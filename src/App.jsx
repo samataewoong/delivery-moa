@@ -1,15 +1,15 @@
-import { useState } from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import Header from './components/Header'
+import { useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Header from "./components/Header";
+import supabase from "./config/supabaseClient";
 
 function App() {
-	return (
-		<BrowserRouter basename={import.meta.env.BASE_URL}>
-			<Header />
-			<Routes>
-			</Routes>
-		</BrowserRouter>
-	)
+  return (
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
+      <Header />
+      <Routes></Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
