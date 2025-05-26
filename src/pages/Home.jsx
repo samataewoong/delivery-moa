@@ -5,6 +5,7 @@ export default function Home() {
     <div>
       <h1>홈 화면입니다</h1>
       <SideMenu />
+      
     </div>
   );
 }

@@ -15,6 +15,7 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Home />} />
+
         <Route path="/mypages" element={<TestLayout />}>
           <Route path="orderlist" element={<OrderList />} />
           <Route path="profile" element={<Profile />} />
