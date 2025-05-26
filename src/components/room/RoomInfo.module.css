@@ -1,0 +1,34 @@
+.room_info {
+    width: calc(100% - 1rem);
+    height: calc(100vh - 200px - 1rem);
+    padding: 0.5rem;
+    background-color: bisque;
+}
+.room_header {
+    padding: 1rem;
+}
+.room_created_at {
+    padding: 0.5rem;
+    font-size: 0.8em;
+    float: right;
+}
+.room_name {
+    padding: 0.5rem;
+    font-size: 1.5em;
+    font-weight: 700;
+}
+.room_address {
+    padding: 0.5rem;
+    font-size: 0.8em;
+    float: right;
+}
+.store_name {
+    padding: 0.5rem;
+    font-size: 1.2em;
+    font-weight: 700;
+}
+.store_address {
+    padding: 0.5rem;
+    font-size: 0.8em;
+    float: right;
+}

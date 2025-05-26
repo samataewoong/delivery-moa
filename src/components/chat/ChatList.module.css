@@ -1,0 +1,7 @@
+.chat_list {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: calc(100vh - 200px - 76px); /* Adjust height to leave space for ChatInput */
+    overflow-y: auto;
+}

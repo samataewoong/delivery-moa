@@ -1,0 +1,21 @@
+.chat {
+	display: flex;
+	padding: 10px;
+	width: calc(50vw - 10px);
+	flex-direction: row;
+}
+.date {
+	color: gray;
+	font-size: 0.8em;
+	padding: 0.5em;
+	align-self: flex-end;
+}
+.chat_box {
+	display: flex;
+	background-color: bisque;
+	flex-direction: column;
+	width: fit-content;
+	overflow: auto;
+	padding: 0.5rem;
+	border-radius: 0.5rem;
+}
