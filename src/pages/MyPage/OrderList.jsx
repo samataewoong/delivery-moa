@@ -1,5 +1,6 @@
 //order Table column - room.id / store.id / room_order / total_price / created_at / user.id / id
 import { useState } from "react";
+import { DummyPayment } from "./Pay";
 
 const dummyOrders = [
   {
@@ -30,15 +31,29 @@ const dummyOrders = [
     store_id: "홍보석",
   },
 ];
-const userId = 0;
-// export default function
-
 export default function OrderList() {
-  const myOrders = dummyOrders.filter((order) => order.user_id === userId);
+  const [inputUserId, setInputUserId] = useState("1");
+
+  const handleChange = (e) => {
+    setInputUserId(e.target.value);
+  };
+
+  const userId = parseInt(inputUserId, 10);
+
+  const myOrders = !isNaN(userId)
+    ? dummyOrders.filter((order) => order.user_id === userId)
+    : [];
 
   return (
     <div>
       <h2>주문 내역 (user_id: {userId})</h2>
+      <input
+        type="number"
+        value={inputUserId}
+        onChange={handleChange}
+        placeholder="유저ID 입력"
+      />
+
       <ul>
         {/* {dummyOrders.map((order) => ( */}
         {myOrders.length === 0 ? (
@@ -58,6 +73,7 @@ export default function OrderList() {
           ))
         )}
       </ul>
+      <DummyPayment />
     </div>
   );
 }
