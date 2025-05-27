@@ -10,21 +10,18 @@ function App() {
 	return (
 		<>
 			<BrowserRouter basename={import.meta.env.BASE_URL}>
-				<Header/>
-    <Link to="/mypage/userinfo">마이페이지</Link>&nbsp;
-			<Link to="/">홈</Link>
+				<Header />
 				<nav>
 					<Link to="/register"> 회원가입 </Link>
 					<Link to="/login"> 로그인 </Link>
+					<Link to="/mypage/userinfo">마이페이지</Link>&nbsp;
+					<Link to="/">홈</Link>*
 				</nav>
-
 				<Routes>
-					<Route path="/register" element={<Register/>}/>
-					<Route path="/login" element={<Login/>}/>
-            <Route path="mypage/*" element={<MyPage />} />
+					<Route path="/register" element={<Register />} />
+					<Route path="/login" element={<Login />} />
+					<Route path="/mypage/*" element={<MyPage />} />
 				</Routes>
-
-
 			</BrowserRouter>
 
 
