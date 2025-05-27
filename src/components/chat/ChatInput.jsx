@@ -13,6 +13,7 @@ export default function ChatInput({
 					console.error("Error getting user:", error);
 					alert('채팅 전송에 실패했습니다. 다시 시도해주세요. ' + error.message);
 				}
+				const user_id = data.user.id;
 				if (data && data.user) {
 					var { data, error } = await supabase
 						.from('chat')
@@ -37,7 +38,7 @@ export default function ChatInput({
 	};
 	return (
 		<div className={style.chat_input_box}>
-			<input type="text" className={style.chat_input} onChange={handleInput} placeholder='메시지를 입력' />
+			<input type="text" className={style.chat_input} onChange={handleInput} placeholder='메시지를 입력' value={chat} />
 			<input type="button" className={style.chat_submit_button} onClick={handleSubmit} value={'전송'} disabled={chat.trim().length > 0 ? false : true} />
 		</div>
 	);
