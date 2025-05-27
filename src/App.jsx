@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import Register from './pages/Register'
 import Header from './components/Header'
+import Login from './pages/Login'
 
 function App() {
 	return (
@@ -10,11 +11,12 @@ function App() {
 				<Header/>
 				<nav>
 					<Link to="/register"> 회원가입 </Link>
+					<Link to="/login"> 로그인 </Link>
 				</nav>
 
 				<Routes>
-					<Route path="/" element={<></>} />
 					<Route path="/register" element={<Register/>}/>
+					<Route path="/login" element={<Login/>}/>
 				</Routes>
 
 
