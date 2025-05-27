@@ -1,0 +1,21 @@
+.room_status_title {
+    font-size: 20px;
+    color: grey;
+    margin-top: 28px;
+    margin-left: 24px;
+}
+.user_profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.user_profile_image {
+    width: 59px;
+    height: 59px;
+    border-radius: 9999px;
+    background-color: #f0f0f0;
+    margin-left: 24px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-right: 19px;
+}
