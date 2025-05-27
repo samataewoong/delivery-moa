@@ -1,6 +1,6 @@
 //order Table column - room.id / store.id / room_order / total_price / created_at / user.id / id
 import { useState } from "react";
-import { DummyPayment } from "./Pay";
+import DummyPayment from "../CashPay";
 
 const dummyOrders = [
   {
@@ -73,7 +73,6 @@ export default function OrderList() {
           ))
         )}
       </ul>
-      <DummyPayment />
     </div>
   );
 }
