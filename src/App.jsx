@@ -5,7 +5,7 @@ import Header from './components/Header'
 function App() {
 	return (
 		<BrowserRouter basename={import.meta.env.BASE_URL}>
-			<Header />
+			<Header/>
 			<Routes>
 			</Routes>
 		</BrowserRouter>
