@@ -1,0 +1,50 @@
+/* Footer.css */
+.footer {
+    width: 100vw;
+    height: 300px;
+    background-color: #2F4F4F;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 0;
+    box-sizing: border-box;
+}
+
+.footer table {
+    width: 1280px;
+    margin: 0 auto 20px auto;
+    border-collapse: collapse;
+}
+
+.footer th,
+.footer td {
+    width: calc(100% / 3);
+    box-sizing: border-box;
+    text-align: center;
+    padding: 5px 0;
+}
+
+.footer th {
+    color: #FFE66D;
+    font-size: 1.1em;
+    padding-bottom: 15px;
+}
+
+.footer td {
+    color: #DDDDDD;
+}
+
+.footer tr:last-child td {
+    padding-bottom: 0;
+}
+
+.footer .copyright {
+    color: #DDDDDD;
+    font-size: 0.85em;
+    margin-top: 10px;
+    border-top: 1px solid #666;
+    padding-top: 15px;
+    width: 1280px;
+    text-align: center;
+}
