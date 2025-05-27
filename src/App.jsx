@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import Register from './pages/Register'
 import Header from './components/Header'
+import Footer from './components/Footer'
 import Login from './pages/Login'
 
 function App() {
@@ -19,7 +20,7 @@ function App() {
 					<Route path="/login" element={<Login/>}/>
 				</Routes>
 
-
+				<Footer/>
 			</BrowserRouter>
 
 
