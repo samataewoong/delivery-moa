@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import Register from './pages/Register'
 import Header from './components/Header'
+import Footer from './components/Footer'
 import RoomPage from './pages/room/RoomPage'
 import Login from './pages/Login'
 import MyPage from './components/pages/myPage/MyPage';
@@ -23,6 +24,7 @@ function App() {
 					<Route path="/mypage/*" element={<MyPage />} />
 				  <Route path="/room/:room_id" element={<RoomPage />} />
 				</Routes>
+				<Footer/>
 			</BrowserRouter>
 
 
