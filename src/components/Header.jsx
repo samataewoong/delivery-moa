@@ -2,6 +2,7 @@ import "./Header.css";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Login from "../pages/Login";
+import supabase from "../config/supabaseClient";
 
 export default function Header() {
     const [isOpen, setIsOpen] = useState(false);
@@ -35,15 +36,22 @@ export default function Header() {
                     </div>
                     {isOpen && (
                         <div className="hamburger_nav">
-                            <div className="mypage">
-                                <img className="mypage_icon" src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/home-black.png"/>
-                                <span className="mypage_text">마이페이지</span>
+                            <img className="mypage_icon" src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/home-black.png" />
+                            <div className="mypage_text">마이페이지</div>
+                            <div className="user_coin">
+                                <div className="userName"><b>홍길동님</b></div>
+                                <img className="coin_imo" src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/coin.png" />
+                                <div className="coin_confirm">37000</div>
                             </div>
-                            <div className="userName">{user.nickname}</div>
-                            <div></div>
+                            <div className="event_banner">
+                                <img className="event_banner1" src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/event_banner1.png"></img>
+                                <img className="event_banner2" src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/event_banner2.png"></img>
+                            </div>
+                            <div>
+                                <h3>참여중인 채팅방 목록</h3>
 
+                            </div>
                         </div>
-
                     )}
                 </div>
             </div>
