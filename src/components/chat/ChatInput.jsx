@@ -37,7 +37,7 @@ export default function ChatInput({
 	};
 	return (
 		<div className={style.chat_input_box}>
-			<textarea type="text-area" className={style.chat_textarea} onChange={handleInput} />
+			<input type="text" className={style.chat_input} onChange={handleInput} placeholder='메시지를 입력' />
 			<input type="button" className={style.chat_submit_button} onClick={handleSubmit} value={'전송'} disabled={chat.trim().length > 0 ? false : true} />
 		</div>
 	);

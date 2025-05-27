@@ -22,7 +22,7 @@ export default function RoomJoin({ room_id, user_id }) {
                         .from("room")
                         .update({ 
                             /* Add the user to the room's users array */
-                            users: (data.users ? [...data.users, { id: user_id, status: 'joined'}] : [{ id: user_id, status: 'joined'}]).filter((user, index, self) =>
+                            users: (data.users ? [...data.users, { id: user_id, ready: false, menus:[] }] : [{ id: user_id, ready: false, menus:[] }]).filter((user, index, self) =>
                             index === self.findIndex((u) => u.id === user.id))
                         })
                         .eq('id', room_id);

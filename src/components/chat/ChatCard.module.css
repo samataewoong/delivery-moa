@@ -1,21 +1,23 @@
 .chat {
 	display: flex;
 	padding: 10px;
-	width: calc(50vw - 10px);
 	flex-direction: row;
+}
+.chat_user {
+	font-weight: 700;
+	font-size: 20px;
+}
+.chat_chat {
+	font-weight: 350;
+	font-size: 20px;
 }
 .date {
 	color: gray;
-	font-size: 0.8em;
-	padding: 0.5em;
+	font-size: 16px;
 	align-self: flex-end;
+	float: right;
 }
 .chat_box {
-	display: flex;
-	background-color: bisque;
-	flex-direction: column;
-	width: fit-content;
+	width: 100%;
 	overflow: auto;
-	padding: 0.5rem;
-	border-radius: 0.5rem;
 }

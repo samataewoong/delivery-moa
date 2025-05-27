@@ -33,18 +33,14 @@ export default function ChatCard({
 	if (minutes.length < 2) {
 		minutes = '0' + minutes;
 	}
-	let seconds = `${date.getSeconds()}`;
-	if (seconds.length < 2) {
-		seconds = '0' + seconds;
-	}	
 
 	return (
 		<div className={style.chat}>
 			<span className={style.chat_box} key={id}>
-				<b>{user.nickname}</b>
-				<div>{chat}</div>
+				<div className={style.chat_user}>{user.nickname}</div>
+				<span className={style.date}>{`${hours} : ${minutes}`}</span>
+				<div className={style.chat_chat}>{chat}</div>
 			</span>
-			<span className={style.date}>{`${hours}:${minutes}:${seconds}`}</span>
 		</div>
 	);
 }

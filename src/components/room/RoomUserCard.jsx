@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import supabase from "../../config/supabaseClient";
 import MenuCard from "../menu/MenuCard";
 
-export default function RoomUserCard({ user }) {
+export default function RoomUser({ user_id }) {
     const [nickname, setNickname] = useState(user.nickname || "Unknown");
     const [error, setError] = useState(null);
 
@@ -12,7 +12,7 @@ export default function RoomUserCard({ user }) {
             const { data, error } = await supabase
                 .from("user")
                 .select("*")
-                .eq("id", user.id)
+                .eq("id", user_id)
                 .single();
 
             if (error) {
