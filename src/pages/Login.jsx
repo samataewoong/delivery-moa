@@ -75,10 +75,10 @@ function Login() {
 
     return (
         <div>
-            {/* 로그인된 상태면 환영 메시지와 로그아웃 버튼만 보여줌 */}
+            {/* 로그인된 상태면 ~님, 로그아웃 버튼만 보여줌 */}
             {session && nickname ? (
                 <div id="user_login">
-                    <h2>환영합니다, {nickname}님!</h2>
+                    <h2>{nickname}님</h2>
                     <button onClick={handleLogout}>로그아웃</button>
                 </div>
             ) : (
