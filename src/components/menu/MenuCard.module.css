@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
+.menu_card {
+    font-family: 'Noto Sans KR', sans-serif;
+    width: 25%;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    background-color: bisque;
+    padding: 10px;
+}
+.menu_image {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 0.5rem;
+    float: left;
+}
+.menu_name {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 1.5em;
+    font-weight: 700;
+    float: right;
+}
+.menu_price {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 1.5em;
+    font-weight: 700;
+    float: right;
+}
+.menu_quantity {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 1em;
+    font-weight: 700;
+    float: right;
+}

@@ -1,0 +1,19 @@
+.room_header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 10px;
+    width: 1280px;
+    height: 65px;
+    border-radius: 10px;
+}
+.back_button {
+    width: 13.5px;
+    height: 25.5px;
+    padding-left: 24px;
+    padding-right: 24px;
+}
+.room_name {
+    font-weight: 400;
+    font-size: 24px;
+}

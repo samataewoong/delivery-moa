@@ -1,0 +1,37 @@
+.menu_name {
+    font-size: 24px;
+    font-weight: 350;
+}
+.menu_price {
+    font-size: 24px;
+    font-weight: 400;
+}
+.menu_quantity_box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    float: right;
+}
+.menu_quantity_add,.menu_quantity_sub,.menu_quantity_disabled {
+    font-size: 24px;
+    font-weight: 400;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.menu_quantity_disabled {
+    color: gray;
+}
+.menu_quantity {
+    font-size: 24px;
+    font-weight: 400;
+    text-align: center;
+}
+.menu_item {
+    height: 70px;
+    padding: 20px;
+    padding-top: 30px;
+    border-bottom: 1px solid #ccc;
+}
+.menu_price {
+    font-weight: 400;
+}

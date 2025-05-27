@@ -1,0 +1,23 @@
+.chat {
+	display: flex;
+	padding: 10px;
+	flex-direction: row;
+}
+.chat_user {
+	font-weight: 700;
+	font-size: 20px;
+}
+.chat_chat {
+	font-weight: 350;
+	font-size: 20px;
+}
+.date {
+	color: gray;
+	font-size: 16px;
+	align-self: flex-end;
+	float: right;
+}
+.chat_box {
+	width: 100%;
+	overflow: auto;
+}
