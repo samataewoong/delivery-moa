@@ -17,10 +17,10 @@ export default function SideMenu() {
           <Link to="/order">주문</Link>
         </li>
         <li>
-          <Link to="/Pay">결제?</Link>
+          <Link to="/Pay">포인트 충전</Link>
         </li>
         <li>
-          <Link to="/Test">포인트 및 결제</Link>
+          <Link to="/Test">포인트 충전 및 결제</Link>
         </li>
         <li>
           <Link to="/qna">문의게시판</Link>

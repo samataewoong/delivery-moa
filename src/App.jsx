@@ -11,6 +11,7 @@ import Order from "./pages/Order";
 import Pay from "./pages/CashPay";
 import Test from "./pages/Test";
 import QnABoard from "./pages/QnA/QnA";
+import NaverMap from "./components/NaverMap";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path="payment" element={<DummyPayment />} />
           <Route path="profile" element={<Profile />} />
         </Route>
+        <Route path="/navermap" element={<NaverMap />} />
       </Routes>
     </BrowserRouter>
   );
