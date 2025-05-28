@@ -45,7 +45,7 @@ const OrderComplete = () => {
   };
 
   const goToHome = () => {
-    navigate('/');
+    navigate('/mainpage');
   };
 
   return (
