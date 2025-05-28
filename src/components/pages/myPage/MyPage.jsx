@@ -24,7 +24,7 @@ export default function MyPage() {
         { name: "문의내역", path: "myqna" },
         { name: "나의평가", path: "myreview" },
         { name: "주문내역", path: "orderlist" },
-        { name: "회원탈퇴", path: "deleteaccount" },
+        //{ name: "회원탈퇴", path: "deleteaccount" },
     ];
     const selectedMenu = menuList.find(menu => menu.path === currentMenu)?.name;
     return (
@@ -68,7 +68,6 @@ export default function MyPage() {
                     <Route path="myreview" element={<MyReview />} />
                     {/* 주문내역 컴포넌트 없으면 빈 요소라도 넣어주세요 */}
                     <Route path="orderlist" element={<div>주문내역 준비중입니다.</div>} />
-                    <Route path="deleteaccount" element={<DeleteAccount />} />
                     {/* 기본 경로 리다이렉트 */}
                     <Route path="*" element={<UserInfo selectedMenu={selectedMenu} />} />
                 </Routes>
