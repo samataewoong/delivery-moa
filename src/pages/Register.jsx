@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import supabase from "../config/supabaseClient";
+import Header from "../components/Header";
+import style from "./Register.module.css";
+
 
 function Register() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [nickname, setNickname] = useState("");
-    const [address, setAddress] = useState(""); // ✅ 주소 상태 추가
 
     const navigate = useNavigate();
 
@@ -63,7 +65,7 @@ function Register() {
                     {
                         id: user.id,
                         nickname,
-                        address, // ✅ 주소 함께 저장
+                        address,
                         user_rating: 50,
                         cash: 0,
                     },
@@ -79,83 +81,82 @@ function Register() {
     };
 
     return (
-        <div>
-            <h2>회원가입</h2>
-            <table>
-                <tbody>
-                    <tr>
-                        <td>이메일</td>
-                        <td>
-                            <input
-                                type="email"
-                                placeholder="이메일"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                            />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>비밀번호</td>
-                        <td>
-                            <input
-                                type="password"
-                                placeholder="비밀번호"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                            />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>비밀번호 확인</td>
-                        <td>
-                            <input
-                                type="password"
-                                placeholder="비밀번호 확인"
-                                value={confirmPassword}
-                                onChange={(e) => setConfirmPassword(e.target.value)}
-                            />
-                            {confirmPassword && confirmPassword !== password && (
-                                <div style={{ color: "red", fontSize: "0.8rem" }}>
-                                    비밀번호가 일치하지 않습니다.
-                                </div>
-                            )}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>닉네임</td>
-                        <td>
-                            <input
-                                type="text"
-                                placeholder="닉네임"
-                                value={nickname}
-                                onChange={(e) => setNickname(e.target.value)}
-                            />
-                            <button
-                                type="button"
-                                onClick={checkNicknameDuplicate}
-                                style={{ marginLeft: "8px" }}
-                            >
-                                중복확인
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>주소</td>
-                        <td>
-                            <input
-                                type="text"
-                                placeholder="주소를 입력해주세요"
-                                value={address}
-                                onChange={(e) => setAddress(e.target.value)}
-                            />
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <br />
-            <button onClick={() => navigate("/")}>취소</button>
-            <button onClick={handleRegister}>회원가입</button>
-        </div>
+        <>
+            <Header />
+            <div className={style['register_container']}>
+                <div className={style['register_h2h3']}>
+                    <h2>회원가입</h2>
+                    <h3> ● 표시는 필수 입력 항목입니다. </h3>
+                </div>
+                <table className={style['register_table']}>
+                    <tbody>
+                        <tr>
+                            <td>● 이메일</td>
+                            <td>
+                                <input
+                                    type="email"
+                                    placeholder="이메일"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>● 비밀번호</td>
+                            <td>
+                                <input
+                                    type="password"
+                                    placeholder="비밀번호"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>● 비밀번호 확인</td>
+                            <td>
+                                <input
+                                    type="password"
+                                    placeholder="비밀번호 확인"
+                                    value={confirmPassword}
+                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                />
+                                {confirmPassword && confirmPassword !== password && (
+                                    <div style={{ color: "red", fontSize: "0.8rem" }}>
+                                        비밀번호가 일치하지 않습니다.
+                                    </div>
+                                )}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>● 닉네임</td>
+                            <td>
+                                <input
+                                    type="text"
+                                    placeholder="닉네임"
+                                    value={nickname}
+                                    onChange={(e) => setNickname(e.target.value)}
+                                />
+                                <button
+                                    type="button"
+                                    onClick={checkNicknameDuplicate}
+                                    style={{ marginLeft: "8px" }}
+                                >
+                                    중복확인
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br />
+                <div className={style['register_button']}>
+                    <button onClick={() => navigate("/")}>취소</button>
+                    <button onClick={handleRegister}>회원가입</button>
+                </div>
+
+            </div>
+        </>
+
     );
 }
 

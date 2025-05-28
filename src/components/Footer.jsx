@@ -34,7 +34,7 @@ export default function Footer() {
                     </tr>
                 </tbody>
             </table>
-            <p className={['copyright']}>© 2025 배달모아. All rights reserved.</p>
+            <p className={style['copyright']}>© 2025 배달모아. All rights reserved.</p>
         </footer>
     );
 }
