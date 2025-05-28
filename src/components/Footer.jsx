@@ -1,11 +1,11 @@
 // Footer.jsx
 import React from 'react'; // React 컴포넌트임을 명시
-import './Footer.css'; // Footer 전용 CSS 파일 임포트
+import style from './Footer.module.css'; // Footer 전용 CSS 파일 임포트
 
 export default function Footer() {
     return (
-        <footer className='footer'>
-            <table>
+        <footer className={style['footer']}>
+            <table className={style['footer_table']}>
                 <tbody>
                     <tr>
                         <th>배달모아</th>
@@ -34,7 +34,7 @@ export default function Footer() {
                     </tr>
                 </tbody>
             </table>
-            <p className="copyright">© 2025 배달모아. All rights reserved.</p>
+            <p className={['copyright']}>© 2025 배달모아. All rights reserved.</p>
         </footer>
     );
 }
