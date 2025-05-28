@@ -1,3 +1,5 @@
+import styles from "../pages/myPage/MyPage.module.css";
+
 export default function GaugeBar({ value = 0 }) {
   const safeValue = Math.min(Math.max(value, 0), 100);
 
@@ -6,10 +8,9 @@ export default function GaugeBar({ value = 0 }) {
   else if (safeValue < 70) fillColor = "#ffeb3b"; // 노랑
 
   return (
-    
     <div
-      className="gaugeBar"
-      style={{ width:"255px", height: `20px` }}
+      className={styles.gaugeBar}
+      style={{ width: "255px", height: "20px" }}
       aria-label={`Progress: ${safeValue}%`}
       role="progressbar"
       aria-valuemin={0}
@@ -17,10 +18,10 @@ export default function GaugeBar({ value = 0 }) {
       aria-valuenow={safeValue}
     >
       <div
-        className="gaugeFill"
+        className={styles.gaugeFill}
         style={{ width: `${safeValue}%`, backgroundColor: fillColor }}
       ></div>
-      <span className="gaugeText">{safeValue}p</span>
+      <span className={styles.gaugeText}>{safeValue}p</span>
     </div>
   );
 }
