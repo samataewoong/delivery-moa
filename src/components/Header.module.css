@@ -1,4 +1,4 @@
-img:hover {
+.hLogo_img:hover {
     opacity: 0.9;
     cursor: pointer;
 }
@@ -8,18 +8,17 @@ img:hover {
     width: 100vw;
     height: 115px;
     display: flex;
-    justify-content: center; 
-    
+    justify-content: center;
+
 }
 
-.container{
+.container {
     width: 1280px;
     display: flex;
     position: relative;
-    
 }
 
-.hLogo {
+.hLogo_img {
     padding: 16.5px 20px;
 }
 
@@ -45,10 +44,11 @@ img:hover {
     padding-left: 20px;
 }
 
-input::placeholder {
+.search_value::placeholder {
     color: gray;
-    font-size: 14px;
+    font-size: 16px;
 }
+
 
 .search_btn {
     background-color: #1A535C;
@@ -69,35 +69,40 @@ input::placeholder {
     all: unset;
 }
 
-.hamburger_nav{
+.hamburger_nav {
     position: absolute;
     top: 115px;
     right: 0;
-    width:434px;
+    width: 434px;
     height: 100vh;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     background-color: white;
     z-index: 1000;
     padding: 30px 45px;
 }
-.mypage_icon{
-    width:21px;
+
+.mypage_icon {
+    width: 21px;
     height: auto;
 }
-.mypage{
+
+.mypage {
     margin-top: 5px;
     display: flex;
 }
-.mypage_text{
+
+.mypage_text {
     margin-left: 10px;
     font-size: 16px;
 
 }
-.userName{
+
+.userName {
     font-size: 24px;
     text-align: left;
 }
-.userName_btn{
+
+.userName_btn {
     border: 2px solid #FF6B6B;
     background-color: white;
     border-radius: 10px;
@@ -106,31 +111,36 @@ input::placeholder {
     height: 32px;
 }
 
-#user_notlogin{
+#user_notlogin {
     font-size: 24px;
     text-align: left;
     margin-top: 40px;
 }
-.user_coin{
+
+.user_coin {
     display: flex;
     margin-top: 40px;
     justify-content: space-between;
 }
-.coin_imo{
+
+.coin_imo {
     width: auto;
     height: 31.67px;
     margin-top: 4px;
     margin-left: auto;
 }
-.coin_confirm{
+
+.coin_confirm {
     font-size: 18px;
     margin-top: 5px;
     margin-left: 12px;
-    
+
 }
-.event_banner1{
+
+.event_banner1 {
     margin-top: 50px;
 }
-.event_banner2{
+
+.event_banner2 {
     margin-top: 15px;
 }

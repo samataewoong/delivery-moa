@@ -68,7 +68,7 @@ export default function main_Header() {
         <>
             <header className={styles["main_header"]}>
                 <div className={styles["main_container"]}>
-                    <div className={styles["hLogo"]}>
+                    <div className={styles["hLogo_img"]}>
                         <Link to="/mainpage" style={{ textDecoration: 'none', color: 'inherit' }}>
                             <img
                                 src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/main_logo.png"
@@ -77,12 +77,14 @@ export default function main_Header() {
                         </Link>
 
                     </div>
-                    <ul className={styles["main_menu"]}>
+                    <div>
+                        <ul className={styles["main_menu"]}>
                         <li>메뉴</li>
                         <li>진행중인 공구</li>
                         <li>랭킹</li>
                         <li>이벤트</li>
-                    </ul>
+                        </ul>
+                    </div>
                     <div className={styles["location"]}>
                         <div>
                             <button className={styles["location_btn"]} onClick={handleClick}>
@@ -165,6 +167,11 @@ export default function main_Header() {
                     )}
                 </div>
             </header>
+            <div className={styles["search"]}>
+                <div className={styles["search_box"]}>
+                    <div className={styles["search_text"]}>오늘은 무엇을 함께 먹을까요?</div>
+                </div>
+            </div>
         </>
-    );
+    ); 
 }

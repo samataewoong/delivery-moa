@@ -1,12 +1,16 @@
-ul {
+.main_menu{
     list-style: none;
     display: flex;
     gap: 20px;
+    margin: 46.5px 234px;
+    font-size: 18px;
+    padding-inline-start: 0;
 }
-li {
+
+.main_menu li{
     white-space: nowrap;
 }
-img:hover {
+.hLogo_img:hover {
     opacity: 0.9;
     cursor: pointer;
 }
@@ -18,7 +22,25 @@ img:hover {
     justify-content: center; 
     
 }
-
+.search{
+    background-color: #FF6B6B;
+    width: 100vw;
+    height: 170px;
+    display: flex;
+    justify-content: center; 
+}
+.search_box{
+    width: 1280px;
+    display: flex;
+    position: relative;
+    width: fit-content;
+    margin: 0 auto;
+    color: white;
+}
+.search_text{
+    font-size: 28px;
+    font-weight: 500;
+}
 .main_container{
     width: 1280px;
     display: flex;
@@ -26,13 +48,8 @@ img:hover {
     
 }
 
-.hLogo {
+.hLogo_img {
     padding: 16.5px 20px;
-}
-
-.main_menu{
-    margin: 46.5px 169px;
-    font-size: 18px;
 }
 .location{
     display: flex;
@@ -43,7 +60,7 @@ img:hover {
     display: flex;
     box-sizing: border-box;
     font-size: 16px;
-    width: 200px;
+    width: 150px;
     height: 20px;
 }
 .location_btn{
@@ -86,7 +103,6 @@ img:hover {
 .mypage_text{
     margin-left: 10px;
     font-size: 16px;
-
 }
 .userName{
     font-size: 24px;
