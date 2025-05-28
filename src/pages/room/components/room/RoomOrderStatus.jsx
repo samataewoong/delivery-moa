@@ -1,4 +1,4 @@
-import supabase from "../../config/supabaseClient";
+import supabase from "../../../../config/supabaseClient";
 import { useEffect, useState } from "react";
 import style from "./RoomOrderStatus.module.css";
 

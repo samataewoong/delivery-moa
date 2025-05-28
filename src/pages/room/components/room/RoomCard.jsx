@@ -1,4 +1,4 @@
-import supabase from "../../config/supabaseClient";
+import supabase from "../../../../config/supabaseClient";
 import style from "./RoomCard.module.css";
 
 export default function RoomCard({

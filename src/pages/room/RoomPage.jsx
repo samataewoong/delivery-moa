@@ -1,10 +1,9 @@
 import supabase from "../../config/supabaseClient";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import style from "./RoomPage.module.css";
-import RoomJoin from "../../components/room/RoomJoin";
-import RoomHeader from "../../components/room/RoomHeader";
-import RoomBody from "../../components/room/RoomBody";
+import RoomJoin from "./components/room/RoomJoin";
+import RoomHeader from "./components/room/RoomHeader";
+import RoomBody from "./components/room/RoomBody";
 import Header from "../../components/Header";
 
 export default function RoomPage() {

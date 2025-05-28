@@ -1,8 +1,8 @@
 import style from "./RoomBody.module.css";
 import { useEffect, useState } from "react";
-import supabase from "../../config/supabaseClient";
+import supabase from "../../../../config/supabaseClient";
 import Chat from "../../components/chat/Chat";
-import RoomMenu from "../../components/room/RoomMenu";
+import RoomMenu from "./RoomMenu";
 import RoomOrderStatus from "./RoomOrderStatus";
 
 export default function RoomBody({ room_id }) {

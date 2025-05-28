@@ -1,4 +1,4 @@
-import supabase from "../../config/supabaseClient";
+import supabase from "../../../../config/supabaseClient";
 import { useEffect, useState, useRef } from "react";
 import Chat from "./ChatCard";
 import style from "./ChatList.module.css";

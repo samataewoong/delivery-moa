@@ -1,6 +1,7 @@
-import supabase from '../../config/supabaseClient'
+import supabase from '../../../../config/supabaseClient'
 import React, { useEffect, useState } from 'react'
 import style from './ChatInput.module.css'
+import getAuthUser from '../../../../functions/auth/GetAuthUser';
 
 export default function ChatInput({
 	room_id
@@ -8,12 +9,20 @@ export default function ChatInput({
 	const [chat, setChat] = useState('');
 	const handleSubmit = () => {
 			async function insertChat() {
-				var { data, error } = await supabase.auth.getUser();
-				if (error) {
-					console.error("Error getting user:", error);
-					alert('채팅 전송에 실패했습니다. 다시 시도해주세요. ' + error.message);
-				}
-				const user_id = data.user.id;
+				let user_id = null;
+				try {
+					const { id } = await getAuthUser();
+					user_id = id;
+				} catch (error) {
+					alert('로그인 정보를 가져오는데 실패하였습니다. 다시 로그인 해 주세요.');
+					navigate('/login');
+                    return;
+                }
+				if (!user_id) {
+					alert('로그인 정보를 가져오는데 실패하였습니다. 다시 로그인 해 주세요.');
+                    navigate('/login');
+                    return;
+                }
 				if (data && data.user) {
 					var { data, error } = await supabase
 						.from('chat')
