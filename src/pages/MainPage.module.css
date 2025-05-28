@@ -10,7 +10,7 @@
 .main_menu li{
     white-space: nowrap;
 }
-.hLogo img:hover {
+.hLogo_img:hover {
     opacity: 0.9;
     cursor: pointer;
 }
@@ -48,7 +48,7 @@
     
 }
 
-.hLogo {
+.hLogo_img {
     padding: 16.5px 20px;
 }
 .location{

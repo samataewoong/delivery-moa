@@ -68,7 +68,7 @@ export default function main_Header() {
         <>
             <header className={styles["main_header"]}>
                 <div className={styles["main_container"]}>
-                    <div className={styles["hLogo"]}>
+                    <div className={styles["hLogo_img"]}>
                         <Link to="/mainpage" style={{ textDecoration: 'none', color: 'inherit' }}>
                             <img
                                 src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/main_logo.png"
