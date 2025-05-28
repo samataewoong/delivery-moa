@@ -13,10 +13,8 @@ export default function RoomPage() {
     useEffect(() => {
         async function fetchUser() {
             let { data, error } = await supabase.auth.getUser();
-            data = { user: { id: '86969f38-3018-4b8e-bb6f-1bcc6376ee65' }  };
             if (error) {
                 console.error("Error fetching user:", error);
-                setUid(data.user.id);
             } else {
                 setUid(data.user.id);
             }
