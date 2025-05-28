@@ -2,8 +2,9 @@ import styles from "./MainPage.module.css";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import supabase from "../config/supabaseClient";
+import Hamburger from "../components/Hamburger";
 
-export default function main_Header() {
+export default function MainHeader() {
     const [isOpen, setIsOpen] = useState(false);
     const [nickname, setNickname] = useState("");
     const [session, setSession] = useState(null);
@@ -18,6 +19,11 @@ export default function main_Header() {
             },
         }).open();
     };
+    const onKeyDown = (e) => {
+        if (e.key === "Enter") {
+            search();
+        }
+    }
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
@@ -61,8 +67,13 @@ export default function main_Header() {
     };
 
     const search = () => {
+        if (!keyword.trim()) {
+            alert("검색어를 입력하세요.");
+            return;
+        }
         alert(`검색어: ${keyword}`);
     };
+
 
     return (
         <>
@@ -79,10 +90,10 @@ export default function main_Header() {
                     </div>
                     <div>
                         <ul className={styles["main_menu"]}>
-                        <li>메뉴</li>
-                        <li>진행중인 공구</li>
-                        <li>랭킹</li>
-                        <li>이벤트</li>
+                            <li>메뉴</li>
+                            <li>진행중인 공구</li>
+                            <li>랭킹</li>
+                            <li>이벤트</li>
                         </ul>
                     </div>
                     <div className={styles["location"]}>
@@ -114,64 +125,39 @@ export default function main_Header() {
                             />
                         </button>
                     </div>
-
-                    {isOpen && (
-                        <div className={styles["hamburger_nav"]}>
-                            <div className={styles["mypage"]}>
-                                <img
-                                    className={styles["mypage_icon"]}
-                                    src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/home-black.png"
-                                    alt="마이페이지"
-                                />
-                                <div className={styles["mypage_text"]}>마이페이지</div>
-                            </div>
-
-                            {session && nickname ? (
-                                <div className={styles["user_coin"]}>
-                                    <div className={styles["userName"]}>{nickname}님
-                                    </div>
-                                    <button className={styles["userName_btn"]} onClick={handleLogout}>로그아웃</button>
-                                    <img
-                                        className={styles["coin_imo"]}
-                                        src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/coin.png"
-                                        alt="코인"
-                                    />
-                                    <div className={styles["coin_confirm"]}>37000</div>
-                                </div>
-                            ) : (
-                                <div id={styles["user_notlogin"]}>
-                                    <Link to="/login"> 로그인 </Link>
-                                    <Link to="/register"> 회원가입 </Link>
-                                </div>
-                            )}
-
-                            <div className={styles["event_banner"]}>
-                                <img
-                                    className={styles["event_banner1"]}
-                                    src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/event_banner1.png"
-                                    alt="배너1"
-                                />
-                                <img
-                                    className={styles["event_banner2"]}
-                                    src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/event_banner2.png"
-                                    alt="배너2"
-                                />
-                            </div>
-
-                            {session && nickname && (
-                                <div>
-                                    <h3>참여중인 채팅방 목록</h3>
-                                </div>
-                            )}
-                        </div>
-                    )}
+                    <Hamburger
+                        isOpen={isOpen}
+                        session={session}
+                        nickname={nickname}
+                        handleLogout={handleLogout}
+                        onClose={() => setIsOpen(false)}
+                    />
                 </div>
             </header>
-            <div className={styles["search"]}>
+            <div className={styles["search_header"]}>
                 <div className={styles["search_box"]}>
                     <div className={styles["search_text"]}>오늘은 무엇을 함께 먹을까요?</div>
+                    <div className={styles["search"]}>
+                        <input
+                            type="text"
+                            className={styles["search_value"]}
+                            value={keyword}
+                            onChange={(e) => setKeyword(e.target.value)}
+                            onKeyDown={onKeyDown}
+                            placeholder="음식점 또는 메뉴를 검색해보세요"
+                        />
+                        <button onClick={search} className={styles["search_btn"]}>
+                            검색
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <h2>음식 카테고리</h2>
+
                 </div>
             </div>
         </>
-    ); 
+    );
 }
