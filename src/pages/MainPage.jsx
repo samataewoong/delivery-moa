@@ -1,13 +1,23 @@
-import "./MainPage.css";
+import styles from "./MainPage.module.css";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import supabase from "../config/supabaseClient";
 
-export default function Header() {
+export default function main_Header() {
     const [isOpen, setIsOpen] = useState(false);
     const [nickname, setNickname] = useState("");
     const [session, setSession] = useState(null);
     const [keyword, setKeyword] = useState("");
+
+    const [address, setAddress] = useState("");
+
+    const handleClick = () => {
+        new window.daum.Postcode({
+            oncomplete: function (data) {
+                setAddress(data.address);
+            },
+        }).open();
+    };
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
@@ -56,79 +66,91 @@ export default function Header() {
 
     return (
         <>
-            <div className="main_header">
-                <div className="main_container">
-                    <div className="hLogo">
+            <header className={styles["main_header"]}>
+                <div className={styles["main_container"]}>
+                    <div className={styles["hLogo"]}>
                         <Link to="/mainpage" style={{ textDecoration: 'none', color: 'inherit' }}>
-                        <img
-                            src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/header_logo.png"
-                            alt="로고"
-                        />
-                        </Link>
-                        
-                    </div>
-                    <div className="search">
-                        <input
-                            type="text"
-                            className="search_value"
-                            value={keyword}
-                            onChange={(e) => setKeyword(e.target.value)}
-                            placeholder="음식점 또는 메뉴를 검색해보세요"
-                        />
-                        <button onClick={search} className="search_btn">
-                            검색
-                        </button>
-                    </div>
-                    <div className="hamburger">
-                        <button onClick={toggleMenu} className="hamburger_btn">
                             <img
-                                src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/hamburger-md.png"
+                                src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/main_logo.png"
+                                alt="로고"
+                            />
+                        </Link>
+
+                    </div>
+                    <ul className={styles["main_menu"]}>
+                        <li>메뉴</li>
+                        <li>진행중인 공구</li>
+                        <li>랭킹</li>
+                        <li>이벤트</li>
+                    </ul>
+                    <div className={styles["location"]}>
+                        <div>
+                            <button className={styles["location_btn"]} onClick={handleClick}>
+                                <img src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/location_imo.png" />
+                            </button>
+                        </div>
+                        <div className={styles["location_gps"]}>
+                            {session && nickname ? (
+                                address ? (
+                                    <div className={styles["location_gps"]}>{address}</div>
+                                ) : (
+                                    "주소를 입력하세요"
+                                )
+                            ) : (
+                                <div>
+                                    <Link to="/login">로그인</Link>
+                                    <Link to="/register"> 회원가입 </Link>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                    <div className={styles["main_hamburger"]}>
+                        <button onClick={toggleMenu} className={styles["main_hamburger_btn"]}>
+                            <img
+                                src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/main_hamburger-md.png"
                                 alt="햄버거 메뉴"
                             />
                         </button>
                     </div>
 
                     {isOpen && (
-                        <div className="hamburger_nav">
-                            <div className="mypage">
+                        <div className={styles["hamburger_nav"]}>
+                            <div className={styles["mypage"]}>
                                 <img
-                                    className="mypage_icon"
+                                    className={styles["mypage_icon"]}
                                     src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/home-black.png"
                                     alt="마이페이지"
                                 />
-                                <div className="mypage_text">마이페이지</div>
+                                <div className={styles["mypage_text"]}>마이페이지</div>
                             </div>
 
                             {session && nickname ? (
-                                <div className="user_coin">
-                                    <div className="userName">{nickname}님
+                                <div className={styles["user_coin"]}>
+                                    <div className={styles["userName"]}>{nickname}님
                                     </div>
+                                    <button className={styles["userName_btn"]} onClick={handleLogout}>로그아웃</button>
                                     <img
-                                        className="coin_imo"
+                                        className={styles["coin_imo"]}
                                         src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/coin.png"
                                         alt="코인"
                                     />
-                                    <div className="coin_confirm">37000</div>
+                                    <div className={styles["coin_confirm"]}>37000</div>
                                 </div>
                             ) : (
-                                <div id="user_notlogin">
-                                    <Link to="/login" style={{ textDecoration: 'none', color: 'inherit' }}>
-                                        로그인해주세요
-                                    </Link>
+                                <div id={styles["user_notlogin"]}>
+                                    <Link to="/login"> 로그인 </Link>
                                     <Link to="/register"> 회원가입 </Link>
-					                <Link to="/login"> 로그인 </Link>
                                 </div>
-
                             )}
 
-                            <div className="event_banner">
+                            <div className={styles["event_banner"]}>
                                 <img
-                                    className="event_banner1"
+                                    className={styles["event_banner1"]}
                                     src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/event_banner1.png"
                                     alt="배너1"
                                 />
                                 <img
-                                    className="event_banner2"
+                                    className={styles["event_banner2"]}
                                     src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/event_banner2.png"
                                     alt="배너2"
                                 />
@@ -142,7 +164,7 @@ export default function Header() {
                         </div>
                     )}
                 </div>
-            </div>
+            </header>
         </>
     );
 }

@@ -1,10 +1,17 @@
+ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+li {
+    white-space: nowrap;
+}
 img:hover {
     opacity: 0.9;
     cursor: pointer;
 }
 
-.header {
-    background-color: #FF6B6B;
+.main_header {
     width: 100vw;
     height: 115px;
     display: flex;
@@ -12,7 +19,7 @@ img:hover {
     
 }
 
-.container{
+.main_container{
     width: 1280px;
     display: flex;
     position: relative;
@@ -23,48 +30,38 @@ img:hover {
     padding: 16.5px 20px;
 }
 
-.search {
+.main_menu{
+    margin: 46.5px 169px;
+    font-size: 18px;
+}
+.location{
     display: flex;
-    padding: 31px 85px;
-    gap: 0;
+    margin: 48px 20px;
 }
-
-.search_value,
-.search_btn {
+.location_btn,
+.location_gps{
+    display: flex;
     box-sizing: border-box;
-    vertical-align: top;
     font-size: 16px;
-    line-height: 1;
+    width: 200px;
+    height: 20px;
 }
-
-.search_value {
-    width: 502.25px;
-    height: 53px;
-    border: 0px;
-    border-radius: 10px 0px 0px 10px;
-    padding-left: 20px;
-}
-
-input::placeholder {
-    color: gray;
-    font-size: 14px;
-}
-
-.search_btn {
-    background-color: #1A535C;
-    color: white;
-    width: 72.35px;
-    height: 53px;
-    border: 0px;
-    border-radius: 0px 10px 10px 0px;
-}
-
-.hamburger {
-    padding: 27.5px 20px 27.5px 187.4px;
-}
-
-.hamburger_btn {
+.location_btn{
     all: unset;
+    margin-right: 10px;
+}
+.location_gps{
+    margin-top: -2px;
+}
+.main_hamburger {
+    position: absolute;
+    padding: 27.5px 20px;
+    right: 0;
+}
+
+.main_hamburger_btn {
+    all: unset;
+    
 }
 
 .hamburger_nav{
@@ -94,6 +91,14 @@ input::placeholder {
 .userName{
     font-size: 24px;
     text-align: left;
+}
+.userName_btn{
+    border: 2px solid #FF6B6B;
+    background-color: white;
+    border-radius: 10px;
+    color: black;
+    margin: 3px 10px;
+    height: 32px;
 }
 
 #user_notlogin{

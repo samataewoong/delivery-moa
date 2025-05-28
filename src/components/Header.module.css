@@ -1,0 +1,136 @@
+img:hover {
+    opacity: 0.9;
+    cursor: pointer;
+}
+
+.header {
+    background-color: #FF6B6B;
+    width: 100vw;
+    height: 115px;
+    display: flex;
+    justify-content: center; 
+    
+}
+
+.container{
+    width: 1280px;
+    display: flex;
+    position: relative;
+    
+}
+
+.hLogo {
+    padding: 16.5px 20px;
+}
+
+.search {
+    display: flex;
+    padding: 31px 85px;
+    gap: 0;
+}
+
+.search_value,
+.search_btn {
+    box-sizing: border-box;
+    vertical-align: top;
+    font-size: 16px;
+    line-height: 1;
+}
+
+.search_value {
+    width: 502.25px;
+    height: 53px;
+    border: 0px;
+    border-radius: 10px 0px 0px 10px;
+    padding-left: 20px;
+}
+
+input::placeholder {
+    color: gray;
+    font-size: 14px;
+}
+
+.search_btn {
+    background-color: #1A535C;
+    color: white;
+    width: 72.35px;
+    height: 53px;
+    border: 0px;
+    border-radius: 0px 10px 10px 0px;
+}
+
+.hamburger {
+    position: absolute;
+    padding: 27.5px 0;
+    right: 20px;
+}
+
+.hamburger_btn {
+    all: unset;
+}
+
+.hamburger_nav{
+    position: absolute;
+    top: 115px;
+    right: 0;
+    width:434px;
+    height: 100vh;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    background-color: white;
+    z-index: 1000;
+    padding: 30px 45px;
+}
+.mypage_icon{
+    width:21px;
+    height: auto;
+}
+.mypage{
+    margin-top: 5px;
+    display: flex;
+}
+.mypage_text{
+    margin-left: 10px;
+    font-size: 16px;
+
+}
+.userName{
+    font-size: 24px;
+    text-align: left;
+}
+.userName_btn{
+    border: 2px solid #FF6B6B;
+    background-color: white;
+    border-radius: 10px;
+    color: black;
+    margin: 3px 10px;
+    height: 32px;
+}
+
+#user_notlogin{
+    font-size: 24px;
+    text-align: left;
+    margin-top: 40px;
+}
+.user_coin{
+    display: flex;
+    margin-top: 40px;
+    justify-content: space-between;
+}
+.coin_imo{
+    width: auto;
+    height: 31.67px;
+    margin-top: 4px;
+    margin-left: auto;
+}
+.coin_confirm{
+    font-size: 18px;
+    margin-top: 5px;
+    margin-left: 12px;
+    
+}
+.event_banner1{
+    margin-top: 50px;
+}
+.event_banner2{
+    margin-top: 15px;
+}

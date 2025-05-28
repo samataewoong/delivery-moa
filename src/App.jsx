@@ -6,25 +6,26 @@ import Footer from './components/Footer'
 import RoomPage from './pages/room/RoomPage'
 import Login from './pages/Login'
 import MyPage from './components/pages/myPage/MyPage';
+import MainPage from './pages/MainPage';
 
 function App() {
 	return (
 		<>
 			<BrowserRouter basename={import.meta.env.BASE_URL}>
-				<Header />
-				<nav>
-					<Link to="/register"> 회원가입 </Link>
-					<Link to="/login"> 로그인 </Link>
-					<Link to="/mypage/userinfo">마이페이지</Link>&nbsp;
-					<Link to="/">홈</Link>*
-				</nav>
+				
 				<Routes>
 					<Route path="/register" element={<Register />} />
 					<Route path="/login" element={<Login />} />
 					<Route path="/mypage/*" element={<MyPage />} />
-				  <Route path="/room/:room_id" element={<RoomPage />} />
+					<Route path="/mainpage" element={<MainPage />} />
+				<Route path="/room/:room_id" element={<RoomPage />} />
 				</Routes>
 				<Footer/>
+				<nav>
+					<Link to="/login">로그인</Link>
+					<Link to="/mypage/userinfo">마이페이지</Link>&nbsp;
+					<Link to="/mainpage">홈</Link>*
+				</nav>
 			</BrowserRouter>
 
 
