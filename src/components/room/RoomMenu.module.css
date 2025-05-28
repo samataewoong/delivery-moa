@@ -28,7 +28,6 @@
 .room_menus {
     width: calc(522px - 20px);
     height: calc(828px - 300px);
-    margin: 10px;
     border-radius: 10px;
 }
 .total_price_box {
