@@ -152,10 +152,9 @@ export default function MainHeader() {
                     </div>
                 </div>
             </div>
-            <div>
-                <div>
+            <div className={styles["body_box"]}>
+                <div className={styles["body_container"]}>
                     <h2>음식 카테고리</h2>
-
                 </div>
             </div>
         </>
