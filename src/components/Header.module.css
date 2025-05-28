@@ -1,4 +1,4 @@
-img:hover {
+.hLogo img:hover {
     opacity: 0.9;
     cursor: pointer;
 }
@@ -16,7 +16,6 @@ img:hover {
     width: 1280px;
     display: flex;
     position: relative;
-    
 }
 
 .hLogo {
