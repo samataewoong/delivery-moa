@@ -9,18 +9,6 @@ import Header from "../../components/Header";
 
 export default function RoomPage() {
     const { room_id } = useParams();
-    const [uid, setUid] = useState(null);
-    useEffect(() => {
-        async function fetchUser() {
-            let { data, error } = await supabase.auth.getUser();
-            if (error) {
-                console.error("Error fetching user:", error);
-            } else {
-                setUid(data.user.id);
-            }
-        }
-        fetchUser();
-    }, []);
     return (
         <div style={{
             display: "flex",
@@ -28,9 +16,9 @@ export default function RoomPage() {
             alignItems: "center",
         }}>
             <Header />
-            { uid && <RoomJoin room_id={room_id} user_id={uid} />}
-                <RoomHeader room_id={room_id} />
-                <RoomBody room_id={room_id} />
+            <RoomJoin room_id={room_id} />
+            <RoomHeader room_id={room_id} />
+            <RoomBody room_id={room_id} />
         </div>
     );
 }
