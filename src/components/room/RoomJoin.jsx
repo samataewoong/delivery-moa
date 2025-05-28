@@ -8,6 +8,14 @@ export default function RoomJoin({ room_id, user_id }) {
     const navigate = useNavigate();
 
     useEffect(() => {
+        async function fetchUser(){
+            const { data, error } = await supabase.auth.getUser();
+            if (error) {
+                console.error("Error fetching user:", error);
+                alert('유저 정보를 가져오는데 실패하였습니다. 로그인 후 사용 해 주세요.');
+                navigate("/login");
+            }
+        }
         async function fetchRoom() {
             const { data: roomData, error: roomError } = await supabase
                 .from("room")
@@ -56,7 +64,7 @@ export default function RoomJoin({ room_id, user_id }) {
                 }
             }
         }
-
+        fetchUser();
         fetchRoom();
     }, [room_id]);
     return (
