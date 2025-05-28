@@ -7,7 +7,7 @@
 .room_body_left {
     display: flex;
     flex-direction: column;
-    width: 738px;
+    width: calc(738px + 20px);
     height: calc(828px + 20px);
 }
 .room_body_left_top {
