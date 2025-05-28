@@ -1,4 +1,4 @@
-import "./Header.css";
+import styles from "./Header.module.css";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import supabase from "../config/supabaseClient";
@@ -56,10 +56,10 @@ export default function Header() {
 
     return (
         <>
-            <div className="header">
-                <div className="container">
-                    <div className="hLogo">
-                        <Link to="/main" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <div className={styles["header"]}>
+                <div className={styles["container"]}>
+                    <div className={styles["hLogo"]}>
+                        <Link to="/mainpage" style={{ textDecoration: 'none', color: 'inherit' }}>
                         <img
                             src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/header_logo.png"
                             alt="로고"
@@ -67,20 +67,20 @@ export default function Header() {
                         </Link>
                         
                     </div>
-                    <div className="search">
+                    <div className={styles["search"]}>
                         <input
                             type="text"
-                            className="search_value"
+                            className={styles["search_value"]}
                             value={keyword}
                             onChange={(e) => setKeyword(e.target.value)}
                             placeholder="음식점 또는 메뉴를 검색해보세요"
                         />
-                        <button onClick={search} className="search_btn">
+                        <button onClick={search} className={styles["search_btn"]}>
                             검색
                         </button>
                     </div>
-                    <div className="hamburger">
-                        <button onClick={toggleMenu} className="hamburger_btn">
+                    <div className={styles["hamburger"]}>
+                        <button onClick={toggleMenu} className={styles["hamburger_btn"]}>
                             <img
                                 src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/hamburger-md.png"
                                 alt="햄버거 메뉴"
@@ -89,44 +89,49 @@ export default function Header() {
                     </div>
 
                     {isOpen && (
-                        <div className="hamburger_nav">
-                            <div className="mypage">
+                        <div className={styles["hamburger_nav"]}>
+                            <div className={styles["mypage"]}>
+                                
                                 <img
-                                    className="mypage_icon"
+                                    className={styles["mypage_icon"]}
                                     src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/home-black.png"
                                     alt="마이페이지"
                                 />
-                                <div className="mypage_text">마이페이지</div>
+                                <div className={styles["mypage_text"]}>마이페이지</div>
                             </div>
 
                             {session && nickname ? (
-                                <div className="user_coin">
-                                    <div className="userName">{nickname}님
+                                <div className={styles["user_coin"]}>
+                                    <div className={styles["userName"]}>
+                                        {nickname}님
+                                        <button className={styles["userName_btn"]} onClick={handleLogout}>로그아웃</button>
                                     </div>
                                     <img
-                                        className="coin_imo"
+                                        className={styles["coin_imo"]}
                                         src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/coin.png"
                                         alt="코인"
                                     />
-                                    <div className="coin_confirm">37000</div>
+                                    <div className={styles["coin_confirm"]}>37000</div>
                                 </div>
                             ) : (
-                                <div id="user_notlogin">
+                                <div id={styles["user_notlogin"]}>
                                     <Link to="/login" style={{ textDecoration: 'none', color: 'inherit' }}>
                                         로그인해주세요
                                     </Link>
+                                    <Link to="/register"> 회원가입 </Link>
+					                <Link to="/login"> 로그인 </Link>
                                 </div>
 
                             )}
 
-                            <div className="event_banner">
+                            <div className={styles["event_banner"]}>
                                 <img
-                                    className="event_banner1"
+                                    className={styles["event_banner1"]}
                                     src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/event_banner1.png"
                                     alt="배너1"
                                 />
                                 <img
-                                    className="event_banner2"
+                                    className={styles["event_banner2"]}
                                     src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/event_banner2.png"
                                     alt="배너2"
                                 />

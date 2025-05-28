@@ -12,6 +12,7 @@ import "./my.css";
 
 
 export default function MyPage() {
+    
     const navigate = useNavigate();
     const location = useLocation();
 

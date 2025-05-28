@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import supabase from "../config/supabaseClient";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import Header from "../components/Header";
 
 function Login() {
     const [email, setEmail] = useState("");
@@ -74,6 +75,8 @@ function Login() {
     };
 
     return (
+        <>
+        <Header/>
         <div>
             {/* 로그인된 상태면 ~님, 로그아웃 버튼만 보여줌 */}
             {session && nickname ? (
@@ -100,6 +103,7 @@ function Login() {
                 </>
             )}
         </div>
+        </>
     );
 }
 
