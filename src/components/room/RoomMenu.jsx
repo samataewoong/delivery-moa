@@ -121,7 +121,7 @@ export default function RoomMenu({ room_id }) {
             <div className={style.room_menu_header}>
                 <img src={menuIcon} alt="메뉴 아이콘" className={style.room_menu_icon} />
                 <div className={style.room_menu_title}>
-                    메뉴
+                    메뉴 선택
                 </div>
             </div>
             <div className={style.room_menus}>
