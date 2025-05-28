@@ -19,13 +19,6 @@
     margin-right: 50px;
 }
 
-.main_header {
-    width: 100vw;
-    height: 115px;
-    display: flex;
-    justify-content: center; 
-    
-}
 .search_header{
     background-color: #FF6B6B;
     width: 100vw;
@@ -85,6 +78,13 @@
     position: relative;
     
 }
+.main_header {
+    width: 100vw;
+    height: 115px;
+    display: flex;
+    justify-content: center; 
+    
+}
 
 .location{
     display: flex;
@@ -115,4 +115,16 @@
 .main_hamburger_btn {
     all: unset;
     cursor: pointer;
+}
+
+.body_box {
+    width: 100vw;
+    display: flex;
+    justify-content: center;  
+}
+.body_container{
+    width: 1280px;
+    display: flex;
+    position: relative;
+    
 }
