@@ -1,5 +1,4 @@
 import style from "./RoomMenuItem.module.css";
-import { useEffect, useState } from "react";
 import thousands from 'thousands';
 
 export default function RoomMenuItem({
