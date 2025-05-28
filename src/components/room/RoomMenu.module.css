@@ -14,9 +14,17 @@
     height: 30px;
     margin-left: 27px;
     margin-top: 22px;
-    margin-bottom: 22px;
+    align-items: center;
 }
-.room
+.room_menu_icon {
+    width: 30px;
+    height: 30px;
+}
+.room_menu_title {
+    font-size: 24px;
+    font-weight: 400;
+    margin-left: 10px;
+}
 .room_menus {
     width: calc(522px - 20px);
     height: calc(828px - 300px);
