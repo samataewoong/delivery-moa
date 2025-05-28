@@ -12,12 +12,14 @@ import EditUser from './pages/myPage/EditUser';
 import MyQnA from './pages/myPage/MyQnA';
 import MyReview from './pages/myPage/MyReview';
 import MainPage from './pages/MainPage';
+import RootPage from './pages/RootPage';
 
 function App() {
   return (
     <>
       <BrowserRouter basename={import.meta.env.BASE_URL}>
         <Routes>
+          <Route path="/" element={<RootPage />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/mainpage" element={<MainPage />} />

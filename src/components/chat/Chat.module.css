@@ -1,7 +1,11 @@
 .chat {
     display: flex;
-    flex-direction: column;
-    margin: 10px;
     width: 738px;
+    height: 420px;
+    flex-direction: column;
+    border-radius: 10px;
+    background-color: #ffffff;
+    border: #333 solid 1px;
+    box-sizing: border-box;
     align-items: center;
 }

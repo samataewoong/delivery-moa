@@ -1,14 +1,16 @@
 .chat_input_box {
     display: flex;
     flex-direction: row;
-    width: calc(610px + 89px);
+    width: 700px;
+    height: calc(40px);
     overflow: auto;
     border-radius: 10px;
     border: #333 solid 1px;
+    box-sizing: border-box;
     align-items: center;
 }
 .chat_input {
-    width: 570px;
+    width: calc(610px - 40px);
     outline: none;
     resize: none;
     height: 38px;
@@ -19,8 +21,8 @@
 
 }
 .chat_submit_button {
-    background-color: #ccc;
+    background-color: #d9d9d9;
     border: #333 solid 0px;
-    width: 89px;
+    width: 90px;
     height: 40px;
 }

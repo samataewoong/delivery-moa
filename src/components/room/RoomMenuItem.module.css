@@ -1,15 +1,18 @@
 .menu_name {
     font-size: 24px;
+    margin-left: 20px;
     font-weight: 350;
 }
 .menu_price {
     font-size: 24px;
+    margin-left: 20px;
     font-weight: 400;
 }
 .menu_quantity_box {
     display: flex;
     flex-direction: row;
     align-items: center;
+    margin-right: 5px;
     float: right;
 }
 .menu_quantity_add,.menu_quantity_sub,.menu_quantity_disabled {
@@ -17,6 +20,9 @@
     font-weight: 400;
     padding-left: 10px;
     padding-right: 10px;
+}
+.menu_quantity_sub {
+    margin-bottom: 1px;
 }
 .menu_quantity_disabled {
     color: gray;
@@ -28,7 +34,10 @@
 }
 .menu_item {
     height: 70px;
-    padding: 20px;
+    width: calc(522px - 80px);
+    margin-left: 40px;
+    margin-right: 40px;
+    padding-bottom: 20px;
     padding-top: 30px;
     border-bottom: 1px solid #ccc;
 }

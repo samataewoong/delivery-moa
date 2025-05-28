@@ -4,34 +4,32 @@ import style from "./RoomOrderStatus.module.css";
 
 export default function RoomOrderStatus({ room_id }) {
     const [room, setRoom] = useState(null);
+    const [joinedUsers, setJoinedUsers] = useState([]);
     useEffect(() => {
-        async function fetchRoom() {
-            const { data, error } = await supabase
-                .from("room")
+        async function fetchJoinedUsers() {
+            const { data: joinedUsersData, error: joinedUsersError } = await supabase
+                .from("room_join")
                 .select("*")
-                .eq("id", room_id)
-                .single();
-
-            if (error) {
-                console.error("Error fetching room:", error);
+                .eq("room_id", room_id);
+            if (joinedUsersError) {
+                console.error("Error fetching joined users:", joinedUsersError);
             } else {
-                setRoom(data);
+                setJoinedUsers(joinedUsersData);
             }
         };
-
-        const roomSubscribe = supabase
-            .channel("realtime:room")
+        const joinedUsersSubscribe = supabase
+            .channel("realtime:joined_users")
             .on(
-                "postgress_changes", 
-                { event: '*', schema: 'public', table: 'room' }, (payload) => {
-                    if (payload.new.id === room_id) {
-                        setRoom(payload.new);
+                "postgres_changes", 
+                { event: '*', schema: 'public', table: 'room_join' }, (payload) => {
+                    if (payload.new.room_id === room_id) {
+                        fetchJoinedUsers();
                     }
                 })
             .subscribe();
-        fetchRoom();
+        fetchJoinedUsers();
         return () => {
-            roomSubscribe.unsubscribe();
+            joinedUsersSubscribe.unsubscribe();
         };
     }, [room_id]);
 

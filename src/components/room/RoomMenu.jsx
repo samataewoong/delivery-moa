@@ -11,9 +11,20 @@ export default function RoomMenu({ room_id }) {
     const [room, setRoom] = useState(null);
     const [store, setStore] = useState(null);
     const [order, setOrder] = useState(null);
+    const [menuIcon, setMenuIcon] = useState(null);
 
     useEffect(() => {
         async function fetchAll() {
+            const { data: menuIconData, error: menuIconError } = await supabase
+                .storage
+                .from("imgfile")
+                .getPublicUrl("main_img/cart.png");
+            if (menuIconError) {
+                console.error("Error fetching menu icon:", menuIconError);
+                setError(menuIconError);
+            } else {
+                setMenuIcon(menuIconData.publicUrl);
+            }
             const { data: roomData, error: roomError } = await supabase
                 .from("room")
                 .select("*")
@@ -107,6 +118,12 @@ export default function RoomMenu({ room_id }) {
 
     return (
         <div className={style.room_menu_box}>
+            <div className={style.room_menu_header}>
+                <img src={menuIcon} alt="메뉴 아이콘" className={style.room_menu_icon} />
+                <div className={style.room_menu_title}>
+                    메뉴 선택
+                </div>
+            </div>
             <div className={style.room_menus}>
                 {menus && menus.map((menu) => (
                     <RoomMenuItem
