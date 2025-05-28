@@ -1,4 +1,5 @@
 import { useLocation } from "react-router-dom";
+import styles from "./MyPage.module.css";
 
 export default function MyHeader({ menuList }) {
     const location = useLocation();
@@ -13,7 +14,7 @@ export default function MyHeader({ menuList }) {
     }
 
     return (
-        <div className="myHeader">
+        <div className={styles.myHeader}>
             {selectedMenu}
         </div>
     );
