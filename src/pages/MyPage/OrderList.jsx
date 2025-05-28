@@ -30,6 +30,15 @@ const dummyOrders = [
     user_id: 3,
     store_id: "홍보석",
   },
+  {
+    id: 4,
+    room_id: 45,
+    item: "짬뽕",
+    price: 7500,
+    date: 20250525,
+    user_id: 1,
+    store_id: "수저가",
+  },
 ];
 export default function OrderList() {
   const [inputUserId, setInputUserId] = useState("1");
