@@ -8,7 +8,7 @@ export default function ChatCard({
 	chat,
 	created_at
 }){
-	const [user, setUser] = useState({});
+	const [user, setUser] = useState({ nickname: 'Unknown' });
 	useEffect(() => {
 		const fetchUser = async () => {
 			const { data, error } = await supabase

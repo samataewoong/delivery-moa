@@ -6,7 +6,6 @@ import style from "./ChatList.module.css";
 export default function ChatList({ room_id }) {
     const [chats, setChats] = useState([]);
     const [error, setError] = useState(null);
-    const chatListRef = useRef(null);
 
     useEffect(() => {
         async function fetchChats() {
@@ -43,6 +42,12 @@ export default function ChatList({ room_id }) {
             chatSubscription.unsubscribe();
         };
     }, [room_id]);
+    useEffect(() => {
+        const chatList = document.querySelector(`.${style.chat_list}`);
+        if (chatList) {
+            chatList.scrollTop = chatList.scrollTopMax;
+        }
+    }, [chats]);
 
     if (error) {
         console.error("Error fetching chat list:", error);
@@ -50,7 +55,7 @@ export default function ChatList({ room_id }) {
     }
 
     return (
-        <div className={style.chat_list} ref={chatListRef}>
+        <div className={style.chat_list}>
             {chats.map((chat) => (
                 <Chat
                     key={`${chat.room_id}-${chat.id}`}
