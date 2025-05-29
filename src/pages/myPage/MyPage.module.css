@@ -104,31 +104,33 @@
 
 /* MyPage.module.css */
 .myMenu {
-  padding: 0px 25px 0px 95px;
+    padding: 0px 25px 0px 95px;
 }
 
 .myMenuUl {
-  list-style-type: none;
-  padding-left: 20px;
+    list-style-type: none;
+    padding-left: 20px;
 }
 
 .myMenuLi {
-  font-size: large;
-  margin: 10px;
+    font-size: large;
+    margin: 10px;
 }
 
 .myMenuLi::before {
-  content: "- ";
-  color: black;
-  font-weight: bold;
-  margin-right: 8px;
-  display: inline-block;
-  width: 12px;
+    content: "- ";
+    color: black;
+    font-weight: bold;
+    margin-right: 8px;
+    display: inline-block;
+    width: 12px;
 }
 
 
 .myPageRight {
-    width: 80%;
+    /* width: 80%;  이거 제거 */
+    flex-grow: 1;
+    /*width: 80%;*/
     /* 오른쪽 영역 너비 70% */
     padding: 20px;
     box-sizing: border-box;
@@ -243,8 +245,97 @@ input[readOnly] {
 }
 
 .myQna {
-    border-bottom: solid 1px;
+    border: solid 1px gray;
     margin: 5px 0px 15px 15px;
     padding-bottom: 10px;
-    padding-left: 5px;
+    cursor: pointer;
+}
+
+.qnaDate h1 {
+    padding: 0px 0px 10px 10px;
+    border-bottom: 1px dotted;
+    color: gray;
+    font-size: medium;
+}
+
+.qnaTitle {
+    padding-left: 7px;
+}
+
+.qnaTitle h3 {
+    padding: 15px;
+    font-size: medium;
+}
+
+.qnaContent {
+    margin-bottom: 30px;
+    padding-left: 15px;
+    margin-top: 10px;
+}
+
+.qnaContent h2 {
+    font-size: medium;
+    font-weight: 400;
+    padding-top: 7px;
+}
+
+.answer {
+    border-top: 1px solid #d0d0d0;
+    margin-top: 10px;
+    padding: 10px;
+}
+
+.answer b {
+    padding-top: 10px;
+}
+
+.answer h4 {
+    padding-left: 10px;
+    font-weight: 400;
+}
+
+.deleteReview {
+    border-radius: 5px;
+    margin-left: 10px;
+    cursor: pointer;
+    width: 70px;
+    height: 30px;
+    font-weight: 400;
+}
+
+.deleteReview:hover {
+    background-color: rgb(198, 213, 218);
+}
+
+.qnaPages {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.qnaPages button {
+    border: none;
+    cursor: pointer;
+    opacity: 0.5;
+    /* 기본 연하게 */
+    font-weight: normal;
+    margin: 0 5px;
+    padding: 5px 10px;
+    background: none;
+    transition: opacity 0.3s, font-weight 0.3s;
+}
+
+.qnaPages button:hover:not(:disabled) {
+    opacity: 0.8;
+    /* 호버 시 살짝 강조 */
+}
+
+.activePage {
+    font-weight: bold;
+    opacity: 1;
+    /* 현재 페이지는 진하게 */
+    cursor: default;
 }

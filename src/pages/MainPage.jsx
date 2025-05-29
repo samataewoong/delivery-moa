@@ -123,7 +123,9 @@ export default function main_Header() {
                                     src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/home-black.png"
                                     alt="마이페이지"
                                 />
-                                <div className={styles["mypage_text"]}>마이페이지</div>
+                                <div className={styles["mypage_text"]}>
+                                    {session && nickname ? <Link to="/mypage/userinfo">{nickname}님의 마이페이지</Link> : <Link to="/mainpage">로그인이 필요합니다.</Link>}
+                                </div>
                             </div>
 
                             {session && nickname ? (
