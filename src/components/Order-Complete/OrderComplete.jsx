@@ -130,9 +130,10 @@ const OrderComplete = () => {
             <h3>주문 내역</h3>
             {orderItems.length > 0 ? (
               orderItems.map((item, idx) => (
-                <div key={idx} className={style.orderItem}>
-                  <span>{item.menu_name || `메뉴 ${idx + 1}`}</span>
-                  <span>{item.quantity ? `${item.quantity}개 × ` : ''}{thousands(item.menu_price || 0)}원</span>
+                <div key={idx} className={style['order-item']}>
+                  <div>{item.menu_name || `메뉴 ${idx + 1}`}</div>
+                  <div className={style.menu_quantity}>{item.quantity ? `${item.quantity}개` : ''}</div>
+                  <div>{thousands(item.menu_price || 0)}원</div>
                 </div>
               ))
             ) : (
