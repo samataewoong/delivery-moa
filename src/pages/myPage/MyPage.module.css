@@ -317,6 +317,7 @@ input[readOnly] {
 }
 
 .qnaPages button {
+    font-size: medium;
     border: none;
     cursor: pointer;
     opacity: 0.5;
@@ -325,17 +326,21 @@ input[readOnly] {
     margin: 0 5px;
     padding: 5px 10px;
     background: none;
-    transition: opacity 0.3s, font-weight 0.3s;
+    color: rgb(66, 64, 64);
+    /* 기본 글자색 연한 회색 */
+    transition: opacity 0.3s, font-weight 0.3s, color 0.3s;
 }
 
 .qnaPages button:hover:not(:disabled) {
     opacity: 0.8;
     /* 호버 시 살짝 강조 */
+    color: #333;
+    /* 호버 시 글자색 조금 진하게 */
 }
 
-.activePage {
-    font-weight: bold;
-    opacity: 1;
-    /* 현재 페이지는 진하게 */
-    cursor: default;
+.qnaPages button.activePage {
+  font-weight: bold;
+  opacity: 1;
+  color: black;
+  cursor: default;
 }
