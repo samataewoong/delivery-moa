@@ -28,7 +28,7 @@ function App() {
           <Route path="/mainpage" element={<MainPage />} />
           <Route path="/room/:room_id" element={<RoomPage />} />
           <Route path="/gongucomplete" element={<GonguComplete />} />
-          <Route path="/ordercomplete" element={<OrderComplete />} />
+          <Route path="/ordercomplete/:order_id" element={<OrderComplete />} />
           <Route path="/review" element={<Review />} />
           
 
