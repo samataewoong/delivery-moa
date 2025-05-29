@@ -9,13 +9,16 @@ import selectOrder from "../../../../functions/order/SelectOrder";
 import insertOrder from "../../../../functions/order/InsertOrder";
 import getAuthUser from "../../../../functions/auth/GetAuthUser";
 import selectStore from "../../../../functions/store/SelectStore";
+import selectUser from "../../../../functions/user/SelectUser";
 import updateRoomJoin from "../../../../functions/room_join/UpdateRoomJoin";
+import updateUser from "../../../../functions/user/UpdateUser";
 
 export default function RoomMenu({ room_id }) {
     const [menus, setMenus] = useState([]);
     const [error, setError] = useState(null);
     const [store, setStore] = useState(null);
     const [order, setOrder] = useState(null);
+    const [user, setUser] = useState(null);
     const menuIcon = 'https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/cart.png';
 
     useEffect(() => {
@@ -27,6 +30,13 @@ export default function RoomMenu({ room_id }) {
                     if(payload.new.room_id === room_id && payload.new.user_id === user_id) {
                         setOrder(payload.new);
                     }
+                }
+            });
+        const userSubscribe = supabase
+            .channel('realtime:user')
+            .on("postgres_changes", (payload) => {
+                if (payload.new.id === user_id) {
+                    setUser(payload.new);
                 }
             });
         async function fetchAll() {
@@ -44,6 +54,12 @@ export default function RoomMenu({ room_id }) {
                 alert("로그인 정보를 가져오는데 실패하였습니다. 다시 로그인 해 주세요.");
                 navigate("/login");
                 return;
+            }
+            try {
+                const userData = await selectUser({ user_id });
+                setUser(userData[0]);
+            } catch(error) {
+                console.error("Error fetching user:", error);
             }
             try {
                 const roomData = await selectRoom({ room_id: Number(room_id) });
@@ -94,17 +110,17 @@ export default function RoomMenu({ room_id }) {
                 room_order,
                 total_price
             });
+            await updateUser({
+                user_id,
+                cash: user.cash - total_price,
+            });
             const orderData = await selectOrder({ room_id, user_id });
             setOrder(orderData[0]);
-            if (roomJoinData.length > 0) {
-                await updateRoomJoin({
-                    room_id,
-                    user_id,
-                    status: "준비 완료"
-                });
-            } else {
-                throw new Error("준비 완료 할 수 없습니다.");
-            }
+            await updateRoomJoin({
+                room_id,
+                user_id,
+                status: "준비 완료"
+            });
         } catch (error) {
             console.error("Error inserting order:", error);
             alert("주문에 실패했습니다. 잠시 후 다시 시도해주세요.");
@@ -143,9 +159,15 @@ export default function RoomMenu({ room_id }) {
                         준비 완료
                     </button>
                 ) : (menus.reduce((total, menu) => (total + menu.quantity * menu.menu_price), 0) >= store.min_price ? (
-                    <button className={style.room_menu_order_button} onClick={handleOrder}>
+                    (user?.cash >= menus.reduce((total,menu) => (total + menu.quantity * menu.menu_price), 0)) ? (
+                        <button className={style.room_menu_order_button} onClick={handleOrder}>
                         주문하기
                     </button>
+                    ) : (
+                        <button className={style.room_menu_order_button_disabled} disabled>
+                            잔액이 부족합니다
+                        </button>
+                    )
                 ) : (
                     <button className={style.room_menu_order_button_disabled} disabled>
                         {thousands(store.min_price)} 원 이상 주문 가능
