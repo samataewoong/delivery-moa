@@ -1,5 +1,5 @@
 import styles from "./MainPage.module.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import supabase from "../config/supabaseClient";
 import Hamburger from "../components/Hamburger";
@@ -11,14 +11,71 @@ export default function MainHeader() {
     const [keyword, setKeyword] = useState("");
 
     const [address, setAddress] = useState("");
+    const [showMapModal, setShowMapModal] = useState(false);
+    const closeMapModal = () => setShowMapModal(false);
+
+    const mapRef = useRef(null);
+
+    const waitForKakaoMaps = () => {
+        return new Promise((resolve, reject) => {
+            if (
+                window.kakao &&
+                window.kakao.maps &&
+                window.kakao.maps.Map &&
+                window.kakao.maps.services &&
+                window.kakao.maps.services.Geocoder
+            ) {
+                resolve();
+            } else {
+                reject(new Error('카카오 지도 API가 준비되지 않았습니다.'));
+            }
+        });
+    };
 
     const handleClick = () => {
         new window.daum.Postcode({
             oncomplete: function (data) {
                 setAddress(data.address);
+                setShowMapModal(true);
             },
         }).open();
     };
+
+    const showMap = async (addr) => {
+        await waitForKakaoMaps();
+
+        if (!mapRef.current) return;
+
+        const geocoder = new window.kakao.maps.services.Geocoder();
+
+        geocoder.addressSearch(addr, (result, status) => {
+            if (status === window.kakao.maps.services.Status.OK) {
+                const coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
+                const map = new window.kakao.maps.Map(mapRef.current, {
+                    center: coords,
+                    level: 3,
+                });
+
+                setTimeout(() => {
+                    window.kakao.maps.event.trigger(map, "resize");
+                }, 200);
+
+                new window.kakao.maps.Marker({
+                    map: map,
+                    position: coords,
+                });
+            }
+        });
+    };
+
+    useEffect(() => {
+        if (showMapModal && address) {
+            setTimeout(() => {
+                showMap(address);
+            }, 300);
+        }
+    }, [showMapModal, address]);
+
     const onKeyDown = (e) => {
         if (e.key === "Enter") {
             search();
@@ -75,6 +132,22 @@ export default function MainHeader() {
     };
 
 
+    const [categories, setCategories] = useState([]);
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            const { data, error } = await supabase.from("menu_category").select("id, category");
+            if (error) {
+                console.error("카테고리 불러오기 오류:", error);
+            } else {
+                setCategories(data);
+            }
+        };
+        fetchCategories();
+    }, []);
+
+    const imgBaseUrl = "https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/"
+
     return (
         <>
             <header className={styles["main_header"]}>
@@ -101,11 +174,26 @@ export default function MainHeader() {
                             <button className={styles["location_btn"]} onClick={handleClick}>
                                 <img src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/location_imo.png" />
                             </button>
+                            {showMapModal && (
+                                <div className={styles["modalStyle"]} onClick={closeMapModal}>
+                                    <div className={styles["popupStyle"]} onClick={(e) => e.stopPropagation()}>
+                                        <div ref={mapRef} className={styles["modal_map"]}></div>
+                                        <div style={{ textAlign: "center", marginTop: "15px" }}>
+                                            <button
+                                                onClick={closeMapModal} className={styles["modal_btn"]}>
+                                                닫기
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                         <div className={styles["location_gps"]}>
                             {session && nickname ? (
                                 address ? (
-                                    <div className={styles["location_gps"]}>{address}</div>
+                                    <>
+                                        <div className={styles["location_gps"]}>{address}</div>
+                                    </>
                                 ) : (
                                     "주소를 입력하세요"
                                 )
@@ -140,6 +228,7 @@ export default function MainHeader() {
                     <div className={styles["search"]}>
                         <input
                             type="text"
+                            id="searchKeyword"
                             className={styles["search_value"]}
                             value={keyword}
                             onChange={(e) => setKeyword(e.target.value)}
@@ -154,8 +243,30 @@ export default function MainHeader() {
             </div>
             <div className={styles["body_box"]}>
                 <div className={styles["body_container"]}>
-                    <h2>음식 카테고리</h2>
+                    <div className={styles["food_category_wrap"]}>
+                        <div className={styles["food_category"]}>음식 카테고리</div>
+                        <div className={styles["food_category_move"]}>전체보기→</div>
+                    </div>
+                    <div className={styles["circle_category_wrap"]}>
+                        {categories.map((item) => (
+                            <Link key={item.id} to="/">
+                                <div className={styles["circle_with_text"]}>
+                                    <div className={styles["circle"]}>
+                                        <img
+                                            src={`${imgBaseUrl}${item.id}.png`}
+                                            alt={`${item.category} 이미지`} />
+                                    </div>
+                                    <div className={styles["circle_text"]}>{item.category}</div>
+                                </div>
+                            </Link>
+                        ))}
+                    </div>
+                    <div className={styles["gongu_wrap"]}>
+                        <div className={styles["gongu_list"]}>진행중인 공구방</div>
+                        <div className={styles["gongu_list_move"]}>전체보기→</div>
+                    </div>
                 </div>
+
             </div>
         </>
     );
