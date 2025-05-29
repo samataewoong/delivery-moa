@@ -1,6 +1,7 @@
 import supabase from '../../../../config/supabaseClient'
 import React, { useEffect, useState } from 'react'
 import style from './ChatCard.module.css'
+import selectUser from '../../../../functions/user/SelectUser';
 
 export default function ChatCard({
 	id, 
@@ -11,16 +12,12 @@ export default function ChatCard({
 	const [user, setUser] = useState({ nickname: 'Unknown' });
 	useEffect(() => {
 		const fetchUser = async () => {
-			const { data, error } = await supabase
-				.from('user')
-				.select('*')
-				.eq('id', user_id)
-				.single();
-			if (error) {
+			try {
+				const userData = await selectUser({ user_id });
+				setUser(userData[0]);
+			} catch (error) {
 				console.error('Error fetching user:', error);
-			} else {
-				setUser(data || { nickname: 'Unknown' });
-			}
+            }
 		};
 		fetchUser();
 	}, [user_id]);
