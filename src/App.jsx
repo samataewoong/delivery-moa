@@ -28,7 +28,7 @@ function App() {
           <Route path="payment" element={<DummyPayment />} />
           <Route path="profile" element={<Profile />} />
         </Route>
-        <Route path="/navermap" element={<NaverMap />} />
+        <Route path="navermap" element={<NaverMap />} />
       </Routes>
     </BrowserRouter>
   );

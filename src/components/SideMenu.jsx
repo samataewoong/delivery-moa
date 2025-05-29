@@ -25,6 +25,9 @@ export default function SideMenu() {
         <li>
           <Link to="/qna">문의게시판</Link>
         </li>
+        <li>
+          <Link to="/navermap">지도</Link>
+        </li>
       </ul>
     </aside>
   );
