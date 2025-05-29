@@ -13,21 +13,8 @@
     box-sizing: border-box;
 }
 .user_profile_list_box {
-    padding-left: 24px;
+    padding-left: 14px;
+    height: 316px;
+    overflow: auto;
     padding-top: 17px;
-}
-.user_profile_box {
-    display: flex;
-    height: 59px;
-    padding: 10px;
-}
-.user_profile_image {
-    width: 59px;
-    height: 59px;
-    border-radius: 9999px;
-    background-color: #f0f0f0;
-    margin-left: 24px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    margin-right: 19px;
 }

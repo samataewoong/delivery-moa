@@ -1,6 +1,7 @@
 import supabase from "../../../../config/supabaseClient";
 import { useEffect, useState } from "react";
 import style from "./RoomOrderStatus.module.css";
+import RoomOrderUserCard from "./RoomOrderUserCard";
 
 export default function RoomOrderStatus({ room_id }) {
     const [room, setRoom] = useState(null);
@@ -36,6 +37,13 @@ export default function RoomOrderStatus({ room_id }) {
     return (
         <div className={style.order_status_box}>
             <div className={style.order_status_title}>주문 현황</div>
+            <div className={style.user_profile_list_box}>
+                {joinedUsers.map((user) => (
+                    <RoomOrderUserCard
+                    user_id={user.user_id}
+                    room_id={room_id} />
+                ))}
+            </div>
         </div>
     )
 }
