@@ -91,9 +91,10 @@ export default function RoomMenu({ room_id }) {
 
 
         const room_order = menus.filter(menu => menu.quantity > 0).map(menu => ({
+            menu_name: menu.menu_name,
             menu_id: menu.id,
-            quantity: menu.quantity,
-            price: menu.menu_price
+            menu_quantity: menu.quantity,
+            menu_price: menu.menu_price
         }));
         if (room_order.length === 0) {
             alert("주문할 메뉴가 없습니다.");
