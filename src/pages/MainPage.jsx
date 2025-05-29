@@ -14,6 +14,9 @@ export default function MainHeader() {
     const [showMapModal, setShowMapModal] = useState(false);
     const closeMapModal = () => setShowMapModal(false);
 
+    const [categories, setCategories] = useState([]);
+    const [rooms, setRooms] = useState([]);
+
     const mapRef = useRef(null);
 
     const waitForKakaoMaps = () => {
@@ -130,9 +133,33 @@ export default function MainHeader() {
         }
         alert(`검색어: ${keyword}`);
     };
+    useEffect(() => {
+        const fetchRoom = async () => {
+            const { data, error } = await supabase
+                .from("room")
+                .select(`id, store_id, room_name, room_address, max_people, room_join(count)`);
 
+            if (error) {
+                console.error("room 불러오기 오류:", error);
+            } else {
+                const formattedRooms = data.map(room => {
+                    const joinCount = Array.isArray(room.room_join) && room.room_join.length > 0
+                        ? room.room_join[0].count
+                        : 0;
 
-    const [categories, setCategories] = useState([]);
+                    return {
+                        ...room,
+                        join_count: joinCount
+                    };
+                });
+
+                console.log("formattedRooms:", formattedRooms);
+                setRooms(formattedRooms);
+            }
+        };
+
+        fetchRoom();
+    }, []);
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -145,8 +172,8 @@ export default function MainHeader() {
         };
         fetchCategories();
     }, []);
-
-    const imgBaseUrl = "https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/"
+    const storeUrl = "https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/store_";
+    const imgBaseUrl = "https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/";
 
     return (
         <>
@@ -264,6 +291,33 @@ export default function MainHeader() {
                     <div className={styles["gongu_wrap"]}>
                         <div className={styles["gongu_list"]}>진행중인 공구방</div>
                         <div className={styles["gongu_list_move"]}>전체보기→</div>
+                    </div>
+                    <div className={styles["gongu_list_wrap"]}>
+                        {rooms.map((items) => (
+                            <Link key={items.id} to={`/room/${items.id}`}>
+                                <div className={styles["gongu_with_text"]}>
+                                    <img className={styles["square_img"]}
+                                        src={`${storeUrl}${items.store_id}.jpg`}
+                                        alt={`${items.category} 이미지`} />
+                                    <div className={styles["square"]}>
+                                        <div className={styles["gongu_title"]}>{items.room_name}</div>
+                                        <ul className={styles["gongu_date"]}>
+                                            <li>{items.room_address}</li>
+                                            <li>|</li>
+                                            <li>오늘7시까지</li>
+                                        </ul>
+                                        <progress className={styles["gongu_progress"]} value={items.join_count} max={items.max_people}></progress>
+                                        <div className={styles["gongu_bottom"]}>
+                                            <div style={{ display: "flex", alignItems: "center" }}>
+                                                <img src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/octicon_people-24.png" />
+                                                <div className={styles["gongu_people"]}>{items.join_count}/{items.max_people} 참여중</div>
+                                            </div>
+                                            <div className={styles["gongu_delivery"]}>배달비 무료</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </Link>
+                        ))}
                     </div>
                 </div>
 
