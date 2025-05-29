@@ -15,11 +15,14 @@
     margin-right: 5px;
     float: right;
 }
-.menu_quantity_add,.menu_quantity_sub,.menu_quantity_disabled {
+.menu_quantity_add,.menu_quantity_sub,.menu_quantity_disabled,.menu_quantity_transparent {
     font-size: 24px;
     font-weight: 400;
     padding-left: 10px;
     padding-right: 10px;
+}
+.menu_quantity_transparent {
+    color: rgba(0,0,0,0);
 }
 .menu_quantity_sub {
     margin-bottom: 1px;

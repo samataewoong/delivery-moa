@@ -27,7 +27,7 @@ export default function RoomMenu({ room_id }) {
             .channel('realtime:order')
             .on("postgres_changes", (payload) => {
                 if (payload.op === "INSERT") {
-                    if(payload.new.room_id === room_id && payload.new.user_id === user_id) {
+                    if (payload.new.room_id === room_id && payload.new.user_id === user_id) {
                         setOrder(payload.new);
                     }
                 }
@@ -58,22 +58,22 @@ export default function RoomMenu({ room_id }) {
             try {
                 const userData = await selectUser({ user_id });
                 setUser(userData[0]);
-            } catch(error) {
+            } catch (error) {
                 console.error("Error fetching user:", error);
             }
             try {
                 const roomData = await selectRoom({ room_id: Number(room_id) });
-                if(roomData && roomData.length > 0){
+                if (roomData && roomData.length > 0) {
                     const storeData = await selectStore({ store_id: roomData[0].store_id });
                     setStore(storeData[0]);
                 }
-                if(roomData && roomData.length > 0) {
+                if (roomData && roomData.length > 0) {
                     const menuData = await selectMenu({ store_id: roomData[0].store_id });
-                    setMenus(menuData.map((menu) => ({...menu, quantity: 0 })));
+                    setMenus(menuData.map((menu) => ({ ...menu, quantity: 0 })));
                 }
-                if(user_id) {
+                if (user_id) {
                     const orderData = await selectOrder({ room_id, user_id });
-                    if(orderData) setOrder(orderData[0]);
+                    if (orderData) setOrder(orderData[0]);
                 }
             } catch (error) {
                 console.error("Error fetching data:", error);
@@ -90,19 +90,14 @@ export default function RoomMenu({ room_id }) {
         if (!store || !menus.length) return;
 
 
-        const room_order = menus.filter(menu => menu.quantity > 0).map(menu => ({
-            menu_name: menu.menu_name,
-            menu_id: menu.id,
-            menu_quantity: menu.quantity,
-            menu_price: menu.menu_price
-        }));
+        const room_order = menus.filter(menu => menu.quantity > 0);
         if (room_order.length === 0) {
             alert("주문할 메뉴가 없습니다.");
             return;
         }
         const store_id = store.id;
         const { id: user_id } = await getAuthUser();
-        const total_price = room_order.reduce((total, item) => total + (item.price * item.quantity), 0);
+        const total_price = room_order.reduce((total, item) => total + (item.menu_price * item.quantity), 0);
         try {
             await insertOrder({
                 store_id,
@@ -138,13 +133,24 @@ export default function RoomMenu({ room_id }) {
                 </div>
             </div>
             <div className={style.room_menus}>
-                {menus && menus.map((menu) => (
-                    <RoomMenuItem
-                        key={menu.id}
-                        menu={menu}
-                        setMenus={setMenus}
-                    />
-                ))}
+                {menus && !order ? (
+                    menus.map((menu) => (
+                        <RoomMenuItem
+                            key={menu.id}
+                            menu={menu}
+                            setMenus={setMenus}
+                        />
+                    ))
+                ) : (
+                    order && order.room_order.length > 0 && (
+                        order.room_order.map((roomOrder) => (
+                            <RoomMenuItem
+                                key={roomOrder.id}
+                                menu={roomOrder}
+                            />
+                        ))
+                    )
+                )}
             </div>
             {menus.length && <div className={style.total_price_box}>
                 <div className={style.total_price_value}>
@@ -160,10 +166,10 @@ export default function RoomMenu({ room_id }) {
                         준비 완료
                     </button>
                 ) : (menus.reduce((total, menu) => (total + menu.quantity * menu.menu_price), 0) >= store.min_price ? (
-                    (user?.cash >= menus.reduce((total,menu) => (total + menu.quantity * menu.menu_price), 0)) ? (
+                    (user?.cash >= menus.reduce((total, menu) => (total + menu.quantity * menu.menu_price), 0)) ? (
                         <button className={style.room_menu_order_button} onClick={handleOrder}>
-                        주문하기
-                    </button>
+                            주문하기
+                        </button>
                     ) : (
                         <button className={style.room_menu_order_button_disabled} disabled>
                             잔액이 부족합니다
