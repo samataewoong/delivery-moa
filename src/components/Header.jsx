@@ -2,6 +2,7 @@ import styles from "./Header.module.css";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import supabase from "../config/supabaseClient";
+import Hamburger from "../components/Hamburger";
 
 export default function Header() {
     const [isOpen, setIsOpen] = useState(false);
@@ -60,12 +61,12 @@ export default function Header() {
                 <div className={styles["container"]}>
                     <div className={styles["hLogo_img"]}>
                         <Link to="/mainpage" style={{ textDecoration: 'none', color: 'inherit' }}>
-                        <img
-                            src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/header_logo.png"
-                            alt="로고"
-                        />
+                            <img
+                                src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/header_logo.png"
+                                alt="로고"
+                            />
                         </Link>
-                        
+
                     </div>
                     <div className={styles["search"]}>
                         <input
@@ -87,63 +88,13 @@ export default function Header() {
                             />
                         </button>
                     </div>
-
-                    {isOpen && (
-                        <div className={styles["hamburger_nav"]}>
-                            <div className={styles["mypage"]}>
-                                
-                                <img
-                                    className={styles["mypage_icon"]}
-                                    src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/home-black.png"
-                                    alt="마이페이지"
-                                />
-                                <div className={styles["mypage_text"]}>마이페이지</div>
-                            </div>
-
-                            {session && nickname ? (
-                                <div className={styles["user_coin"]}>
-                                    <div className={styles["userName"]}>
-                                        {nickname}님
-                                        <button className={styles["userName_btn"]} onClick={handleLogout}>로그아웃</button>
-                                    </div>
-                                    <img
-                                        className={styles["coin_imo"]}
-                                        src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/coin.png"
-                                        alt="코인"
-                                    />
-                                    <div className={styles["coin_confirm"]}>37000</div>
-                                </div>
-                            ) : (
-                                <div id={styles["user_notlogin"]}>
-                                    <Link to="/login" style={{ textDecoration: 'none', color: 'inherit' }}>
-                                        로그인해주세요
-                                    </Link>
-                                    <Link to="/register"> 회원가입 </Link>
-					                <Link to="/login"> 로그인 </Link>
-                                </div>
-
-                            )}
-
-                            <div className={styles["event_banner"]}>
-                                <img
-                                    className={styles["event_banner1"]}
-                                    src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/event_banner1.png"
-                                    alt="배너1"
-                                />
-                                <img
-                                    className={styles["event_banner2"]}
-                                    src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/event_banner2.png"
-                                    alt="배너2"
-                                />
-                            </div>
-
-                            {session && nickname && (
-                                <div>
-                                    <h3>참여중인 채팅방 목록</h3>
-                                </div>
-                            )}
-                        </div>
-                    )}
+                    <Hamburger
+                        isOpen={isOpen}
+                        session={session}
+                        nickname={nickname}
+                        handleLogout={handleLogout}
+                        onClose={() => setIsOpen(false)}
+                    />
                 </div>
             </div>
         </>

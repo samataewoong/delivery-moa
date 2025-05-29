@@ -1,0 +1,84 @@
+.register_container {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 30px;
+}
+.register_h2h3 {
+    display: flex;
+    border-bottom: 1px solid #555;
+}
+
+.register_h2h3 h2 {
+    width: 75%;
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+}
+
+.register_h2h3 h3{
+    text-align: right;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+}
+
+.register_table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.register_table td {
+    padding: 15px 10px;
+    vertical-align: middle;
+    font-size: 25px;
+    color: #555;
+}
+
+.register_table input {
+    width: 600px;
+    padding: 10px;
+    border: 1px solid #aaa;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+.register_table button {
+    padding: 8px 12px;
+    margin-left: 10px;
+    background-color: #ffb1b1;
+    color: black;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+
+.register_button {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.register_button button {
+    padding: 12px 30px;
+    width: 200px;
+    border: none;
+    border-radius: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.register_button button:first-child {
+    background-color: #ddd;
+}
+
+.register_button button:last-child {
+    background-color: #ffb1b1;
+}
+
+
+.error_message {
+    color: red;
+    font-size: 0.85rem;
+    margin-top: 5px;
+}
