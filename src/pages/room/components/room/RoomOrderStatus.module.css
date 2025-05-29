@@ -1,10 +1,17 @@
-.room_status_title {
+.order_status_title {
     font-size: 20px;
     color: grey;
-    margin-top: 28px;
-    margin-left: 24px;
+    padding-top: 28px;
+    padding-left: 24px;
 }
-.user_profile {
+.order_status_box {
+    width: 738px;
+    height: 388px;
+    background-color: white;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+.user_profile_box {
     display: flex;
     flex-direction: column;
     align-items: center;
