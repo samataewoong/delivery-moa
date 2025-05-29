@@ -14,7 +14,7 @@ export default function HamburgerMenu({ isOpen, session, nickname, handleLogout 
                     alt="마이페이지"
                 />
                 <div className={styles["mypage_text"]}>
-                    {session && nickname ? <Link to="/mypage/userinfo" state={{ session }}>{nickname}님의 마이페이지</Link> : <Link to="/mainpage">로그인이 필요합니다.</Link>}
+                    {session && nickname ? <Link to="/mypage/userinfo" state={{ session }}>마이페이지</Link> : <Link to="/mainpage">로그인이 필요합니다.</Link>}
                 </div>
 
             </div>
