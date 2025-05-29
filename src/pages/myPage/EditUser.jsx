@@ -1,14 +1,57 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./MyPage.module.css";
+import supabase from "../../config/supabaseClient";
 
 export default function EditUser() {
     // db update 구현해야함
     const navigate = useNavigate();
 
-    const [nickname, setNickname] = useState("공구곰");
-    const [userAddress, setUserAddress] = useState("서울특별시 종로구 종각 종각로30 -120");
-    const [passWord, setPassWord] = useState("123456");
+    const [nickname, setNickname] = useState("");
+
+    const [passWord, setPassWord] = useState("");
+    const [email, setEmail] = useState("");
+    const [createdAt, setCreatedAt] = useState("");
+    const [session, setSession] = useState(null);
+
+
+    // 현재 로그인된 유저 정보 갖고오기
+    useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+        setSession(session);
+
+        if (session?.user) {
+            const user = session.user;
+
+            // 이메일, 가입일 설정
+            setEmail(user.email);
+            setCreatedAt(user.created_at);
+
+            // 추가 유저 정보 가져오기 (user 테이블)
+            const { data, error } = await supabase
+                .from("user")
+                .select("*")
+                .eq("id", user.id)
+                .single();
+
+            if (error) {
+                console.error("추가 유저 정보 불러오기 실패:", error);
+            } else {
+                setNickname(data.nickname);
+                setPassWord(data.password);
+            }
+        } else {
+            setEmail("");
+            setNickname("");
+            setPassWord("");
+            setCreatedAt("");
+        }
+    });
+
+    return () => subscription.unsubscribe(); // 언마운트 시 정리
+}, []);
+
+
     const nickNameChange = (e) => {
         setNickname(e.target.value);
     }
@@ -25,7 +68,7 @@ export default function EditUser() {
     const editComplete = () => {
         alert("수정이 완료되었습니다.");
         navigate("../userinfo");
-    }    
+    }
     return (
         <div className={styles.userInfo}>
             <div className={styles.infoRow}>
@@ -43,7 +86,7 @@ export default function EditUser() {
                 <input
                     type="text"
                     className={styles.editInput}
-                    value="gonggu@example.com"
+                    value={email}
                     readOnly
                 />
             </div>
@@ -54,7 +97,7 @@ export default function EditUser() {
                         type="text"
                         id="editPassWord"
                         onChange={passWordChange}
-                        value={showPassword ? passWord : "*".repeat(passWord.length)}
+                        value={showPassword ? passWord : "*".repeat(passWord)}
                     />
                     <ion-icon
                         id="pwEyes"
@@ -64,21 +107,11 @@ export default function EditUser() {
                 </div>
             </div>
             <div className={styles.infoRow}>
-                <div className={styles.label}>주소:</div>
-                <input
-                    type="text"
-                    className={styles.editInput}
-                    id="editAddress"
-                    onChange={addressChange}
-                    value={userAddress}
-                />
-            </div>
-            <div className={styles.infoRow}>
                 <div className={styles.label}>가입일:</div>
                 <input
                     type="text"
                     className={styles.editInput}
-                    value="2024-03-12"
+                    value={createdAt}
                     readOnly
                 />
             </div>
