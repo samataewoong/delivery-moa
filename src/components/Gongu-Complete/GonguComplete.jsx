@@ -58,7 +58,7 @@ const GroupBuyComplete = () => {
   const handlePaymentClick = (e) => {
     e.preventDefault();
     alert('결제 페이지로 이동합니다.');
-    // window.location.href = `/payment/${room_id}`;
+    
   };
 
   return (
