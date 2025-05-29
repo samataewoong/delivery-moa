@@ -8,6 +8,7 @@
     border: #333 solid 1px;
     box-sizing: border-box;
     align-items: center;
+    overflow: hidden;
 }
 .chat_input {
     width: calc(610px - 40px);
