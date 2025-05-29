@@ -42,12 +42,17 @@ export default function ChatInput({
 			}
 			insertChat();
 	};
+	const onKeyDown = (e) => {
+        if (e.key === "Enter") {
+			handleSubmit();
+        }
+    }
 	const handleInput = (e) => {
 		setChat(e.target.value);
 	};
 	return (
 		<div className={style.chat_input_box}>
-			<input type="text" className={style.chat_input} onChange={handleInput} placeholder='메시지를 입력' value={chat} />
+			<input type="text" onKeyDown={onKeyDown} className={style.chat_input} onChange={handleInput} placeholder='메시지를 입력' value={chat} />
 			<input type="button" className={style.chat_submit_button} onClick={handleSubmit} value={'전송'} disabled={chat.trim().length > 0 ? false : true} />
 		</div>
 	);
