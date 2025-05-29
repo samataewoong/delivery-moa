@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import supabase from "../../config/supabaseClient";
 import style from './GonguModel.module.css'; 
+import Header from "../../components/Header";
 
 const GroupBuyComplete = () => {
   const { room_id } = useParams();
@@ -61,6 +62,8 @@ const GroupBuyComplete = () => {
   };
 
   return (
+    <>
+    <Header/>
     <div className={style["group-buy-container"]}>
       <div className={style["group-buy-header"]}>공구 완료 안내</div>
 
@@ -106,6 +109,7 @@ const GroupBuyComplete = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

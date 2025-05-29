@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import supabase from "../../config/supabaseClient";
 import style from'./OrderModel.module.css'; 
+import Header from "../../components/Header";
 
 const OrderComplete = () => {
+
   const { order_id } = useParams();
   const navigate = useNavigate();
 
@@ -49,6 +51,8 @@ const OrderComplete = () => {
   };
 
   return (
+    <>
+    <Header />
     <div className={style.container}>
       <div className={style.header}>
         <i className="fas fa-check-circle"></i>
@@ -103,6 +107,7 @@ const OrderComplete = () => {
         </button>
       </div>
     </div>
+  </>
   );
 };
 
