@@ -10,6 +10,8 @@ function Register() {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [nickname, setNickname] = useState("");
+    const [isNicknameDuplicate, setIsNicknameDuplicate] = useState(false);
+    const [isNicknameChecked, setIsNicknameChecked] = useState(false);
 
     const navigate = useNavigate();
 
@@ -27,8 +29,12 @@ function Register() {
 
         if (data) {
             alert("이미 사용 중인 닉네임입니다.");
+            setIsNicknameChecked(true);
+            setIsNicknameDuplicate(true);
         } else {
             alert("사용 가능한 닉네임입니다!");
+            setIsNicknameChecked(true);
+            setIsNicknameDuplicate(false);
         }
     };
 
@@ -42,6 +48,17 @@ function Register() {
             alert("비밀번호가 일치하지 않습니다!");
             return;
         }
+
+        if (!isNicknameChecked) {
+            alert("닉네임 중복체크를 해주세요!");
+            return;
+        }
+
+        if(isNicknameDuplicate) {
+            alert("이미 사용 중인 닉네임 입니다.");
+            return;
+        }
+        
 
         const { data, error } = await supabase.auth.signUp({
             email,
@@ -134,7 +151,7 @@ function Register() {
                                     type="text"
                                     placeholder="닉네임"
                                     value={nickname}
-                                    onChange={(e) => setNickname(e.target.value)}
+                                    onChange={(e) => (setNickname(e.target.value), setIsNicknameChecked(false))}
                                 />
                                 <button
                                     type="button"
