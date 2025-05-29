@@ -9,12 +9,17 @@
     height: 388px;
     background-color: white;
     border-radius: 10px;
+    box-shadow: 4px 6px 2px rgba(0, 0, 0, 0.2);
     box-sizing: border-box;
+}
+.user_profile_list_box {
+    padding-left: 24px;
+    padding-top: 17px;
 }
 .user_profile_box {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    height: 59px;
+    padding: 10px;
 }
 .user_profile_image {
     width: 59px;
