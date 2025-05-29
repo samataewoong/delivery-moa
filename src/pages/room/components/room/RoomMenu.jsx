@@ -95,6 +95,7 @@ export default function RoomMenu({ room_id }) {
             alert("주문할 메뉴가 없습니다.");
             return;
         }
+        if(!confirm("주문하시겠습니까?\n주문시 주문 취소 및 변경이 불가능합니다.")) return;
         const store_id = store.id;
         const { id: user_id } = await getAuthUser();
         const total_price = room_order.reduce((total, item) => total + (item.menu_price * item.quantity), 0);
