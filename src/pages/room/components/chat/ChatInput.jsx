@@ -23,7 +23,7 @@ export default function ChatInput({
                     navigate('/login');
                     return;
                 }
-				if (data && data.user) {
+				if (user_id) {
 					var { data, error } = await supabase
 						.from('chat')
 						.insert({
