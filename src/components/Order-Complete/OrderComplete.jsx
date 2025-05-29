@@ -4,6 +4,7 @@ import supabase from "../../config/supabaseClient";
 import style from './OrderModel.module.css'; 
 import Header from "../../components/Header";
 import thousands from 'thousands';
+import selectRoom from "../../functions/room/SelectRoom";
 
 const OrderComplete = () => {
   const { order_id } = useParams();
@@ -11,6 +12,7 @@ const OrderComplete = () => {
 
   const [orderDetails, setOrderDetails] = useState(null);
   const [orderItems, setOrderItems] = useState([]);
+  const [roomInfo, setRoomInfo] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -19,7 +21,7 @@ const OrderComplete = () => {
       try {
         setLoading(true);
         
-        // 주문 기본 정보 조회
+        // 1. 주문 기본 정보 조회
         const { data: orderData, error: orderError } = await supabase
           .from('order')
           .select('*')
@@ -28,7 +30,19 @@ const OrderComplete = () => {
 
         if (orderError) throw orderError;
 
-        // room_order가 JSON 문자열인 경우 파싱
+        // 2. 공구방 정보 조회 (selectRoom 함수 사용)
+        if (orderData.room_id) {
+          try {
+            const roomData = await selectRoom({ room_id: orderData.room_id });
+            if (roomData.length > 0) {
+              setRoomInfo(roomData[0]);
+            }
+          } catch (roomError) {
+            console.error('공구방 정보 조회 오류:', roomError);
+          }
+        }
+
+        // 3. 주문 항목 파싱
         let items = [];
         if (orderData.room_order) {
           try {
@@ -37,7 +51,7 @@ const OrderComplete = () => {
               : orderData.room_order;
             
             if (!Array.isArray(items)) {
-              items = [items]; // 단일 객체인 경우 배열로 변환
+              items = [items];
             }
           } catch (parseError) {
             console.error('JSON 파싱 오류:', parseError);
@@ -45,7 +59,7 @@ const OrderComplete = () => {
           }
         }
 
-        // 메뉴 상세 정보 조회 (필요시)
+        // 4. 메뉴 상세 정보 조회
         const menuIds = items.map(item => item.menu_id).filter(Boolean);
         let menus = [];
         
@@ -60,7 +74,7 @@ const OrderComplete = () => {
           }
         }
 
-        // 메뉴 정보와 주문 항목 결합
+        // 5. 메뉴 정보와 주문 항목 결합
         const combinedItems = items.map(item => {
           const menuInfo = menus.find(m => m.menu_id === item.menu_id) || {};
           return {
@@ -112,6 +126,12 @@ const OrderComplete = () => {
               <div className={style.infoRow}>
                 <span className={style.infoLabel}>공구방 ID: </span>
                 <span className={style.infoValue}>{orderDetails.room_id}</span>
+              </div>
+              <div className={style.infoRow}>
+                <span className={style.infoLabel}>공구방 이름: </span>
+                <span className={style.infoValue}>
+                  {roomInfo?.room_name || '공구방 이름 없음'}
+                </span>
               </div>
               <div className={style.infoRow}>
                 <span className={style.infoLabel}>주문 번호: </span>
