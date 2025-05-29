@@ -167,24 +167,6 @@ a {
     cursor: pointer;
 }
 
-.gongu_wrap {
-    justify-content: space-between;
-    display: flex;
-    align-items: center;
-    width: 100%;
-    padding: 80px 0;
-}
-
-.gongu_list {
-    font-size: 32px;
-    font-weight: 700;
-}
-
-.gongu_list_move {
-    color: #FF6B6B;
-    cursor: pointer;
-}
-
 .circle_category_wrap {
     display: flex;
     padding: 20px 30px;
@@ -255,4 +237,112 @@ a {
     border: 1px solid #ddd;
     border-radius: 4px;
     background-color: #f5f5f5;
+}
+
+.gongu_wrap {
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding-top: 80px;
+}
+
+.gongu_list {
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.gongu_list_move {
+    color: #FF6B6B;
+    cursor: pointer;
+}
+
+.gongu_list_wrap {
+    display: flex;
+    padding: 20px 0 80px 0;
+    gap: 60px;
+    width: 1280px;
+    flex-wrap: wrap;
+}
+
+.gongu_with_text {
+    box-shadow: 4px 6px 2px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+.square_img {
+    width: 373px;
+    height: 160px;
+    border-radius: 10px 10px 0 0;
+    object-fit: cover;
+    object-position: center 80%;
+    display: block;
+}
+
+.square {
+    width: 373px;
+    height: 135px;
+    border-radius: 0 0 10px 10px;
+    background-color: white;
+    padding: 15px 19px;
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.gongu_date {
+    list-style: none;
+    display: flex;
+    gap: 10px;
+    font-size: 14px;
+    padding-inline-start: 0;
+    color: #666666;
+    font-weight: 700;
+    margin-bottom: 15px;
+    margin: 8px 0 0 0;
+    padding: 0;
+}
+
+.gongu_date li {
+    white-space: nowrap;
+    margin: 0;
+}
+
+.gongu_title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.gongu_progress {
+    width: 100%;
+    height: 9px;
+    appearance: none;
+    -webkit-appearance: none;
+    overflow: hidden;
+    border: none;
+}
+
+.gongu_progress::-webkit-progress-bar {
+    background-color: #eee;
+    border-radius: 10px;
+}
+
+.gongu_progress::-webkit-progress-value {
+    background-color: #FFB1B1;
+    /* 진행된 부분 색상 */
+    border-radius: 10px;
+}
+.gongu_bottom{
+    margin-top: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.gongu_people {
+    margin-left: 5px;
+    color: #1A535C;
+    font-size: 14px;
+}
+.gongu_delivery{
+    font-size: 14px;
+    color: #333333;
 }
