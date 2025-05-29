@@ -33,7 +33,7 @@ function Register() {
     };
 
     const handleRegister = async () => {
-        if (!email || !password || !confirmPassword || !nickname || !address) {
+        if (!email || !password || !confirmPassword || !nickname) {
             alert("모든 필드를 입력해주세요!");
             return;
         }
@@ -65,7 +65,6 @@ function Register() {
                     {
                         id: user.id,
                         nickname,
-                        address,
                         user_rating: 50,
                         cash: 0,
                     },
