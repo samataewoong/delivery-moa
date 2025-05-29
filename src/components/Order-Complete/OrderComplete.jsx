@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import supabase from "../../config/supabaseClient";
-import style from'./OrderModel.module.css'; 
+import style from './OrderModel.module.css'; 
 import Header from "../../components/Header";
+import thousands from 'thousands';
 
 const OrderComplete = () => {
-
   const { order_id } = useParams();
   const navigate = useNavigate();
 
@@ -17,13 +17,7 @@ const OrderComplete = () => {
     const fetchOrder = async () => {
       const { data, error } = await supabase
         .from('order')
-        .select(`
-          *,
-          menu:menu_id (
-            menu_name,
-            menu_price
-          )
-        `)
+        .select('*')
         .eq('order_id', order_id)
         .single();
 
@@ -33,8 +27,11 @@ const OrderComplete = () => {
       }
 
       setOrderDetails(data);
-      setOrderItems([data.menu]); // 단일 메뉴 기준
       setTotalPrice(data.total_price || 0);
+
+      // room_order는 jsonb 배열로 가정
+      const parsedItems = data.room_order || [];
+      setOrderItems(parsedItems);
     };
 
     fetchOrder();
@@ -52,62 +49,62 @@ const OrderComplete = () => {
 
   return (
     <>
-    <Header />
-    <div className={style.container}>
-      <div className={style.header}>
-        <i className="fas fa-check-circle"></i>
-        <h1>주문이 완료되었습니다!</h1>
-      </div>
+      <Header />
+      <div className={style.container}>
+        <div className={style.header}>
+          <i className="fas fa-check-circle"></i>
+          <h1>주문이 완료되었습니다!</h1>
+        </div>
 
-      <div className={style.orderInfo}>
-        <h2>주문 정보</h2>
-        {orderDetails && (
-          <div className={style.orderDetails}>
-            <div className={style.infoRow}>
-              <span className={style.infoLabel}>공구방 ID</span>
-              <span className={style.infoValue}>{orderDetails.room_id}</span>
+        <div className={style.orderInfo}>
+          <h2>주문 정보</h2>
+          {orderDetails && (
+            <div className={style.orderDetails}>
+              <div className={style.infoRow}>
+                <span className={style.infoLabel}>공구방 ID: </span>
+                <span className={style.infoValue}>{orderDetails.room_id}</span>
+              </div>
+              <div className={style.infoRow}>
+                <span className={style.infoLabel}>주문 일자: </span>
+                <span className={style.infoValue}>
+                  {new Date(orderDetails.created_at).toLocaleString()}
+                </span>
+              </div>
             </div>
-            <div className={style.infoRow}>
-              <span className={style.infoLabel}>주문 일자</span>
-              <span className={style.infoValue}>
-                {new Date(orderDetails.created_at).toLocaleString()}
-              </span>
-            </div>
+          )}
+
+          <div className={style.orderItems}> 
+            {orderItems.map((item, idx) => (
+              <div key={idx} className={style.orderItem}>
+                <span>{item.menu_name}</span>
+                <span>{thousands(item.menu_price)}원</span>
+              </div>
+            ))}
           </div>
-        )}
 
-         <div className={style.orderItems}> 
-          {orderItems.map((item, idx) => (
-            <div key={idx} className={style.orderItem}>
-              <span>{item.menu_name}</span>
-              <span>{item.menu_price.toLocaleString()}원</span>
-            </div>
-          ))}
+          <div className={style.total}>
+            총 금액: {totalPrice.toLocaleString()}원
+          </div>
         </div>
 
-        <div className={style.total}>
-          총 금액: {totalPrice.toLocaleString()}원
+        <div className={style.notice}>
+          <p>
+            <i className="fas fa-info-circle"></i> 주문이 만족스러웠다면 리뷰 또는 평가를 남겨주세요.
+          </p>
+        </div>
+
+        <div className={style.buttons}>
+          <button className={[style["btn"], style["btn-primary"]].join(' ')} 
+                  onClick={goToGroupPurchase}>
+            공구방 바로가기
+          </button>
+          <button className={[style["btn"], style["btn-secondary"]].join(' ')} 
+                  onClick={goToHome}>
+            홈으로
+          </button>
         </div>
       </div>
-
-      <div className={style.notice}>
-        <p>
-          <i className="fas fa-info-circle"></i> 주문이 만족스러웠다면 리뷰 또는 평가를 남겨주세요.
-        </p>
-      </div>
-
-      <div className={style.buttons}>
-        <button className={[style["btn"],style["btn-primary"]].join(' ')} 
-        onClick={goToGroupPurchase}>
-          공구방 바로가기
-        </button>
-        <button className={[style["btn"],style["btn-secondary"]].join(' ')}
-         onClick={goToHome}>
-          홈으로
-        </button>
-      </div>
-    </div>
-  </>
+    </>
   );
 };
 
