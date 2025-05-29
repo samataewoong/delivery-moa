@@ -1,5 +1,6 @@
 import style from "./RoomMenu.module.css";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import supabase from "../../../../config/supabaseClient";
 import RoomMenuItem from "./RoomMenuItem";
 import thousands from 'thousands';
@@ -14,6 +15,7 @@ import updateRoomJoin from "../../../../functions/room_join/UpdateRoomJoin";
 import updateUser from "../../../../functions/user/UpdateUser";
 
 export default function RoomMenu({ room_id }) {
+    const navigate = useNavigate();
     const [menus, setMenus] = useState([]);
     const [error, setError] = useState(null);
     const [store, setStore] = useState(null);
@@ -118,6 +120,7 @@ export default function RoomMenu({ room_id }) {
                 user_id,
                 status: "준비 완료"
             });
+            navigate(`/ordercomplete/${orderData[0].order_id}`);
         } catch (error) {
             console.error("Error inserting order:", error);
             alert("주문에 실패했습니다. 잠시 후 다시 시도해주세요.");
