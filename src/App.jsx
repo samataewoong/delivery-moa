@@ -14,6 +14,7 @@ import MyQnA from "./pages/myPage/MyQnA";
 import MyReview from "./pages/myPage/MyReview";
 import MainPage from "./pages/MainPage";
 import RootPage from "./pages/RootPage";
+import OrderList from "./pages/MyPage/OrderList";
 
 function App() {
   return (
@@ -36,10 +37,7 @@ function App() {
             <Route path="edituser" element={<EditUser />} />
             <Route path="myqna" element={<MyQnA />} />
             <Route path="myreview" element={<MyReview />} />
-            <Route
-              path="orderlist"
-              element={<div>주문내역 준비중입니다.</div>}
-            />
+            <Route path="orderlist" element={<OrderList />} />
           </Route>
         </Routes>
 
