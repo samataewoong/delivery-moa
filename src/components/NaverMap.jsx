@@ -6,7 +6,7 @@ const app = express();
 
 const GEOCODE_URL = "https://maps.apigw.ntruss.com/map-geocode/v2/geocode";
 const NAVER_CLIENT_ID = "pgsir80tsx"; // 네이버에서 발급받은 Client ID
-const NAVER_CLIENT_SECRET = "GQaXHNeyGOaoCb6D5Nt1mJw7KrGTKYIdOTjgi3r0";
+const NAVER_CLIENT_SECRET = "";
 
 function NaverMapGeocode() {
   const [address, setAddress] = useState("");
