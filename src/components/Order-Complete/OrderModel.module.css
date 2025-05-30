@@ -110,10 +110,20 @@ body {
 .btn-secondary {
     background-color: #f1f1f1;
     color: #333;
+     margin-right: 10px;
 }
 
 .btn-secondary:hover {
     background-color: #e1e1e1;
+}
+
+.btn-review {
+    background-color: yellow;
+    color: #333;
+}
+
+.btn-review:hover {
+    background-color: yellowgreen;
 }
 
 .notice {

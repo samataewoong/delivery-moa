@@ -1,130 +1,142 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import supabase from "../../config/supabaseClient";
-import styles from './ReviewModel.module.css';
-import { FaStar } from 'react-icons/fa';
+import styles from "./ReviewModel.module.css";
+import { FaStar } from "react-icons/fa";
 import Header from "../../components/Header";
+import selectRoom from "../../functions/room/SelectRoom";
 
+const Review = () => {
+  const { room_id } = useParams(); // URL에서 room_id 추출
+  const [currentUserId, setCurrentUserId] = useState(null);
+  const [participants, setParticipants] = useState([]);
+  const [ratings, setRatings] = useState({});
+  const [roomInfo, setRoomInfo] = useState(null);
 
-const ReviewComponent = () => {
-  const [rating, setRating] = useState(0);
-  const [reviewText, setReviewText] = useState('');
-  const [charCount, setCharCount] = useState(0);
-  const [orderInfo, setOrderInfo] = useState({
-    item: '',
-    user: '',
-    date: ''
-  });
-
+  // 현재 로그인한 유저 ID 가져오기
   useEffect(() => {
-    // 주문 정보 로딩 (실제로는 API 호출)
-    loadOrderInfo();
+    const fetchCurrentUser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (user) {
+        setCurrentUserId(user.id);
+      }
+    };
+    fetchCurrentUser();
   }, []);
 
+  // 방 정보 불러오기
   useEffect(() => {
-    setCharCount(reviewText.length);
-  }, [reviewText]);
+    if (!room_id) return;
 
-  const loadOrderInfo = () => {
-    // 실제로는 API에서 데이터를 가져와야 함
-    const orderData = {
-      item: "배달 공구 - 신선한 과일 세트",
-      user: "김공구",
-      date: new Date().toLocaleString('ko-KR', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-      })
+    const fetchRoomInfo = async () => {
+      const result = await selectRoom({ room_id });
+      if (result && result.length > 0) {
+        setRoomInfo(result[0]);
+      }
     };
-    setOrderInfo(orderData);
+
+    fetchRoomInfo();
+  }, [room_id]);
+
+  // 참여자 불러오기
+  useEffect(() => {
+    if (!room_id || !currentUserId) return;
+
+    const fetchParticipants = async () => {
+      const { data: joins, error: joinError } = await supabase
+        .from("room_join")
+        .select("user_id")
+        .eq("room_id", room_id);
+
+      if (joinError) {
+        console.error("room_join 에러:", joinError.message);
+        return;
+      }
+
+      const otherUserIds = joins
+        .map((j) => j.user_id)
+        .filter((uid) => uid !== currentUserId);
+
+      if (otherUserIds.length === 0) {
+        setParticipants([]);
+        return;
+      }
+
+      const { data: users, error: userError } = await supabase
+        .from("user")
+        .select("id, nickname")
+        .in("id", otherUserIds);
+
+      if (userError) {
+        console.error("user 테이블 에러:", userError.message);
+        return;
+      }
+
+      setParticipants(users);
+    };
+
+    fetchParticipants();
+  }, [room_id, currentUserId]);
+
+  const handleRating = (userId, value) => {
+    setRatings((prev) => ({ ...prev, [userId]: value }));
   };
 
-  const handleRatingChange = (selectedRating) => {
-    setRating(selectedRating);
-  };
+  const handleSubmit = async () => {
+    for (const [userId, rating] of Object.entries(ratings)) {
+      const { error } = await supabase
+        .from("user")
+        .update({ user_rating: rating })
+        .eq("id", userId);
 
-  const handleReviewChange = (e) => {
-    const text = e.target.value;
-    if (text.length <= 500) {
-      setReviewText(text);
+      if (error) {
+        console.error(`user ${userId} 업데이트 실패:`, error.message);
+      }
     }
-  };
 
-  const handleSubmit = () => {
-    if (rating === 0 || reviewText.length < 10) {
-      alert('별점을 선택하고 리뷰를 10자 이상 작성해주세요.');
-      return;
-    }
-
-    // 실제로는 API 호출로 대체
-    console.log('제출된 리뷰:', { rating, reviewText });
-    alert(`별점 ${rating}점과 리뷰가 제출되었습니다!\n\n${reviewText}`);
-    
-    // 제출 후 처리 (예: 페이지 이동)
-    // window.location.href = '/order-complete';
+    alert("모든 별점 평가가 저장되었습니다.");
   };
 
   return (
     <>
-    <Header/>
-    <div className={styles.reviewContainer}>
-      <div className={styles.reviewHeader}>
-        <h2>회원 평가 작성</h2>
-        <p>공구 주문자에 대한 솔직한 평가를 남겨주세요</p>
-      </div>
-      
-      <div className={styles.orderInfo}>
-        <p><strong>주문 상품:</strong> {orderInfo.item}</p>
-        <p><strong>주문자:</strong> {orderInfo.user}</p>
-        <p><strong>주문 일시:</strong> {orderInfo.date}</p>
-      </div>
-      
-      <div className={styles.ratingSection}>
-        <h3>이 공구 주문자에 대한 만족도는 어떠셨나요?</h3>
-        <div className={styles.stars}>
-          {[5, 4, 3, 2, 1].map((star) => (
-            <React.Fragment key={star}>
-              <input
-                type="radio"
-                id={`star${star}`}
-                name="rating"
-                value={star}
-                checked={rating === star}
-                onChange={() => handleRatingChange(star)}
-              />
-              <label htmlFor={`star${star}`}>
-                <FaStar 
-                  className={`${styles.starIcon} ${rating >= star ? styles.active : ''}`} 
-                />
-              </label>
-            </React.Fragment>
+      <Header />
+      <div className={styles.container}>
+        <h2 className={styles.title}>
+          {roomInfo
+            ? `${roomInfo.room_name} 방의 사용자 평가하기`
+            : "사용자 평가하기"}
+        </h2>
+
+        <div className={styles.userList}>
+          {participants.map((user) => (
+            <div key={user.id} className={styles.userBox}>
+              <div className={styles.nickname}>{user.nickname}</div>
+              <div className={styles.stars}>
+                {[1, 2, 3, 4, 5].map((n) => (
+                  <FaStar
+                    key={n}
+                    size={24}
+                    className={
+                      n <= (ratings[user.id] || 0)
+                        ? styles.activeStar
+                        : styles.inactiveStar
+                    }
+                    onClick={() => handleRating(user.id, n)}
+                  />
+                ))}
+              </div>
+            </div>
           ))}
         </div>
+
+        <button className={styles.submitBtn} onClick={handleSubmit}>
+          제출하기
+        </button>
       </div>
-      
-      <div className={styles.reviewContent}>
-        <h3>상세 평가 내용</h3>
-        <textarea
-          value={reviewText}
-          onChange={handleReviewChange}
-          placeholder="공구 주문자에 대한 상세한 평가를 작성해주세요. (최소 10자 이상)"
-          className={styles.reviewTextarea}
-        />
-        <div className={styles.charCount}>{charCount}/500자</div>
-      </div>
-      
-      <button
-        className={`${styles.submitBtn} ${rating > 0 && charCount >= 10 ? '' : styles.disabled}`}
-        onClick={handleSubmit}
-        disabled={rating === 0 || charCount < 10}
-      >
-        평가 제출하기
-      </button>
-    </div>
     </>
   );
 };
 
-export default ReviewComponent;
+export default Review;

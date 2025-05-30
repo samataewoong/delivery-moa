@@ -29,7 +29,7 @@ function App() {
           <Route path="/room/:room_id" element={<RoomPage />} />
           <Route path="/gongucomplete" element={<GonguComplete />} />
           <Route path="/ordercomplete/:order_id" element={<OrderComplete />} />
-          <Route path="/review" element={<Review />} />
+          <Route path="/review/:room_id" element={<Review />} />
           
 
           {/* 마이페이지 및 하위 라우트 */}
