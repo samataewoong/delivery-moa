@@ -29,6 +29,7 @@ export default function RoomJoin({ room_id }) {
                 await InsertRoomJoin({ room_id, user_id });
             } catch (error) {
                 console.error(error.message);
+                alert(error.message);
                 navigate("/");
             }
         };
