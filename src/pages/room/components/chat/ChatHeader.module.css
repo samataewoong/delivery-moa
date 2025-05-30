@@ -1,0 +1,16 @@
+.chat_header {
+    display: flex;
+    align-items: center;
+    margin-left: 24px;
+    margin-top: 16px;
+    width: calc(738px - 24px);
+}
+.chat_logo {
+    width: 36px;
+    height: 36px;
+    margin-right: 5px;
+}
+.chat_title {
+    font-size: 22px;
+    font-weight: 400;
+}

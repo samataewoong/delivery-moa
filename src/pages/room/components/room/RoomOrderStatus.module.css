@@ -1,0 +1,20 @@
+.order_status_title {
+    font-size: 20px;
+    color: grey;
+    padding-top: 28px;
+    padding-left: 24px;
+}
+.order_status_box {
+    width: 738px;
+    height: 388px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 4px 6px 2px rgba(0, 0, 0, 0.2);
+    box-sizing: border-box;
+}
+.user_profile_list_box {
+    padding-left: 14px;
+    height: 316px;
+    overflow: auto;
+    padding-top: 17px;
+}

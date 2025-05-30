@@ -1,36 +1,57 @@
-// import { useState } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import Register from "./pages/Register";
 import Header from "./components/Header";
-// import supabase from "./config/supabaseClient";
-import TestLayout from "./pages/MyPage/TestLayout";
-import OrderList from "./pages/MyPage/OrderList";
-import Home from "./pages/Home";
-import Profile from "./pages/MyPage/Profile";
-import DummyPayment from "./pages/CashPay";
-import Order from "./pages/Order";
-import Pay from "./pages/CashPay";
-import Test from "./pages/Test";
-import QnABoard from "./pages/QnA/QnA";
-import NaverMap from "./components/NaverMap";
+import OrderComplete from "./components/Order-Complete/OrderComplete";
+import GonguComplete from "./components/Gongu-Complete/GonguComplete";
+import Review from "./components/User-Review/Review";
+import Footer from "./components/Footer";
+import RoomPage from "./pages/room/RoomPage";
+import Login from "./pages/Login";
+import MyPage from "./pages/myPage/MyPage";
+import UserInfo from "./pages/myPage/UserInfo";
+import EditUser from "./pages/myPage/EditUser";
+import MyQnA from "./pages/myPage/MyQnA";
+import MyReview from "./pages/myPage/MyReview";
+import MainPage from "./pages/MainPage";
+import RootPage from "./pages/RootPage";
 
 function App() {
   return (
-    <BrowserRouter basename={import.meta.env.BASE_URL}>
-      <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="order" element={<Order />} />
-        <Route path="pay" element={<Pay />} />
-        <Route path="test" element={<Test />} />
-        <Route path="qna" element={<QnABoard />} />
-        <Route path="/mypages" element={<TestLayout />}>
-          <Route path="orderlist" element={<OrderList />} />
-          <Route path="payment" element={<DummyPayment />} />
-          <Route path="profile" element={<Profile />} />
-        </Route>
-        <Route path="navermap" element={<NaverMap />} />
-      </Routes>
-    </BrowserRouter>
+    <>
+      <BrowserRouter basename={import.meta.env.BASE_URL}>
+        <Routes>
+          <Route path="/" element={<RootPage />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/mainpage" element={<MainPage />} />
+          <Route path="/room/:room_id" element={<RoomPage />} />
+          <Route path="/gongucomplete" element={<GonguComplete />} />
+          <Route path="/ordercomplete/:order_id" element={<OrderComplete />} />
+          <Route path="/review" element={<Review />} />
+
+          {/* 마이페이지 및 하위 라우트 */}
+          <Route path="/mypage" element={<MyPage />}>
+            <Route index element={<UserInfo />} />
+            <Route path="userinfo" element={<UserInfo />} />
+            <Route path="edituser" element={<EditUser />} />
+            <Route path="myqna" element={<MyQnA />} />
+            <Route path="myreview" element={<MyReview />} />
+            <Route
+              path="orderlist"
+              element={<div>주문내역 준비중입니다.</div>}
+            />
+          </Route>
+        </Routes>
+
+        <Footer />
+        <nav>
+          <Link to="/login">로그인</Link>
+          <Link to="/mypage/userinfo">마이페이지</Link>&nbsp;
+          <Link to="/mainpage">홈</Link>
+          <Link to="/register">회원가입</Link>
+        </nav>
+      </BrowserRouter>
+    </>
   );
 }
 
