@@ -31,14 +31,6 @@ export default function RoomHeader({ room_id }) {
                 setError(error);
             }
         }
-        const roomJoinSubscribe = supabase
-           .realtime
-           .channel('realtime:room_join')
-           .on("postgres_changes", (payload) => {
-                if (payload.new.room_id === room_id) {
-                    fetchRoomJoin();
-                }
-           });
         async function fetchRoom() {
             try {
                 const roomData = await selectRoom({
@@ -51,6 +43,22 @@ export default function RoomHeader({ room_id }) {
                 setError(error);
             }
         }
+        const roomSubscribe = supabase
+           .realtime
+           .channel('realtime:room')
+           .on("postgres_changes", (payload) => {
+                if (payload.new.room_id === room_id) {
+                    fetchRoomJoin();
+                }
+           });
+        const roomJoinSubscribe = supabase
+           .realtime
+           .channel('realtime:room_join')
+           .on("postgres_changes", (payload) => {
+                if (payload.new.room_id === room_id) {
+                    fetchRoomJoin();
+                }
+           });
         fetchRoomJoin();
         fetchRoom();
     }, [room_id]);
@@ -66,8 +74,9 @@ export default function RoomHeader({ room_id }) {
                         // 방장인 경우
                         if(
                             room
-                            && roomJoin 
-                            && roomJoin.filter((join) => (join.status == '준비 완료')).length
+                            && roomJoin
+                            && roomJoin.length > 0 
+                            && roomJoin.filter((join) => (join.status == '준비 완료')).length > 0
                         ) {
                             setCanLeave(false);
                         } else {
@@ -77,7 +86,8 @@ export default function RoomHeader({ room_id }) {
                         // 일반인 경우
                         if(
                             room
-                            && roomJoin 
+                            && roomJoin
+                            && roomJoin.length > 0
                             && roomJoin.filter((join) => (join.user_id == user_id &&  join.status == '준비 완료')).length
                         ) {
                             setCanLeave(false);
@@ -111,6 +121,7 @@ export default function RoomHeader({ room_id }) {
                     navigate(-1);
                 }} src={backBtnLogo} alt="Back Button" className={style.back_button} />}
                 {room && <div className={style.room_name}>{room.room_name}</div>}
+                {room && <div className={style.room_status}>{room.status}</div>}
             </div>
             <div className={style.room_header_right}>
                 <div className={style.location_box}>

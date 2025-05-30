@@ -4,6 +4,23 @@
     height: 59px;
     padding: 10px;
 }
+.user_profile_left_box {
+    display: flex;
+    align-items: center;
+}
+.end_recruit_button {
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    margin-left: 10px;
+    font-size: 14px;
+    background-color: white;
+    box-sizing: border-box;
+    border: #FF6B6B solid 1px;
+    border-radius: 9999px;
+    color: #FF6B6B;
+}
 .user_profile_box_top {
     padding-top: 0px;
 }
@@ -17,6 +34,8 @@
     background-color: #f0f0f0;
 }
 .user_profile_status_box {
+    display: flex;
+    justify-content: space-between;
     width: 616px;
     padding-left: 19px;
     padding-right: 20px;

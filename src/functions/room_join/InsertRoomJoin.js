@@ -12,18 +12,19 @@ export default async function InsertRoomJoin({
         throw new Error("방이 존재하지 않습니다.");
     }
 
+    const roomJoin = await selectRoomJoin({ room_id });
+    if (roomJoin.find(join => join.user_id === user_id)) {
+        return undefined;
+    }
+
     if (room[0].status != '모집중') {
         throw new Error("방의 상태가 모집중이 아닙니다.");
     }
 
-    const roomJoin = await selectRoomJoin({ room_id });
     if (room[0].max_people <= roomJoin.length) {
         throw new Error("이미 방이 가득 찼습니다.");
     }
 
-    if (roomJoin.find(join => join.user_id === user_id)) {
-        return undefined;
-    }
 
     const { data, error } = await supabase
         .from("room_join")
