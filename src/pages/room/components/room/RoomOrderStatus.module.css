@@ -1,6 +1,6 @@
 .order_status_title {
     font-size: 20px;
-    color: grey;
+    color: #4B5563;
     padding-top: 28px;
     padding-left: 24px;
 }
@@ -13,8 +13,9 @@
     box-sizing: border-box;
 }
 .user_profile_list_box {
-    padding-left: 14px;
-    height: 316px;
+    margin-left: 14px;
+    height: 296px;
     overflow: auto;
-    padding-top: 17px;
+    margin-top: 17px;
+    margin-bottom: 20px;
 }

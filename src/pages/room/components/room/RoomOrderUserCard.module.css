@@ -1,8 +1,14 @@
-.user_profile_box {
+.user_profile_box,.user_profile_box_top,.user_profile_box_bottom {
     display: flex;
     align-items: center;
     height: 59px;
     padding: 10px;
+}
+.user_profile_box_top {
+    padding-top: 0px;
+}
+.user_profile_box_bottom {
+    padding-bottom: 0px;
 }
 .user_profile_image {
     width: 59px;

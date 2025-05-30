@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import style from "./RoomOrderUserCard.module.css";
 
 export default function RoomOrderUserCard({
+    position,
     room_id,
     user_id,
 }) {
@@ -26,8 +27,15 @@ export default function RoomOrderUserCard({
         };
         process();
     }, [user_id]);
+    const boxClassName = (() => {
+        switch (position) {
+            case "top": return style.user_profile_box_top;
+            case "bottom": return style.user_profile_box_bottom;
+            default: return style.user_profile_box;
+        }
+    })();
     return (
-        <div className={style.user_profile_box}>
+        <div className={boxClassName}>
             <div className={style.user_profile_image} />
             <div className={style.user_profile_status_box}>
                 {roomJoin && <div className={(() => {
