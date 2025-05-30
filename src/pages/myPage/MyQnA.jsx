@@ -141,9 +141,7 @@ export default function MyQnA() {
 
           <button
             onClick={() =>
-              setCurrentPage((prev) =>
-                Math.min(prev + 1, totalPages - 1)
-              )
+              setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1))
             }
             disabled={currentPage === totalPages - 1}
           >

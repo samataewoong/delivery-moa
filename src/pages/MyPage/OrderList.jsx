@@ -55,28 +55,45 @@ export default function OrderList() {
       ) : orders.length === 0 ? (
         <p>주문 재녁이 없습니다.</p>
       ) : (
-        orders.map((order) => (
-          <li key={order.order_id}>
-            주문번호: {order.order_id}
-            <br />방 ID: {order.room_id}
-            <br />
-            가게 ID: {order.store_id}
-            <br />
-            주문상세:
-            <ul>
-              {(order.room_order || []).map((item, idx) => (
-                <li key={idx}>
-                  메뉴: {item.menu_name} <br />
-                  수량: {item.quantity}개 <br />
-                  가격: {item.menu_price}원 <br />
-                </li>
-              ))}
-            </ul>
-            총액: {order.total_price}원
-            <br />
-            생성일: {order.create_at}
-          </li>
-        ))
+        orders.map((order) => {
+          // 각 주무의 room_order 내 uuid 일치 항목 찾기
+          const myOrderItems = (order.room_order || []).filter(
+            (item) => item.uuid === userId
+          );
+
+          //내 주문 합계
+          const myTotal = myOrderItems.reduce(
+            (sum, item) => sum + item.menu_price * item.quantity,
+            0
+          );
+
+          return (
+            <li key={order.order_id}>
+              주문번호: {order.order_id}
+              <br />방 ID: {order.room_id}
+              <br />
+              가게 ID: {order.store_id}
+              <br />
+              내가 결제한 금액: {myTotal}원<br />
+              주문상세:
+              <ul>
+                {myOrderItems.length === 0 ? (
+                  <li>이 주문에 내 주문 데이터 없음</li>
+                ) : (
+                  myOrderItems.map((item, idx) => (
+                    <li key={idx}>
+                      메뉴: {item.menu_name} <br />
+                      수량: {item.quantity}개 <br />
+                      가격: {item.menu_price}원 <br />
+                      소계: {item.menu_price * item.quantity}원
+                    </li>
+                  ))
+                )}
+              </ul>
+              생성일: {order.created_at}
+            </li>
+          );
+        })
       )}
     </div>
   );
