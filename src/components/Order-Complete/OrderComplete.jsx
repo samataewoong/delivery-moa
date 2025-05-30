@@ -185,6 +185,12 @@ const OrderComplete = () => {
           >
             홈으로
           </button>
+          <button 
+            className={`${style.btn} ${style["btn-secondary"]}`} 
+            onClick={goToHome}
+          >
+            리뷰작성
+          </button>
         </div>
       </div>
     </>
