@@ -115,6 +115,7 @@ export default function RoomHeader({ room_id }) {
                 room_id,
                 user_id,
             });
+            navigate(-1);
         } catch (error) {
             console.error(error);
         }
