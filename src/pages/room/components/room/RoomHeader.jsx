@@ -45,22 +45,30 @@ export default function RoomHeader({ room_id }) {
         }
         const roomSubscribe = supabase
             .realtime
-            .channel('realtime:room')
+            .channel(`realtime:room_status_watch_on_room_header_in_room_${room_id}`)
             .on("postgres_changes", (payload) => {
                 if (payload.new.room_id === room_id) {
-                    fetchRoomJoin();
+                    fetchRoom();
                 }
             });
         const roomJoinSubscribe = supabase
             .realtime
-            .channel('realtime:room_join')
-            .on("postgres_changes", (payload) => {
+            .channel(`realtime:room_join_leave_button_on_room_header_in_room_${room_id}`)
+            .on(
+                "postgres_changes",
+                { event: '*', schema: 'public', table:'room_join'  },
+                (payload) => {
                 if (payload.new.room_id === room_id) {
                     fetchRoomJoin();
                 }
-            });
+            })
+            .subscribe();
         fetchRoomJoin();
         fetchRoom();
+        return () => {
+            roomSubscribe.unsubscribe();
+            roomJoinSubscribe.unsubscribe();
+        }
     }, [room_id]);
     useEffect(() => {
         async function fetchCanLeave() {
@@ -107,6 +115,7 @@ export default function RoomHeader({ room_id }) {
                 room_id,
                 user_id,
             });
+            navigate(-1);
         } catch (error) {
             console.error(error);
         }
