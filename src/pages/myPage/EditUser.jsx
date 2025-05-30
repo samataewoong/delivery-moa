@@ -24,7 +24,7 @@ export default function EditUser() {
 
                 // 이메일, 가입일 설정
                 setEmail(user.email ?? "");
-                setCreatedAt(user.created_at);
+                setCreatedAt(user.created_at ?? "");
 
                 // 추가 유저 정보 가져오기 (user 테이블)
                 const { data, error } = await supabase
@@ -37,7 +37,7 @@ export default function EditUser() {
                     console.error("추가 유저 정보 불러오기 실패:", error);
                 } else {
                     setNickname(data?.nickname ?? "");
-                    setPassWord(data.password);
+                    setPassWord(data?.password ?? "");
                 }
             } else {
                 setEmail("");
@@ -64,7 +64,7 @@ export default function EditUser() {
     // 수정
     const editComplete = async () => {
 
-        if(!session || !session.user){
+        if (!session || !session.user) {
             alert("로그인 정보가 없습니다");
             return;
         }
@@ -79,19 +79,27 @@ export default function EditUser() {
             })
             .eq("id", userId);
 
-        if(nicknameError){
+        if (nicknameError) {
             console.log("닉네임 업데이트 실패", nicknameError);
             return;
         }
 
         // 비밀번호 업데이트
-        if(passWord !== ""){
-            const {error: passwordError} = await supabase.auth.updateUser({
+        if (passWord !== "") {
+            const { data, error: passwordError } = await supabase.auth.updateUser({
                 password: passWord,
             })
 
-            if(passwordError){
-                console.log("비밀번호 업데이트 실패", nicknameError);
+            if (passwordError) {
+                console.log("비밀번호 업데이트 실패", passwordError);
+                return;
+            }
+        } else {
+            const { data, error: passwordError } = await supabase.auth.updateUser({
+                password: passWord,
+            })
+            if (passwordError) {
+                console.log("비밀번호 업데이트 실패", passwordError);
                 return;
             }
         }
