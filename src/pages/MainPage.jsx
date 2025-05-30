@@ -16,9 +16,10 @@ export default function MainHeader() {
 
     const [categories, setCategories] = useState([]);
     const [rooms, setRooms] = useState([]);
+    const [menu, setMenu] = useState([]);
 
     const mapRef = useRef(null);
-
+    //지도
     const waitForKakaoMaps = () => {
         return new Promise((resolve, reject) => {
             if (
@@ -84,7 +85,7 @@ export default function MainHeader() {
             search();
         }
     }
-
+    //햄버거
     const toggleMenu = () => {
         setIsOpen(!isOpen);
     };
@@ -93,7 +94,7 @@ export default function MainHeader() {
         const { data } = await supabase.from("user").select("nickname").eq("id", user_id).single();
         setNickname(data?.nickname || "");
     };
-
+    //로그인 정보
     useEffect(() => {
         const getSession = async () => {
             const {
@@ -125,7 +126,7 @@ export default function MainHeader() {
             setNickname("");
         }
     };
-
+    //검색창
     const search = () => {
         if (!keyword.trim()) {
             alert("검색어를 입력하세요.");
@@ -133,6 +134,7 @@ export default function MainHeader() {
         }
         alert(`검색어: ${keyword}`);
     };
+    //공구방 데이터
     useEffect(() => {
         const fetchRoom = async () => {
             const { data, error } = await supabase
@@ -160,7 +162,7 @@ export default function MainHeader() {
 
         fetchRoom();
     }, []);
-
+    //카테고리 목록
     useEffect(() => {
         const fetchCategories = async () => {
             const { data, error } = await supabase.from("menu_category").select("id, category");
@@ -172,8 +174,23 @@ export default function MainHeader() {
         };
         fetchCategories();
     }, []);
-    const storeUrl = "https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/store_";
-    const imgBaseUrl = "https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/";
+    //지금인기있는메뉴
+    useEffect(() => {
+        const fetchMenu = async () => {
+            const { data, error } = await supabase.from("popular").select("*");
+            if (error) {
+                console.error("인기메뉴 불러오기 오류:", error)
+            } else {
+                setMenu(data);
+            }
+        };
+        fetchMenu();
+    }, []);
+    const storeUrl = "https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/store/store_";
+
+    const imgBaseUrl = "https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/category/";
+
+    const popularUrl = "https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/popular/popular_";
 
     return (
         <>
@@ -197,10 +214,24 @@ export default function MainHeader() {
                         </ul>
                     </div>
                     <div className={styles["location"]}>
-                        <div>
-                            <button className={styles["location_btn"]} onClick={handleClick}>
-                                <img src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/location_imo.png" />
-                            </button>
+                        <div className={styles["location_gps"]}>
+                            {session && nickname ? (
+                                <>
+                                    <button className={styles["location_btn"]} onClick={handleClick}>
+                                        <img src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/location_imo.png" />
+                                    </button>
+                                    {address ? (
+                                        <div onClick={handleClick}>{address}</div>
+                                    ) : (
+                                        <div onClick={handleClick}>주소를 입력하세요</div>
+                                    )}
+                                </>
+                            ) : (
+                                <div>
+                                    <Link to="/login">로그인</Link>
+                                </div>
+                            )}
+
                             {showMapModal && (
                                 <div className={styles["modalStyle"]} onClick={closeMapModal}>
                                     <div className={styles["popupStyle"]} onClick={(e) => e.stopPropagation()}>
@@ -212,22 +243,6 @@ export default function MainHeader() {
                                             </button>
                                         </div>
                                     </div>
-                                </div>
-                            )}
-                        </div>
-                        <div className={styles["location_gps"]}>
-                            {session && nickname ? (
-                                address ? (
-                                    <>
-                                        <div className={styles["location_gps"]}>{address}</div>
-                                    </>
-                                ) : (
-                                    "주소를 입력하세요"
-                                )
-                            ) : (
-                                <div>
-                                    <Link to="/login">로그인</Link>
-                                    <Link to="/register"> 회원가입 </Link>
                                 </div>
                             )}
                         </div>
@@ -293,19 +308,20 @@ export default function MainHeader() {
                         <div className={styles["gongu_list_move"]}>전체보기→</div>
                     </div>
                     <div className={styles["gongu_list_wrap"]}>
-                        {rooms.map((items) => (
-                            <Link key={items.id} to={`/room/${items.id}`}>
+                        {rooms.slice(0, 6).map((items) => (
+                            <Link key={items.id} to={`/room/${items.id}`} onClick={(e) => {
+                                if(!window.confirm(`${items.room_name} 공구방에 참여하시겠습니까?`)){
+                                    e.preventDefault(); 
+                                }
+                            }}>
                                 <div className={styles["gongu_with_text"]}>
                                     <img className={styles["square_img"]}
                                         src={`${storeUrl}${items.store_id}.jpg`}
                                         alt={`${items.category} 이미지`} />
                                     <div className={styles["square"]}>
                                         <div className={styles["gongu_title"]}>{items.room_name}</div>
-                                        <ul className={styles["gongu_date"]}>
-                                            <li>{items.room_address}</li>
-                                            <li>|</li>
-                                            <li>오늘7시까지</li>
-                                        </ul>
+                                        <div className={styles["gongu_date"]}>{items.room_address}
+                                        </div>
                                         <progress className={styles["gongu_progress"]} value={items.join_count} max={items.max_people}></progress>
                                         <div className={styles["gongu_bottom"]}>
                                             <div style={{ display: "flex", alignItems: "center" }}>
@@ -320,7 +336,27 @@ export default function MainHeader() {
                         ))}
                     </div>
                 </div>
-
+            </div>
+            <div className={styles["body_bottom"]}>
+                <div className={styles["body_bottom_container"]}>
+                    <div className={styles["popular_text"]}>지금 인기있는 메뉴</div>
+                    <div className={styles["popular_list_wrap"]}>
+                        {menu.slice(0, 5).map((item) => (
+                            <div key={item.id} className={styles["popular_with_text"]}>
+                                <img
+                                    className={styles["popular_img"]}
+                                    src={`${popularUrl}${item.id}.jpg`} />
+                                <div className={styles["popular_square"]}>
+                                    <div className={styles["popular_title"]}>{item.title}</div>
+                                    <div className={styles["popular_detail"]}>
+                                        <div className={styles["popular_star"]}>★★★★★</div>
+                                        <div className={styles["popular_detail_text"]}>{item.price}원</div>
+                                    </div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
             </div>
         </>
     );

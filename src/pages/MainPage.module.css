@@ -10,6 +10,7 @@ a {
     margin: 46.5px 184px;
     font-size: 18px;
     padding-inline-start: 0;
+    cursor: pointer;
 }
 
 .main_menu li {
@@ -24,11 +25,13 @@ a {
 .hLogo_img {
     padding: 16.5px 20px;
     margin-right: 50px;
+    border: none;
+    outline: none;
 }
 
 .search_header {
     background-color: #FF6B6B;
-    width: 100vw;
+    width: 100%;
     height: 180px;
     display: flex;
     justify-content: center;
@@ -95,7 +98,7 @@ a {
 }
 
 .main_header {
-    width: 100vw;
+    width: 100%;
     height: 115px;
     display: flex;
     justify-content: center;
@@ -118,13 +121,16 @@ a {
 
 .location_btn {
     all: unset;
-    margin-right: 10px;
+    margin-top: 5px;
+    margin-right: 8px;
     cursor: pointer;
 }
 
 .location_gps {
     margin-top: -2px;
+    cursor: pointer;
 }
+
 
 .main_hamburger {
     position: absolute;
@@ -138,7 +144,7 @@ a {
 }
 
 .body_box {
-    width: 100vw;
+    width: 100%;
     display: flex;
     justify-content: center;
 }
@@ -203,7 +209,7 @@ a {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
+    width: 100%;
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.5);
     display: flex;
@@ -259,7 +265,7 @@ a {
 
 .gongu_list_wrap {
     display: flex;
-    padding: 20px 0 80px 0;
+    padding: 20px 0 100px 0;
     gap: 60px;
     width: 1280px;
     flex-wrap: wrap;
@@ -345,4 +351,67 @@ a {
 .gongu_delivery{
     font-size: 14px;
     color: #333333;
+}
+
+.body_bottom{
+    background-color: #F0F6FF;
+    height: 360px;
+    margin-bottom: 100px;
+}
+.body_bottom_container{
+    width: 1280px;
+    position: relative;
+    margin: 0 auto;
+    padding: 50px 20px;
+    box-sizing: border-box;
+}
+
+.popular_text{
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+.popular_list_wrap{
+    display: flex;
+    gap: 40px;
+}
+.popular_img{
+    width: 216px;
+    height: 120px;
+    border-radius: 10px 10px 0 0;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+.popular_with_text{
+    box-shadow: 4px 6px 2px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+.popular_square{
+    width: 216px;
+    height: 72px;
+    border-radius: 0 0 10px 10px;
+    background-color: white;
+    padding: 12px 12px;
+    box-sizing: border-box;
+    margin: 0;
+}
+.popular_title{
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+.popular_detail{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.popular_star{
+    color: rgb(255, 217, 0);
+    font-size: 13px;
+}
+.popular_detail_text{
+    font-size: 13px;
+    color: #666666;
 }
