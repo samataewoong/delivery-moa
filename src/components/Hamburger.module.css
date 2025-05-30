@@ -74,3 +74,88 @@
 .event_banner2 {
     margin-top: 15px;
 }
+
+.gongu_progress {
+    width: 100%;
+    height: 20px;
+    appearance: none;
+    -webkit-appearance: none;
+    overflow: hidden;
+    border: none;
+    margin: 40px 0 20px 0;
+}
+
+.gongu_progress::-webkit-progress-bar {
+    background-color: #eee;
+}
+
+.gongu_progress::-webkit-progress-value {
+    background-color: #FF6B6B;
+}
+
+.chat_list {
+    margin-top: 50px;
+}
+
+.chat_list_title {
+    font-size: 20px;
+    margin-bottom: 30px;
+}
+
+.chat_list_room {
+    display: flex;
+}
+
+.chat_list_circle {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center 80%;
+    display: block;
+}
+
+.chat_room_detail {
+    display: flex;
+}
+
+.chat_room {
+    margin-left: 15px;
+    align-items: center;
+    padding: 16px 0;
+    width: 100%;
+}
+
+.chat_title {
+    font-size: 18px;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 70%;
+}
+
+.chat_people {
+    margin-left: 5px;
+    margin-right: 10px;
+    color: #1A535C;
+    font-size: 14px;
+}
+
+.chat_state {
+    color: red;
+    font-size: 14px;
+}
+
+.chat_title_time {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.chat_time {
+    font-size: 16px;
+    color: #7B7A7A;
+}
