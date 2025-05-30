@@ -25,7 +25,7 @@ export default function ChatList({ room_id }) {
         fetchChats();
 
         const chatSubscription = supabase
-            .channel("realtime:chat")
+            .channel(`realtime:chat_list_watch_on_chat_list_component_${room_id}`)
             .on(
                 "postgres_changes", 
                 { event: '*', schema: 'public', table: 'chat' },

@@ -28,13 +28,20 @@ export default function RoomOrderUserCard({
         }
         const roomSubscribe = supabase
             .realtime
-            .channel('realtime:room')
-            .on("postgres_changes", (payload) => {
+            .channel(`realtime:room_status_watch_on_room_order_user_card_in_room_${room_id}`)
+            .on(
+                "postgres_changes",
+                { event: '*', schema: 'public', table:'room' },
+                (payload) => {
                 if (payload.new.id === room_id) {
                     fetchRoom();
                 }
-            });
+            })
+            .subscribe();
         fetchRoom();
+        return () => {
+            roomSubscribe.unsubscribe();
+        }
     }, [room_id]);
     useEffect(() => {
         const process = async () => {
