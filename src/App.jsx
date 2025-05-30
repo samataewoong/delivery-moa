@@ -44,12 +44,6 @@ function App() {
         </Routes>
 
         <Footer />
-        <nav>
-          <Link to="/login">로그인</Link>
-          <Link to="/mypage/userinfo">마이페이지</Link>&nbsp;
-          <Link to="/mainpage">홈</Link>
-          <Link to="/register">회원가입</Link>
-        </nav>
       </BrowserRouter>
     </>
   );
