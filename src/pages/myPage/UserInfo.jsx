@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import styles from "./MyPage.module.css";
 import { useEffect, useState } from "react";
 import supabase from "../../config/supabaseClient";
+import FormattedDate from "../../components/FormattedDate";
 
 export default function UserInfo({ selectedMenu }) {
   const navigate = useNavigate();
@@ -42,15 +43,15 @@ export default function UserInfo({ selectedMenu }) {
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
-        if (session?.user) {
-            setSession(session);
-            fetchUserInfo(session.user);
-        } 
-        else {
-          setSession(null);
-          setEmail("");
-          setNickname("");
-          setCreatedAt("");
+      if (session?.user) {
+        setSession(session);
+        fetchUserInfo(session.user);
+      }
+      else {
+        setSession(null);
+        setEmail("");
+        setNickname("");
+        setCreatedAt("");
       }
     });
 
@@ -79,7 +80,7 @@ export default function UserInfo({ selectedMenu }) {
       </div>
       <div className={styles.infoRow}>
         <div className={styles.label}>가입일:</div>
-        <div className={styles.value}>{createdAt}</div>
+        <div className={styles.value}><FormattedDate dateString={createdAt} /></div>
       </div>
       <div className={styles.myButtonContainer}>
         <button onClick={editButton}>수정하기</button>

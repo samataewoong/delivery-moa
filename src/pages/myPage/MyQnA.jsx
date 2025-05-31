@@ -44,7 +44,8 @@ export default function MyQnA() {
       }
     }
   }
-
+  // QnA 업데이트 함수
+  
   // 유저 아이디가 바뀌면 데이터 불러오기
   useEffect(() => {
     if (!userId) return;
@@ -107,6 +108,7 @@ export default function MyQnA() {
               >
                 리뷰 삭제
               </button>
+              {qna.q_answer? "" : <button className={styles.editReview}>수정하기</button>}
             </div>
             {qna.q_answer && showAnswerId === qna.id && (
               <div className={styles.answer}>

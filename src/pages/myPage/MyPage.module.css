@@ -1,6 +1,5 @@
 .myPage {
     display: flex;
-    height: 100vh;
     width: 1680px;
     /* 원하는 고정 너비 */
     /*margin: 0 auto;*/
@@ -142,7 +141,7 @@
     text-align: left;
     font-weight: bold;
     font-size: x-large;
-    border-bottom: solid;
+    border-bottom: solid 1px #CCD;
     margin-bottom: 40px;
     padding: 14px;
 }
@@ -176,13 +175,13 @@
 .infoRow .label {
     width: 100px;
     /* 고정 너비 */
-    font-weight: bold;
+    font-weight: 500;
 }
 
 .infoRow .value {
     width: 535px;
     margin-left: 25px;
-    border-bottom: solid;
+    border-bottom: solid #ccc 2px;
     padding-bottom: 5px;
     /* 남은 공간 차지 */
 }
@@ -303,6 +302,15 @@ input[readOnly] {
     font-weight: 400;
 }
 
+.editReview {
+    border-radius: 5px;
+    margin-left: 10px;
+    cursor: pointer;
+    width: 70px;
+    height: 30px;
+    font-weight: 400;
+}
+
 .deleteReview:hover {
     background-color: rgb(198, 213, 218);
 }
@@ -344,3 +352,4 @@ input[readOnly] {
   color: black;
   cursor: default;
 }
+
