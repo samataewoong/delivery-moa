@@ -267,14 +267,16 @@ input[readOnly] {
 }
 
 .qnaContent {
-    margin-bottom: 30px;
+    margin-bottom: 10px;
     padding-left: 15px;
     margin-top: 10px;
 }
 
-.qnaContent h2 {
+.qnaTextArea {
+    width: 1225px;
+    height: 130px;
     font-size: medium;
-    font-weight: 400;
+    font-weight: 1000;
     padding-top: 7px;
 }
 

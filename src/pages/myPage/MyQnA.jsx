@@ -25,7 +25,7 @@ export default function MyQnA() {
 
   // QnA 삭제 함수
   async function reviewDelete(qnaId) {
-    const confirmed = window.confirm("정말로 이 문의를 삭제하시겠습니까?");
+    const confirmed = window.confirm("문의를 삭제하시겠습니까?");
     if (!confirmed) return;
 
     const { error } = await supabase.from("qna").delete().eq("id", qnaId);
@@ -43,9 +43,51 @@ export default function MyQnA() {
         setCurrentPage(totalPages - 1);
       }
     }
-  }
+  };
   // QnA 업데이트 함수
-  
+  // id 체킹
+  const [editQnaById, setEditQnaById] = useState("");
+  // 수정중 체크
+  const [editing, setEditing] = useState(false);
+  // 수정 내용
+  const [editedContents, setEditedContents] = useState("");
+  // 수정하기 버튼
+  const editStart = (qna) => {
+    const confirmed = window.confirm("문의를 수정하시겠습니까?");
+    if (!confirmed) return;
+    setEditQnaById(qna.id);
+    setEditing(true);
+  };
+  // 수정완료 버튼
+  async function editDone(editQnaById) {
+    const { data, error } = await supabase.from('qna').update({ q_contents: editedContents }).eq('id', editQnaById);
+    if (error) {
+      console.error("업데이트 실패", error);
+    } else {
+      console.log("업데이트 성공");
+    }
+    setEditing(false);
+  };
+  // 수정버튼 랜더링 함수
+  const renderEditButton = (qna) => {
+    if (qna.id === editQnaById && editing) {
+      // 수정 중일 때
+      return (
+        <button onClick={() => editDone(editQnaById)} className={styles.editReview}>수정완료</button>
+      );
+    }
+
+    if (!qna.q_answer) {
+      // 답변 없고, 수정 중 아닐 때 수정하기 버튼
+      return (
+        <button onClick={() => editStart(qna)} className={styles.editReview}>수정하기</button>
+      );
+    }
+
+    // 그 외 버튼 없음
+    return null;
+  };
+
   // 유저 아이디가 바뀌면 데이터 불러오기
   useEffect(() => {
     if (!userId) return;
@@ -96,7 +138,9 @@ export default function MyQnA() {
             <div className={styles.qnaTitle}>
               <b>Q. {qna.title}</b>
               <div className={styles.qnaContent}>
-                <h2>{qna.q_contents}</h2>
+                <textarea className={styles.qnaTextArea} value={qna.q_contents} disabled={!editing} onChange={(e) => setEditedContents(e.target.value)} style={{
+                  border: !editing ? "none" : undefined
+                }} />
               </div>
               <h3>답변유무 {qna.q_answer ? "Yes" : "No"}</h3>
               <button
@@ -106,9 +150,9 @@ export default function MyQnA() {
                   reviewDelete(qna.id);
                 }}
               >
-                리뷰 삭제
+                리뷰삭제
               </button>
-              {qna.q_answer? "" : <button className={styles.editReview}>수정하기</button>}
+              {renderEditButton(qna)}
             </div>
             {qna.q_answer && showAnswerId === qna.id && (
               <div className={styles.answer}>
