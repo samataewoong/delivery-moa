@@ -14,7 +14,7 @@ import MyQnA from './pages/myPage/MyQnA';
 import MyReview from './pages/myPage/MyReview';
 import MainPage from './pages/MainPage';
 import RootPage from './pages/RootPage';
-import EditQna from './pages/myPage/editQna';
+
 
 
 function App() {
