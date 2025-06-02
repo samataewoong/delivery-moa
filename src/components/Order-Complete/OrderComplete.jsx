@@ -107,6 +107,10 @@ const OrderComplete = () => {
     navigate('/mainpage');
   };
 
+  const goToReview =() => {
+    navigate('/review');
+  }
+
   if (loading) return <div className={style.loading}>주문 정보를 불러오는 중...</div>;
   if (error) return <div className={style.error}>오류 발생: {error}</div>;
 
@@ -186,8 +190,8 @@ const OrderComplete = () => {
             홈으로
           </button>
           <button 
-            className={`${style.btn} ${style["btn-secondary"]}`} 
-            onClick={goToHome}
+            className={`${style.btn} ${style["btn-review"]}`} 
+            onClick={goToReview}
           >
             리뷰작성
           </button>

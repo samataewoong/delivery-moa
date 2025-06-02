@@ -65,7 +65,7 @@ export default function MyPage() {
                             {myNickname} 님
                         </h2>
                         <br />
-                        <GaugeBar value={40} />
+                        <GaugeBar value={80} />
                         <div className={styles.myCash}>
                             <span className={styles.label}>내 캐시:</span>
                             <span className={styles.amount}>{myCash}원</span>

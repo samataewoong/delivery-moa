@@ -21,7 +21,7 @@ export default function ChatCard({
 		};
 		fetchUser();
 	}, [user_id]);
-	const date = new Date(created_at);
+	const date = new Date(Date.parse(created_at) + 32400000);
 	let hours = `${date.getHours()}`;
 	if (hours.length < 2) {
 		hours = '0' + hours;

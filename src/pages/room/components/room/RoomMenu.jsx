@@ -26,21 +26,29 @@ export default function RoomMenu({ room_id }) {
     useEffect(() => {
         const orderSubscribe = supabase
             .realtime
-            .channel('realtime:order')
-            .on("postgres_changes", (payload) => {
+            .channel(`realtime:order_ready_check_on_room_menu_in_room_${room_id}`)
+            .on(
+                "postgres_changes",
+                { event:'*', schema: 'public', table: 'order' },
+                (payload) => {
                 if (payload.op === "INSERT") {
-                    if (payload.new.room_id === room_id && payload.new.user_id === user_id) {
+                    if (payload.new.room_id === Number(room_id) && payload.new.user_id === user_id) {
                         setOrder(payload.new);
                     }
                 }
-            });
+            })
+            .subscribe();
         const userSubscribe = supabase
-            .channel('realtime:user')
-            .on("postgres_changes", (payload) => {
+            .channel(`realtime:user_cash_watch_on_room_menu_in_room_${room_id}`)
+            .on(
+                "postgres_changes",
+                { event:'*', schema: 'public', table: 'user' },
+                (payload) => {
                 if (payload.new.id === user_id) {
                     setUser(payload.new);
                 }
-            });
+            })
+            .subscribe();
         async function fetchAll() {
             let user_id = null;
             try {
@@ -84,7 +92,8 @@ export default function RoomMenu({ room_id }) {
         }
         fetchAll();
         return () => {
-            orderSubscribe.unsubscribe()
+            orderSubscribe.unsubscribe();
+            userSubscribe.unsubscribe();
         };
     }, [room_id]);
 

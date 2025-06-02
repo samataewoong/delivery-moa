@@ -28,8 +28,7 @@ function App() {
           <Route path="/room/:room_id" element={<RoomPage />} />
           <Route path="/gongucomplete" element={<GonguComplete />} />
           <Route path="/ordercomplete/:order_id" element={<OrderComplete />} />
-          <Route path="/review" element={<Review />} />
-
+          <Route path="/review/:room_id" element={<Review />} />
           {/* 마이페이지 및 하위 라우트 */}
           <Route path="/mypage" element={<MyPage />}>
             <Route index element={<UserInfo />} />
@@ -42,12 +41,6 @@ function App() {
         </Routes>
 
         <Footer />
-        <nav>
-          <Link to="/login">로그인</Link>
-          <Link to="/mypage/userinfo">마이페이지</Link>&nbsp;
-          <Link to="/mainpage">홈</Link>
-          <Link to="/register">회원가입</Link>
-        </nav>
       </BrowserRouter>
     </>
   );

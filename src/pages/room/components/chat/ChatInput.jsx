@@ -9,6 +9,7 @@ export default function ChatInput({
 	const [chat, setChat] = useState('');
 	const handleSubmit = () => {
 			async function insertChat() {
+				if(!chat.trim()) return;
 				let user_id = null;
 				try {
 					const { id } = await getAuthUser();

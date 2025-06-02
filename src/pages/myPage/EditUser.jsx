@@ -8,7 +8,7 @@ export default function EditUser() {
     const navigate = useNavigate();
 
     const [nickname, setNickname] = useState("");
-    const [passWord, setPassWord] = useState("");
+    const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [createdAt, setCreatedAt] = useState("");
     const [session, setSession] = useState(null);
@@ -24,7 +24,7 @@ export default function EditUser() {
 
                 // 이메일, 가입일 설정
                 setEmail(user.email ?? "");
-                setCreatedAt(user.created_at);
+                setCreatedAt(user.created_at ?? "");
 
                 // 추가 유저 정보 가져오기 (user 테이블)
                 const { data, error } = await supabase
@@ -37,12 +37,12 @@ export default function EditUser() {
                     console.error("추가 유저 정보 불러오기 실패:", error);
                 } else {
                     setNickname(data?.nickname ?? "");
-                    setPassWord(data.password);
+                    setPassword(data?.password ?? "");
                 }
             } else {
                 setEmail("");
                 setNickname("");
-                setPassWord("");
+                setPassword("");
                 setCreatedAt("");
             }
         });
@@ -55,7 +55,7 @@ export default function EditUser() {
         setNickname(e.target.value ?? "");
     }
     const passWordChange = (e) => {
-        setPassWord(e.target.value ?? "");
+        setPassword(e.target.value ?? "");
     }
     const [showPassword, setShowPassword] = useState(false);
 
@@ -64,7 +64,7 @@ export default function EditUser() {
     // 수정
     const editComplete = async () => {
 
-        if(!session || !session.user){
+        if (!session || !session.user) {
             alert("로그인 정보가 없습니다");
             return;
         }
@@ -79,20 +79,19 @@ export default function EditUser() {
             })
             .eq("id", userId);
 
-        if(nicknameError){
+        if (nicknameError) {
             console.log("닉네임 업데이트 실패", nicknameError);
             return;
         }
 
         // 비밀번호 업데이트
-        if(passWord !== ""){
-            const {error: passwordError} = await supabase.auth.updateUser({
-                password: passWord,
-            })
+        if (password !== "") {
+            const { error: passwordError } = await supabase.auth.updateUser({
+                password: password
+            });
 
-            if(passwordError){
-                console.log("비밀번호 업데이트 실패", nicknameError);
-                return;
+            if (passwordError) {
+                console.log('비밀번호 변경 실패:', passwordError.message);
             }
         }
         alert("수정이 완료되었습니다!");
@@ -126,7 +125,7 @@ export default function EditUser() {
                         type={showPassword ? "text" : "password"}
                         id="editPassWord"
                         onChange={passWordChange}
-                        value={passWord}
+                        value={password}
                         placeholder="6자 이상 입력하세요"
                     />
                     <ion-icon
