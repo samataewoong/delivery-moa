@@ -169,17 +169,13 @@ export default function MyQnA() {
         <p>문의 내역이 없습니다.</p>
       ) : (
         paginatedQna.map((qna) => (
-          <div
-            key={qna.id}
-            className={styles.myQna}
-          >
+          <div key={qna.id} className={styles.myQna}>
             <div className={styles.qnaDate}>
               <h1>
                 <FormattedDate dateString={qna.created_at} />
               </h1>
             </div>
             <div className={styles.qnaTitle}>
-
               <b>Q. {qna.title}</b>
               <div className={styles.qnaContent}>
                 <textarea
@@ -189,7 +185,10 @@ export default function MyQnA() {
                 />
               </div>
               <h3>답변유무 {qna.q_answer ? "Yes" : "No"}</h3>
-              <div style={qna.q_answer ? { cursor: 'pointer' } : {}} onClick={() => toggleAnswer(qna.id)}>
+              <div
+                style={qna.q_answer ? { cursor: "pointer" } : {}}
+                onClick={() => toggleAnswer(qna.id)}
+              >
                 <button
                   className={styles.deleteReview}
                   onClick={(e) => {
@@ -199,7 +198,9 @@ export default function MyQnA() {
                 >
                   리뷰삭제
                 </button>
-                {qna.q_answer ? "" :
+                {qna.q_answer ? (
+                  ""
+                ) : (
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
@@ -209,8 +210,12 @@ export default function MyQnA() {
                   >
                     수정하기
                   </button>
-                }
-                {qna.q_answer ? <ArrowDropDownIcon className={styles.downIcon} /> : ""}
+                )}
+                {qna.q_answer ? (
+                  <ArrowDropDownIcon className={styles.downIcon} />
+                ) : (
+                  ""
+                )}
               </div>
             </div>
             {qna.q_answer && showAnswerId === qna.id && (
