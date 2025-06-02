@@ -3,7 +3,8 @@ import styles from "./MyPage.module.css";
 import { useOutletContext } from "react-router-dom";
 import supabase from "../../config/supabaseClient";
 import FormattedDate from "../../components/FormattedDate";
-import EditModal from "./EditModal"; // ✅ 모달 import
+import EditModal from "./EditModal";
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 export default function MyQnA() {
   const { userSession, userId } = useOutletContext();
@@ -88,13 +89,12 @@ export default function MyQnA() {
           <div
             key={qna.id}
             className={styles.myQna}
-            onClick={() => toggleAnswer(qna.id)}
-            style={{ cursor: "pointer" }}
           >
             <div className={styles.qnaDate}>
               <h1><FormattedDate dateString={qna.created_at} /></h1>
             </div>
             <div className={styles.qnaTitle}>
+
               <b>Q. {qna.title}</b>
               <div className={styles.qnaContent}>
                 <textarea
@@ -104,26 +104,29 @@ export default function MyQnA() {
                 />
               </div>
               <h3>답변유무 {qna.q_answer ? "Yes" : "No"}</h3>
-              <button
-                className={styles.deleteReview}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  reviewDelete(qna.id);
-                }}
-              >
-                리뷰삭제
-              </button>
-              {qna.q_answer && (
+              <div style={qna.q_answer ? { cursor: 'pointer' } : {}} onClick={() => toggleAnswer(qna.id)}>
                 <button
+                  className={styles.deleteReview}
                   onClick={(e) => {
                     e.stopPropagation();
-                    editStart(qna);
+                    reviewDelete(qna.id);
                   }}
-                  className={styles.editReview}
                 >
-                  수정하기
+                  리뷰삭제
                 </button>
-              )}
+                {qna.q_answer ? "" :
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      editStart(qna);
+                    }}
+                    className={styles.editReview}
+                  >
+                    수정하기
+                  </button>
+                }
+                {qna.q_answer ? <ArrowDropDownIcon className={styles.downIcon} /> : ""}
+              </div>
             </div>
             {qna.q_answer && showAnswerId === qna.id && (
               <div className={styles.answer}>
