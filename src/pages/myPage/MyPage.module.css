@@ -206,6 +206,7 @@
     border-radius: 7px;
     border: 2px solid #c8d1ca;
     background-color: #c8d1ca;
+    cursor: pointer;
 }
 
 .editInput {
