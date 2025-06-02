@@ -4,6 +4,7 @@ import { useOutletContext } from "react-router-dom";
 import supabase from "../../config/supabaseClient";
 import FormattedDate from "../../components/FormattedDate";
 import EditModal from "./EditModal"; // ✅ 모달 import
+import Modal from "../../components/Modal";
 
 export default function MyQnA() {
   const { userSession, userId } = useOutletContext();
