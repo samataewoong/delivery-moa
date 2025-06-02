@@ -83,6 +83,7 @@ export default function RoomOrderUserCard({
     }, [user_id]);
     async function handleEndRecruit() {
         try {
+            if(!confirm('모집을 마감하시겠습니까?')) return;
             await updateRoom({
                 room_id,
                 status: "준비중",

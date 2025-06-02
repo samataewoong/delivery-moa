@@ -114,6 +114,15 @@ export default function RoomHeader({ room_id }) {
     async function handleLeaveRoom() {
         try {
             const { id: user_id } = await getAuthUser();
+            if(room && room.leader_id === user_id) {
+                if(!confirm('방을 삭제하시겠습니까?')) {
+                    return;
+                }
+            } else {
+                if(!confirm('방을 나가시겠습니까?')) {
+                    return;
+                }
+            }
             await deleteRoomJoin({
                 room_id,
                 user_id,
