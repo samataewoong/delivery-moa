@@ -116,6 +116,17 @@ export default function RoomOrderUserCard({
             console.error("Error ending recruit:", error);
         }
     }
+    async function handleRoomOrder() {
+        try {
+            if(!confirm('주문하시겠습니까?')) return;
+            await updateRoom({
+                room_id,
+                status: "조리중",
+            });
+        } catch(error) {
+            console.error("Error ordering:", error);
+        }
+    }
 
     const boxClassName = (() => {
         switch (position) {
@@ -138,7 +149,7 @@ export default function RoomOrderUserCard({
                     {room && isLeader && isSelf && room.status == '모집중' && <div onClick={handleEndRecruit} className={style.end_recruit_button}>
                         모집 마감
                     </div>}
-                    {room && isLeader && isSelf && roomJoinList && roomJoinList.filter(join => join.status === '준비 완료').length == roomJoinList.length && (room.status == '준비중' || room.status == '모집중') && <div className={style.order_button}>
+                    {room && isLeader && isSelf && roomJoinList && roomJoinList.filter(join => join.status === '준비 완료').length == roomJoinList.length && (room.status == '준비중' || room.status == '모집중') && <div onClick={handleRoomOrder} className={style.order_button}>
                         주문
                     </div>}
                 </div>
