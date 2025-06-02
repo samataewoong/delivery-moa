@@ -8,7 +8,7 @@
     display: flex;
     align-items: center;
 }
-.end_recruit_button {
+.end_recruit_button,.order_button,.leader_mark,.pick_up_button,.room_end_button {
     padding-left: 8px;
     padding-right: 8px;
     padding-top: 2px;
@@ -20,6 +20,10 @@
     border: #FF6B6B solid 1px;
     border-radius: 9999px;
     color: #FF6B6B;
+}
+.leader_mark {
+    border: #000 solid 1px;
+    color: #000;
 }
 .user_profile_box_top {
     padding-top: 0px;
@@ -54,8 +58,8 @@
 .user_profile_status_pending::after {
     content: "...";
 }
-.user_profile_status_recieved {
-    color: #FF9FAC;
+.user_profile_status_received {
+    color: #1A00FF;
 }
 .user_profile_status_ready {
     color: #00AE00;
