@@ -197,7 +197,7 @@ export default function MainHeader() {
         }
         const { data } = await supabase.from("room_join").select("*").eq("room_id", roomId).eq("user_id", userId);
 
-        if (data) {
+        if (data.length>0) {
             window.location.href = `/delivery-moa/room/${roomId}`;
         } else {
             const confirmJoin = window.confirm("이 공구방에 참여하시겠습니까?");
@@ -276,13 +276,16 @@ export default function MainHeader() {
                             />
                         </button>
                     </div>
+                    {isOpen && (
                         <Hamburger
                             isOpen={isOpen}
                             session={session}
                             nickname={nickname}
                             handleLogout={handleLogout}
                             onClose={() => setIsOpen(false)}
+                            style={{height : '1945px'}}
                         />
+                    )}
                 </div>
             </header>
             <main>

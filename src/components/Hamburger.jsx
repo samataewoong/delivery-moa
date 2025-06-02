@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import styles from "./Hamburger.module.css";
 import supabase from "../config/supabaseClient";
 
-export default function HamburgerMenu({ isOpen, session, nickname, handleLogout }) {
+export default function HamburgerMenu({ isOpen, session, nickname, handleLogout, style }) {
     if (!isOpen) return null;
 
     const [userRoom, setUserRoom] = useState([]);
@@ -21,7 +21,9 @@ export default function HamburgerMenu({ isOpen, session, nickname, handleLogout 
             const { data: roomData, error: roomError } = await supabase.from("room").select("id, room_name, store_id, max_people, status").in("id", roomIds);
             if (roomError || !roomData) return;
 
-            const { data: countpeople } = await supabase.from("room_join").select("room_id, count:user_id").in("room_id", roomIds).group("room_id");
+            const { data: countpeople, error:countError } = await supabase
+                .from("room_join")
+                .select("room_id, user_id", { count: "exact" });
 
             const chatTimes = await Promise.all(
                 roomIds.map(async roomId => {
@@ -36,7 +38,7 @@ export default function HamburgerMenu({ isOpen, session, nickname, handleLogout 
             );
 
             const formattedRooms = roomData.map(room => {
-                const current_people = countpeople?.find(p => p.room_id === room.id)?.count || 0;
+                const count = countpeople?.filter(j => j.room_id === room.id).length || 0;
                 const chatInfo = chatTimes.find(c => c.room_id === room.id);
 
                 return {
@@ -45,7 +47,7 @@ export default function HamburgerMenu({ isOpen, session, nickname, handleLogout 
                     store_id: room.store_id,
                     max_people: room.max_people,
                     status: room.status,
-                    current_people,
+                    count,
                     latest_chat: chatInfo?.latest_chat,
                 };
             });
@@ -59,7 +61,7 @@ export default function HamburgerMenu({ isOpen, session, nickname, handleLogout 
     const roomUrl = "https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/store/store_";
 
     return (
-        <div className={styles["hamburger_nav"]}>
+        <div className={styles["hamburger_nav"]} style={style}>
             <div className={styles["mypage"]}>
                 <img
                     className={styles["mypage_icon"]}
@@ -110,7 +112,7 @@ export default function HamburgerMenu({ isOpen, session, nickname, handleLogout 
                         userRoom.map((room) => (
                             <div key={room.id} className={styles["chat_list_room"]}
                                 onClick={() => window.location.href = `/delivery-moa/room/${room.id}`}>
-                                <img className={styles["chat_list_circle"]} src={`${roomUrl}${room.id}.png`} />
+                                <img className={styles["chat_list_circle"]} src={`${roomUrl}${room.store_id}.jpg`} />
                                 <div className={styles["chat_room"]}>
                                     <div className={styles["chat_title_time"]}>
                                         <div className={styles["chat_title"]}>{room.name}</div>
@@ -122,7 +124,7 @@ export default function HamburgerMenu({ isOpen, session, nickname, handleLogout 
                                     </div>
                                     <div className={styles["chat_room_detail"]}>
                                         <img src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/octicon_people-24.png" />
-                                        <div className={styles["chat_people"]}>{room.current_people}/{room.max_people} 참여중</div>
+                                        <div className={styles["chat_people"]}>{room.count}/{room.max_people} 참여중</div>
                                         <div className={styles["chat_state"]}>{room.status}</div>
                                     </div>
                                 </div>
