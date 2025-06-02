@@ -1,6 +1,7 @@
 import selectRoomJoin from "../../../../functions/room_join/SelectRoomJoin";
 import selectRoom from "../../../../functions/room/SelectRoom";
 import updateRoom from "../../../../functions/room/UpdateRoom";
+import updateRoomJoin from "../../../../functions/room_join/UpdateRoomJoin";
 import selectUser from "../../../../functions/user/SelectUser";
 import getAuthUser from "../../../../functions/auth/GetAuthUser";
 import { useEffect, useState } from "react";
@@ -16,7 +17,8 @@ export default function RoomOrderUserCard({
     const [room, setRoom] = useState(null);
     const [roomJoin, setRoomJoin] = useState(null);
     const [roomJoinList, setRoomJoinList] = useState([]);
-    const [isLeader,setIsLeader] = useState(false);
+    const [isLeader, setIsLeader] = useState(false);
+    const [canEnd, setCanEnd] = useState(false);
     const [isSelf, setIsSelf] = useState(false);
     useEffect(() => {
         async function fetchRoom() {
@@ -32,12 +34,28 @@ export default function RoomOrderUserCard({
             .channel(`realtime:room_status_watch_on_room_order_user_card_in_room_${room_id}`)
             .on(
                 "postgres_changes",
-                { event: '*', schema: 'public', table:'room' },
+                { event: '*', schema: 'public', table: 'room' },
                 (payload) => {
-                if (payload.new.id === Number(room_id)) {
-                    fetchRoom();
-                }
-            })
+                    if (payload.new.id === Number(room_id)) {
+                        fetchRoom();
+                        if (room.status === '조리중') {
+                            setTimeout(async () => {
+                                await updateRoom({
+                                    room_id,
+                                    status: "배송중",
+                                });
+                            }, 300000);
+                        }
+                        if(room.status === '배송중') {
+                            setTimeout(async () => {
+                                await updateRoom({
+                                    room_id,
+                                    status: "픽업 대기중",
+                                });
+                            }, 300000);
+                        }
+                    }
+                })
             .subscribe();
         fetchRoom();
         return () => {
@@ -66,9 +84,9 @@ export default function RoomOrderUserCard({
             setRoomJoinList(roomJoinData);
         }
         const roomJoinListSubscribe = supabase
-           .realtime
-           .channel(`realtime:room_join_status_update_watch_on_room_order_user_card_in_room_${room_id}`)
-           .on(
+            .realtime
+            .channel(`realtime:room_join_status_update_watch_on_room_order_user_card_in_room_${room_id}`)
+            .on(
                 "postgres_changes",
                 { event: '*', schema: 'public', table: 'room_join' },
                 (payload) => {
@@ -77,8 +95,8 @@ export default function RoomOrderUserCard({
                         fetchRoomJoinList();
                     }
                 }
-           )
-           .subscribe();
+            )
+            .subscribe();
         fetchRoomJoinList();
         return () => {
             roomJoinListSubscribe.unsubscribe();
@@ -86,7 +104,7 @@ export default function RoomOrderUserCard({
     }, [room_id]);
     useEffect(() => {
         async function fetchIsLeader() {
-            if(room && room.leader_id === user_id) {
+            if (room && room.leader_id === user_id) {
                 setIsLeader(true);
             } else {
                 setIsLeader(false);
@@ -97,7 +115,7 @@ export default function RoomOrderUserCard({
     useEffect(() => {
         async function fetchIsSelf() {
             const { id } = await getAuthUser();
-            if(id == user_id) {
+            if (id == user_id) {
                 setIsSelf(true);
             } else {
                 setIsSelf(false);
@@ -105,9 +123,16 @@ export default function RoomOrderUserCard({
         }
         fetchIsSelf();
     }, [user_id]);
+    useEffect(() => {
+        if (roomJoinList.length > 0) {
+            if(roomJoinList.filter((join) => (join.status === '픽업 완료')).length == roomJoinList.length) {
+                setCanEnd(true);
+            }
+        }
+    },[roomJoinList]);
     async function handleEndRecruit() {
         try {
-            if(!confirm('모집을 마감하시겠습니까?')) return;
+            if (!confirm('모집을 마감하시겠습니까?')) return;
             await updateRoom({
                 room_id,
                 status: "준비중",
@@ -116,15 +141,38 @@ export default function RoomOrderUserCard({
             console.error("Error ending recruit:", error);
         }
     }
+    async function handlePickUp() {
+        try {
+            if (!confirm('픽업하시겠습니까?')) return;
+            await updateRoomJoin({
+                room_id,
+                user_id,
+                status: "픽업 완료",
+            });
+        } catch (error) {
+            console.error("Error picking up:", error);
+        }
+    }
     async function handleRoomOrder() {
         try {
-            if(!confirm('주문하시겠습니까?')) return;
+            if (!confirm('주문하시겠습니까?')) return;
             await updateRoom({
                 room_id,
                 status: "조리중",
             });
-        } catch(error) {
+        } catch (error) {
             console.error("Error ordering:", error);
+        }
+    }
+    async function handleRoomEnd() {
+        try {
+            if(!confirm("공구방을 종료하시겠습니까?")) return;
+            await updateRoom({
+                room_id,
+                status: "종료"
+            });
+        } catch (error) {
+            console.error("Error ending room:", error);
         }
     }
 
@@ -152,12 +200,19 @@ export default function RoomOrderUserCard({
                     {room && isLeader && isSelf && roomJoinList && roomJoinList.filter(join => join.status === '준비 완료').length == roomJoinList.length && (room.status == '준비중' || room.status == '모집중') && <div onClick={handleRoomOrder} className={style.order_button}>
                         주문
                     </div>}
+                    {room && roomJoin && isSelf && room.status === '픽업 대기중' && roomJoin.status !== '픽업 완료' && <div onClick={handlePickUp} className={style.pick_up_button}>
+                        픽업 완료
+                    </div>}
+                    {room && isLeader && isSelf && room.status !== '종료' && roomJoinList.filter(join => join.status === '픽업 완료').length == roomJoinList.length && <div onClick={handleRoomEnd} className={style.room_end_button}>
+                        종료
+                    </div>}
+
                 </div>
                 {roomJoin && <div className={(() => {
                     switch (roomJoin.status) {
                         case "준비 완료": return style.user_profile_status_ready;
                         case "준비중": return style.user_profile_status_pending;
-                        case "수취 완료": return style.user_profile_status_received;
+                        case "픽업 완료": return style.user_profile_status_received;
                     }
                 })()}>
                     {roomJoin.status}

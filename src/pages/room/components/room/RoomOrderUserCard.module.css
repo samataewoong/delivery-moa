@@ -8,7 +8,7 @@
     display: flex;
     align-items: center;
 }
-.end_recruit_button,.order_button,.leader_mark {
+.end_recruit_button,.order_button,.leader_mark,.pick_up_button,.room_end_button {
     padding-left: 8px;
     padding-right: 8px;
     padding-top: 2px;
@@ -58,8 +58,8 @@
 .user_profile_status_pending::after {
     content: "...";
 }
-.user_profile_status_recieved {
-    color: #FF9FAC;
+.user_profile_status_received {
+    color: #1A00FF;
 }
 .user_profile_status_ready {
     color: #00AE00;
