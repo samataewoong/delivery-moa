@@ -16,6 +16,7 @@ import MainPage from "./pages/MainPage";
 import RootPage from "./pages/RootPage";
 import OrderList from "./pages/myPage/OrderList";
 
+
 function App() {
   return (
     <>
@@ -38,6 +39,7 @@ function App() {
             <Route path="myreview" element={<MyReview />} />
             <Route path="orderlist" element={<OrderList />} />
           </Route>
+          
         </Routes>
 
         <Footer />
