@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import supabase from "../../config/supabaseClient";
 import FormattedDate from "../../components/FormattedDate";
 
-export default function UserInfo({ address }) {
+export default function UserInfo() {
   const navigate = useNavigate();
 
   const [nickname, setNickname] = useState("");
@@ -59,7 +59,7 @@ export default function UserInfo({ address }) {
   }, []);
 
   const quitButton = () => {
-    confirm("정말 탈퇴하시겠습니까?");
+    alert("회원탈퇴는 관리자에게 문의주세요.");
   };
   const editButton = () => {
     navigate("../edituser");
@@ -73,10 +73,6 @@ export default function UserInfo({ address }) {
       <div className={styles.infoRow}>
         <div className={styles.label}>이메일:</div>
         <div className={styles.value}>{email}</div>
-      </div>
-      <div className={styles.infoRow}>
-        <div className={styles.label}>주소:</div>
-        <div className={styles.value}>{address}</div>
       </div>
       <div className={styles.infoRow}>
         <div className={styles.label}>가입일:</div>

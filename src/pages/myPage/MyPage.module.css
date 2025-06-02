@@ -164,7 +164,7 @@
 }
 
 .userInfo {
-    padding: 100px 270px 5px 290px;
+    padding: 80px 100px 80px 290px;
     font-size: x-large;
 }
 
@@ -201,6 +201,7 @@
     border-radius: 7px;
     border: 2px solid #c8d1ca;
     background-color: #c8d1ca;
+    cursor: pointer;
 }
 
 .editInput {
