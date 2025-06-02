@@ -38,21 +38,21 @@ export default function RoomOrderUserCard({
                 (payload) => {
                     if (payload.new.id === Number(room_id)) {
                         fetchRoom();
-                        if (room.status === '조리중') {
+                        if (payload.new.status === '조리중') {
                             setTimeout(async () => {
                                 await updateRoom({
                                     room_id,
                                     status: "배송중",
                                 });
-                            }, 300000);
+                            }, 60000);
                         }
-                        if(room.status === '배송중') {
+                        if(payload.new.status === '배송중') {
                             setTimeout(async () => {
                                 await updateRoom({
                                     room_id,
                                     status: "픽업 대기중",
                                 });
-                            }, 300000);
+                            }, 60000);
                         }
                     }
                 })
