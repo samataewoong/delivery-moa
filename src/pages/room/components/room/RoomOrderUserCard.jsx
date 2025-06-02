@@ -33,7 +33,7 @@ export default function RoomOrderUserCard({
                 "postgres_changes",
                 { event: '*', schema: 'public', table:'room' },
                 (payload) => {
-                if (payload.new.id === room_id) {
+                if (payload.new.id === Number(room_id)) {
                     fetchRoom();
                 }
             })

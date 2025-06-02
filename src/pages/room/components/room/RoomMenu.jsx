@@ -32,7 +32,7 @@ export default function RoomMenu({ room_id }) {
                 { event:'*', schema: 'public', table: 'order' },
                 (payload) => {
                 if (payload.op === "INSERT") {
-                    if (payload.new.room_id === room_id && payload.new.user_id === user_id) {
+                    if (payload.new.room_id === Number(room_id) && payload.new.user_id === user_id) {
                         setOrder(payload.new);
                     }
                 }
