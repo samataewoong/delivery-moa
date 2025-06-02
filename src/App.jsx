@@ -14,6 +14,7 @@ import MyQnA from './pages/myPage/MyQnA';
 import MyReview from './pages/myPage/MyReview';
 import MainPage from './pages/MainPage';
 import RootPage from './pages/RootPage';
+import EditQna from './pages/myPage/editQna';
 
 
 function App() {
@@ -38,9 +39,11 @@ function App() {
             <Route path="userinfo" element={<UserInfo />} />
             <Route path="edituser" element={<EditUser />} />
             <Route path="myqna" element={<MyQnA />} />
+            <Route path="myqna/editQna" element={<EditQna />}/>
             <Route path="myreview" element={<MyReview />} />
             <Route path="orderlist" element={<div>주문내역 준비중입니다.</div>} />
           </Route>
+          
         </Routes>
 
         <Footer />

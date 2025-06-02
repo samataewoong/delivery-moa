@@ -3,114 +3,75 @@ import styles from "./MyPage.module.css";
 import { useOutletContext } from "react-router-dom";
 import supabase from "../../config/supabaseClient";
 import FormattedDate from "../../components/FormattedDate";
+import EditModal from "./EditModal"; // ✅ 모달 import
 
 export default function MyQnA() {
-  // user 정보
   const { userSession, userId } = useOutletContext();
 
-  // QnA 리스트 상태
   const [qnaList, setQnaList] = useState([]);
-
-  // 페이지네이션 상태
   const [currentPage, setCurrentPage] = useState(0);
+  const [showAnswerId, setShowAnswerId] = useState(null);
+  const [editQnaById, setEditQnaById] = useState(null);
+  const [editing, setEditing] = useState(false);
+
   const itemsPerPage = 3;
 
-  // 답변 열기 상태 (열려있는 QnA id 저장)
-  const [showAnswerId, setShowAnswerId] = useState(null);
+  // ✅ 데이터 가져오는 함수 분리
+  const fetchUserData = async () => {
+    if (!userId) return;
 
-  // 답변 토글 함수
+    const { data, error } = await supabase
+      .from("qna")
+      .select("id, title, q_contents, q_answer, created_at")
+      .eq("user_id", userId)
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      console.error("Error fetching user data:", error);
+    } else {
+      setQnaList(data || []);
+      setCurrentPage(0);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserData();
+  }, [userId]);
+
   const toggleAnswer = (id) => {
     setShowAnswerId((prev) => (prev === id ? null : id));
   };
 
-  // QnA 삭제 함수
-  async function reviewDelete(qnaId) {
+  const reviewDelete = async (qnaId) => {
     const confirmed = window.confirm("문의를 삭제하시겠습니까?");
     if (!confirmed) return;
 
     const { error } = await supabase.from("qna").delete().eq("id", qnaId);
-
     if (error) {
-      console.error("리뷰 삭제 실패:", error);
       alert("삭제 중 오류가 발생했습니다.");
     } else {
-      console.log("리뷰 삭제 성공");
-      // 삭제된 항목 상태에서 제거
       setQnaList((prev) => prev.filter((qna) => qna.id !== qnaId));
-      // 만약 삭제 후 현재 페이지가 빈 페이지가 되면 이전 페이지로 이동
       const totalPages = Math.ceil((qnaList.length - 1) / itemsPerPage);
       if (currentPage > totalPages - 1) {
         setCurrentPage(totalPages - 1);
       }
     }
   };
-  // QnA 업데이트 함수
-  // id 체킹
-  const [editQnaById, setEditQnaById] = useState("");
-  // 수정중 체크
-  const [editing, setEditing] = useState(false);
-  // 수정 내용
-  const [editedContents, setEditedContents] = useState("");
-  // 수정하기 버튼
+
   const editStart = (qna) => {
     const confirmed = window.confirm("문의를 수정하시겠습니까?");
     if (!confirmed) return;
     setEditQnaById(qna.id);
-    setEditing(true);
+    setEditing(true); // ✅ 모달 열기
   };
-  // 수정완료 버튼
-  async function editDone(editQnaById) {
-    const { data, error } = await supabase.from('qna').update({ q_contents: editedContents }).eq('id', editQnaById);
-    if (error) {
-      console.error("업데이트 실패", error);
-    } else {
-      console.log("업데이트 성공");
-    }
+
+  // ✅ 모달 닫기 함수
+  const closeModal = () => {
     setEditing(false);
-  };
-  // 수정버튼 랜더링 함수
-  const renderEditButton = (qna) => {
-    if (qna.id === editQnaById && editing) {
-      // 수정 중일 때
-      return (
-        <button onClick={() => editDone(editQnaById)} className={styles.editReview}>수정완료</button>
-      );
-    }
-
-    if (!qna.q_answer) {
-      // 답변 없고, 수정 중 아닐 때 수정하기 버튼
-      return (
-        <button onClick={() => editStart(qna)} className={styles.editReview}>수정하기</button>
-      );
-    }
-
-    // 그 외 버튼 없음
-    return null;
+    setEditQnaById(null);
+    fetchUserData(); // 수정된 데이터 반영
   };
 
-  // 유저 아이디가 바뀌면 데이터 불러오기
-  useEffect(() => {
-    if (!userId) return;
-
-    async function fetchUserData() {
-      const { data, error } = await supabase
-        .from("qna")
-        .select("id, title, q_contents, q_answer, created_at")
-        .eq("user_id", userId)
-        .order("created_at", { ascending: false }); // 최신순 정렬
-
-      if (error) {
-        console.error("Error fetching user data:", error);
-      } else {
-        setQnaList(data || []);
-        setCurrentPage(0); // 불러올 때 페이지 초기화
-      }
-    }
-
-    fetchUserData();
-  }, [userId]);
-
-  // 페이지네이션: 현재 페이지에 보여줄 QnA 목록
   const paginatedQna = qnaList.slice(
     currentPage * itemsPerPage,
     (currentPage + 1) * itemsPerPage
@@ -131,33 +92,42 @@ export default function MyQnA() {
             style={{ cursor: "pointer" }}
           >
             <div className={styles.qnaDate}>
-              <h1>
-                <FormattedDate dateString={qna.created_at} />
-              </h1>
+              <h1><FormattedDate dateString={qna.created_at} /></h1>
             </div>
             <div className={styles.qnaTitle}>
               <b>Q. {qna.title}</b>
               <div className={styles.qnaContent}>
-                <textarea className={styles.qnaTextArea} value={qna.q_contents} disabled={!editing} onChange={(e) => setEditedContents(e.target.value)} style={{
-                  border: !editing ? "none" : undefined
-                }} />
+                <textarea
+                  className={styles.qnaTextArea}
+                  disabled
+                  value={qna.q_contents}
+                />
               </div>
               <h3>답변유무 {qna.q_answer ? "Yes" : "No"}</h3>
               <button
                 className={styles.deleteReview}
                 onClick={(e) => {
-                  e.stopPropagation(); // 부모 onClick 중복 방지
+                  e.stopPropagation();
                   reviewDelete(qna.id);
                 }}
               >
                 리뷰삭제
               </button>
-              {renderEditButton(qna)}
+              {qna.q_answer && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    editStart(qna);
+                  }}
+                  className={styles.editReview}
+                >
+                  수정하기
+                </button>
+              )}
             </div>
             {qna.q_answer && showAnswerId === qna.id && (
               <div className={styles.answer}>
                 <b>A.</b>
-                <br />
                 <h4>{qna.q_answer}</h4>
               </div>
             )}
@@ -165,7 +135,6 @@ export default function MyQnA() {
         ))
       )}
 
-      {/* 페이지 네비게이션 */}
       {totalPages > 1 && (
         <div className={styles.qnaPages}>
           <button
@@ -187,15 +156,18 @@ export default function MyQnA() {
 
           <button
             onClick={() =>
-              setCurrentPage((prev) =>
-                Math.min(prev + 1, totalPages - 1)
-              )
+              setCurrentPage((prev) => Math.min(prev + 1, totalPages - 1))
             }
             disabled={currentPage === totalPages - 1}
           >
             다음
           </button>
         </div>
+      )}
+
+      {/* ✅ 수정 모달 삽입 */}
+      {editing && editQnaById && (
+        <EditModal qnaId={editQnaById} onClose={closeModal} />
       )}
     </>
   );
