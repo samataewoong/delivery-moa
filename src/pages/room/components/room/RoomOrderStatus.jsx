@@ -21,13 +21,17 @@ export default function RoomOrderStatus({ room_id }) {
             .channel(`realtime:room_join_status_update_watch_on_room_order_status_in_room_${room_id}`)
             .on(
                 "postgres_changes",
-                { event: '*', schema: 'public', table:'room_join' },
+                { event: '*', schema: 'public', table: 'room_join' },
                 (payload) => {
-                if (payload.new.room_id === room_id) {
-                    fetchRoomJoin();
+                    console.log("Received payload:", payload);
+                    if (payload.new.room_id === Number(room_id) || payload.eventType == "DELETE") {
+                        console.log("Room ID matches, fetching room join data...");
+                        fetchRoomJoin();
+                    }
                 }
-            })
+            )
             .subscribe();
+
         fetchRoomJoin();
         return () => {
             userSubscribe.unsubscribe();

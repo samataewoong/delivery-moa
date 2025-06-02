@@ -31,7 +31,7 @@ export default function ChatList({ room_id }) {
                 { event: '*', schema: 'public', table: 'chat' },
                 (payload) => {
                     console.log("Chat payload:", payload);
-                    if (payload.new) {
+                    if (payload.new.room_id === Number(room_id)) {
                         setChats((prevChats) => [...prevChats, payload.new]);
                     }
                 }

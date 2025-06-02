@@ -46,8 +46,11 @@ export default function RoomHeader({ room_id }) {
         const roomSubscribe = supabase
             .realtime
             .channel(`realtime:room_status_watch_on_room_header_in_room_${room_id}`)
-            .on("postgres_changes", (payload) => {
-                if (payload.new.room_id === room_id) {
+            .on(
+                "postgres_changes",
+                { event: '*', schema: 'public', table: 'room' },
+                (payload) => {
+                if (payload.new.id === Number(room_id)) {
                     fetchRoom();
                 }
             });
@@ -58,7 +61,7 @@ export default function RoomHeader({ room_id }) {
                 "postgres_changes",
                 { event: '*', schema: 'public', table:'room_join'  },
                 (payload) => {
-                if (payload.new.room_id === room_id) {
+                if (payload.new.room_id === Number(room_id)) {
                     fetchRoomJoin();
                 }
             })
