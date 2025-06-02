@@ -15,6 +15,7 @@ import MyReview from "./pages/myPage/MyReview";
 import MainPage from "./pages/MainPage";
 import RootPage from "./pages/RootPage";
 import OrderList from "./pages/myPage/OrderList";
+import StoreListPage from "./pages/StoreListPage";
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
           <Route path="/gongucomplete" element={<GonguComplete />} />
           <Route path="/ordercomplete/:order_id" element={<OrderComplete />} />
           <Route path="/review/:room_id" element={<Review />} />
+          <Route path="/storelist" element={<StoreListPage/>} />
           {/* 마이페이지 및 하위 라우트 */}
           <Route path="/mypage" element={<MyPage />}>
             <Route index element={<UserInfo />} />

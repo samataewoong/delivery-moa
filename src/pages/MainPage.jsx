@@ -351,7 +351,7 @@ export default function MainHeader() {
                             </div>
                             <div className={styles["circle_category_wrap"]}>
                                 {categories.map((item) => (
-                                    <Link key={item.id} to="/">
+                                    <Link key={item.id} to="/storelist">
                                         <div className={styles["circle_with_text"]}>
                                             <div className={styles["circle"]}>
                                                 <img
