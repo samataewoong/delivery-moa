@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./MyPage.module.css";
 import supabase from "../../config/supabaseClient";
+import FormattedDate from "../../components/FormattedDate";
+import DateToString from "../../utils/DateToString";
 
 export default function EditUser() {
     // db update 구현해야함
@@ -140,8 +142,8 @@ export default function EditUser() {
                 <input
                     type="text"
                     className={styles.editInput}
-                    value={createdAt}
                     readOnly
+                    value={DateToString(createdAt)}
                 />
             </div>
             <button className={styles.editButton} onClick={editComplete}>수정완료</button>
