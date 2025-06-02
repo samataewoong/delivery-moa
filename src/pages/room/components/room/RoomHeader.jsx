@@ -53,7 +53,8 @@ export default function RoomHeader({ room_id }) {
                 if (payload.new.id === Number(room_id)) {
                     fetchRoom();
                 }
-            });
+            })
+            .subscribe();
         const roomJoinSubscribe = supabase
             .realtime
             .channel(`realtime:room_join_leave_button_on_room_header_in_room_${room_id}`)
