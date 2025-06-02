@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import supabase from "../config/supabaseClient";
 import Hamburger from "../components/Hamburger";
+import CloseRoom from "../components/CloseRoom";
 
 export default function MainHeader() {
     const [isOpen, setIsOpen] = useState(false);
@@ -246,6 +247,8 @@ export default function MainHeader() {
         const imgBaseUrl = "https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/category/";
 
         const popularUrl = "https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/popular/popular_";
+        // 지도 testing
+        const userId = session?.user?.id;
 
         return (
             <>
@@ -348,6 +351,7 @@ export default function MainHeader() {
                             <div className={styles["food_category_wrap"]}>
                                 <div className={styles["food_category"]}>음식 카테고리</div>
                                 <div className={styles["food_category_move"]}>전체보기→</div>
+                                <CloseRoom userId={userId}>가까운 공구방 보기</CloseRoom>
                             </div>
                             <div className={styles["circle_category_wrap"]}>
                                 {categories.map((item) => (
