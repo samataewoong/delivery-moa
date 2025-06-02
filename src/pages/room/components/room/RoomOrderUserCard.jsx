@@ -15,6 +15,7 @@ export default function RoomOrderUserCard({
     const [user, setUser] = useState(null);
     const [room, setRoom] = useState(null);
     const [roomJoin, setRoomJoin] = useState(null);
+    const [roomJoinList, setRoomJoinList] = useState([]);
     const [isLeader,setIsLeader] = useState(false);
     const [isSelf, setIsSelf] = useState(false);
     useEffect(() => {
@@ -49,9 +50,8 @@ export default function RoomOrderUserCard({
                 let userData = await selectUser({ user_id });
                 if (userData.length > 0) {
                     setUser(userData[0]);
-                    const roomJoinData = await selectRoomJoin({ room_id, user_id });
-                    if (roomJoinData.length > 0) {
-                        setRoomJoin(roomJoinData[0]);
+                    if (roomJoinList.filter((user) => (user.user_id === user_id)).length > 0) {
+                        setRoomJoin(roomJoinList.filter((join) => (join.user_id === user_id))[0]);
                     }
                 }
             } catch (error) {
@@ -59,7 +59,31 @@ export default function RoomOrderUserCard({
             }
         };
         process();
-    }, [user_id])
+    }, [user_id, roomJoinList]);
+    useEffect(() => {
+        async function fetchRoomJoinList() {
+            const roomJoinData = await selectRoomJoin({ room_id });
+            setRoomJoinList(roomJoinData);
+        }
+        const roomJoinListSubscribe = supabase
+           .realtime
+           .channel(`realtime:room_join_status_update_watch_on_room_order_user_card_in_room_${room_id}`)
+           .on(
+                "postgres_changes",
+                { event: '*', schema: 'public', table: 'room_join' },
+                (payload) => {
+                    console.log("Received payload:", payload);
+                    if (payload.new.room_id === Number(room_id) || payload.eventType == "DELETE") {
+                        fetchRoomJoinList();
+                    }
+                }
+           )
+           .subscribe();
+        fetchRoomJoinList();
+        return () => {
+            roomJoinListSubscribe.unsubscribe();
+        };
+    }, [room_id]);
     useEffect(() => {
         async function fetchIsLeader() {
             if(room && room.leader_id === user_id) {
@@ -110,6 +134,9 @@ export default function RoomOrderUserCard({
                     </div>}
                     {room && isLeader && isSelf && room.status == '모집중' && <div onClick={handleEndRecruit} className={style.end_recruit_button}>
                         모집 마감
+                    </div>}
+                    {room && isLeader && isSelf && roomJoinList && roomJoinList.filter(join => join.status === '준비 완료').length == roomJoinList.length && (room.status == '준비중' || room.status == '모집중') && <div className={style.order_button}>
+                        주문
                     </div>}
                 </div>
                 {roomJoin && <div className={(() => {
