@@ -3,7 +3,7 @@ import styles from "./MyPage.module.css";
 import { useEffect, useState } from "react";
 import supabase from "../../config/supabaseClient";
 
-export default function UserInfo({ selectedMenu }) {
+export default function UserInfo({ address }) {
   const navigate = useNavigate();
 
   const [nickname, setNickname] = useState("");
@@ -75,7 +75,7 @@ export default function UserInfo({ selectedMenu }) {
       </div>
       <div className={styles.infoRow}>
         <div className={styles.label}>주소:</div>
-        <div className={styles.value}>서울특별시 종로구 종각 종각로30 -120</div>
+        <div className={styles.value}>{address}</div>
       </div>
       <div className={styles.infoRow}>
         <div className={styles.label}>가입일:</div>
