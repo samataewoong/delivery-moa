@@ -15,6 +15,7 @@ export default function MyPage() {
     const [myUserId, setMyUserId] = useState(null);
     const [myNickname, setMyNickname] = useState("");
     const [myCash, setMyCash] = useState(0);
+    const [myTemperature, setMyTemperature] = useState("");
     useEffect(() => {
         const fetchUserData = async () => {
             const { data: { session } } = await supabase.auth.getSession();
@@ -29,7 +30,7 @@ export default function MyPage() {
 
             const { data, error } = await supabase
                 .from('user')
-                .select('nickname, cash')
+                .select('nickname, cash, user_rating')
                 .eq('id', session.user.id)
                 .single();
 
@@ -38,6 +39,7 @@ export default function MyPage() {
             } else {
                 setMyNickname(data.nickname);
                 setMyCash(data.cash);
+                setMyTemperature(data.user_rating);
                 setMyUserId(session.user.id);
             }
         };
@@ -49,7 +51,6 @@ export default function MyPage() {
     const currentMenu = location.pathname.split('/').pop();
     const menuList = [
         { name: '회원정보', path: 'userinfo' },
-        { name: '나의평가', path: 'myreview' },
         { name: '주문내역', path: 'orderlist' },
         { name: '문의내역', path: 'myqna' }
     ];
@@ -65,7 +66,7 @@ export default function MyPage() {
                             {myNickname} 님
                         </h2>
                         <br />
-                        <GaugeBar value={80} />
+                        <GaugeBar value={myTemperature} />
                         <div className={styles.myCash}>
                             <span className={styles.label}>내 캐시:</span>
                             <span className={styles.amount}>{myCash}원</span>

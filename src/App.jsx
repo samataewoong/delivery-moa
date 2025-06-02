@@ -11,7 +11,6 @@ import MyPage from "./pages/myPage/MyPage";
 import UserInfo from "./pages/myPage/UserInfo";
 import EditUser from "./pages/myPage/EditUser";
 import MyQnA from "./pages/myPage/MyQnA";
-import MyReview from "./pages/myPage/MyReview";
 import MainPage from "./pages/MainPage";
 import RootPage from "./pages/RootPage";
 import OrderList from "./pages/myPage/OrderList";
@@ -36,7 +35,6 @@ function App() {
             <Route path="userinfo" element={<UserInfo />} />
             <Route path="edituser" element={<EditUser />} />
             <Route path="myqna" element={<MyQnA />} />
-            <Route path="myreview" element={<MyReview />} />
             <Route path="orderlist" element={<OrderList />} />
           </Route>
           
