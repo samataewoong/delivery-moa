@@ -139,7 +139,8 @@ export default function MainHeader() {
         const fetchRoom = async () => {
             const { data, error } = await supabase
                 .from("room")
-                .select(`id, store_id, room_name, room_address, max_people, room_join(count)`);
+                .select(`id, store_id, room_name, room_address, max_people, room_join(count)`)
+                .eq("status", "모집중");
 
             if (error) {
                 console.error("room 불러오기 오류:", error);
