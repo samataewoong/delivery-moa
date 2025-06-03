@@ -1,0 +1,45 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    width: 100vw;
+    box-sizing: border-box;
+}
+
+.room_create_page_box {
+    width: 600px;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    border-radius: 15px;
+}
+
+.input_box {
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+    width: 500px;
+    height: 50px;
+    font-size: 16px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 9999px;
+    border: #333 solid 1px;
+    box-sizing: border-box;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.input_button_box {
+    background-color: white;
+    color: #FF6B6B;
+    box-sizing: border-box;
+    border: #FF6B6B solid 1px;
+    border-radius: 9999px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}

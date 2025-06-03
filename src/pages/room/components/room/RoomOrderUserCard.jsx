@@ -203,7 +203,7 @@ export default function RoomOrderUserCard({
                     {room && roomJoin && isSelf && room.status === '픽업 대기중' && roomJoin.status !== '픽업 완료' && <div onClick={handlePickUp} className={style.pick_up_button}>
                         픽업 완료
                     </div>}
-                    {room && isLeader && isSelf && room.status !== '종료' && roomJoinList.filter(join => join.status === '픽업 완료').length == roomJoinList.length && <div onClick={handleRoomEnd} className={style.room_end_button}>
+                    {room && isLeader && isSelf && room.status !== '종료' && roomJoinList.filter(join => join.status === '픽업 완료').length === roomJoinList.length && <div onClick={handleRoomEnd} className={style.room_end_button}>
                         종료
                     </div>}
 
