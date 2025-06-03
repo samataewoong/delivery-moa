@@ -3,7 +3,8 @@ import styles from "./MyPage.module.css";
 import { useOutletContext } from "react-router-dom";
 import supabase from "../../config/supabaseClient";
 import FormattedDate from "../../components/FormattedDate";
-import EditModal from "./EditModal";
+import EditModal from "./EditModal"; // ✅ 모달 import
+import Modal from "../../components/Modal";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 export default function MyQnA() {
@@ -80,8 +81,90 @@ export default function MyQnA() {
 
   const totalPages = Math.ceil(qnaList.length / itemsPerPage);
 
+  //modal
+  const [modalOpen, setModalOpen] = useState(false);
+  const [newTitle, setNewTitle] = useState("");
+  const [newContent, setNewContent] = useState("");
+  const [writing, setWriting] = useState(false); // optional
+  const [loading, setLoading] = useState(false);
+
   return (
     <>
+      <button className={styles.qnaWriteBtn} onClick={() => setModalOpen(true)}>
+        문의 남기기
+      </button>
+
+      <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
+        <form
+          className={styles.qnaWriteForm}
+          onSubmit={async (e) => {
+            e.preventDefault();
+            if (!newTitle.trim() || !newContent.trim()) {
+              alert("제목과 내용을 입력해주세요.");
+              return;
+            }
+            setLoading(true);
+            const { error, data } = await supabase.from("qna").insert([
+              {
+                user_id: userId,
+                title: newTitle,
+                q_contents: newContent,
+                created_at: new Date().toISOString(),
+              },
+            ]);
+            setLoading(false);
+
+            if (error) {
+              alert("등록 중 오류가 발생했습니다.");
+            } else {
+              setQnaList((prev) => [
+                {
+                  id: data[0].id,
+                  title: newTitle,
+                  q_contents: newContent,
+                  created_at: new Date().toISOString(),
+                  q_answer: null,
+                },
+                ...prev,
+              ]);
+              setNewTitle("");
+              setNewContent("");
+              setModalOpen(false);
+              setCurrentPage(0);
+            }
+          }}
+        >
+          <h3>문의 남기기</h3>
+          <input
+            className={styles.qnaInput}
+            placeholder="문의 제목"
+            value={newTitle}
+            onChange={(e) => setNewTitle(e.target.value)}
+            disabled={loading}
+          />
+          <textarea
+            className={styles.qnaTextarea}
+            placeholder="문의 내용"
+            value={newContent}
+            onChange={(e) => setNewContent(e.target.value)}
+            disabled={loading}
+            rows={6}
+          />
+          <div className={styles.qnaWriteBtns}>
+            <button type="submit" disabled={loading}>
+              등록
+            </button>
+            <button
+              type="button"
+              onClick={() => setModalOpen(false)}
+              disabled={loading}
+            >
+              취소
+            </button>
+          </div>
+        </form>
+      </Modal>
+
       {paginatedQna.length === 0 ? (
         <p>문의 내역이 없습니다.</p>
       ) : (
@@ -91,7 +174,9 @@ export default function MyQnA() {
             className={styles.myQna}
           >
             <div className={styles.qnaDate}>
-              <h1><FormattedDate dateString={qna.created_at} /></h1>
+              <h1>
+                <FormattedDate dateString={qna.created_at} />
+              </h1>
             </div>
             <div className={styles.qnaTitle}>
 

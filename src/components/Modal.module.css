@@ -1,0 +1,30 @@
+.modalOverlay {
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modalContent {
+  background: #fff;
+  border-radius: 10px;
+  padding: 2rem;
+  min-width: 300px;
+  max-width: 90vw;
+  position: relative;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.18);
+}
+.closeBtn {
+  position: absolute;
+  top: 12px;
+  right: 18px;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}

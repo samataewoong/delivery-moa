@@ -1,14 +1,18 @@
-import { Link, Outlet, useLocation } from 'react-router-dom';
-import GaugeBar from '../../components/gaugeBar';
-import MyHeader from './MyHeader';
-import styles from './MyPage.module.css';
-import Header from '../../components/Header';
-import supabase from '../../config/supabaseClient';
-import { useState, useEffect } from 'react';
-import { useOutletContext } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { Link, Outlet, useLocation } from "react-router-dom";
+import GaugeBar from "../../components/gaugeBar";
+import MyHeader from "./MyHeader";
+import styles from "./MyPage.module.css";
+import Header from "../../components/Header";
+import supabase from "../../config/supabaseClient";
+import { useState, useEffect } from "react";
+import { useOutletContext } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import CashCharge from "../../components/CashCharge";
 
 export default function MyPage() {
+  const handleChargeClick = () => {
+    window.open("/delivery-moa/cashcharge", "_blank", "width=500,height=700");
+  };
     const navigate = useNavigate();
     //user 정보
     const [session, setSession] = useState(null);
@@ -20,13 +24,13 @@ export default function MyPage() {
         const fetchUserData = async () => {
             const { data: { session } } = await supabase.auth.getSession();
 
-            if (!session?.user) {
-                alert('로그인이 필요합니다.');
-                navigate('/', { replace: true }); // replace로 뒤로 가기 방지
-                return;
-            }
+      if (!session?.user) {
+        alert("로그인이 필요합니다.");
+        navigate("/", { replace: true }); // replace로 뒤로 가기 방지
+        return;
+      }
 
-            setSession(session);
+      setSession(session);
 
             const { data, error } = await supabase
                 .from('user')
@@ -44,9 +48,16 @@ export default function MyPage() {
             }
         };
 
-        fetchUserData();
-    }, [navigate]);
+    fetchUserData();
+  }, [navigate]);
 
+  const currentMenu = location.pathname.split("/").pop();
+  const menuList = [
+    { name: "회원정보", path: "userinfo" },
+    { name: "나의평가", path: "myreview" },
+    { name: "주문내역", path: "orderlist" },
+    { name: "문의내역", path: "myqna" },
+  ];
 
     const currentMenu = location.pathname.split('/').pop();
     const menuList = [
@@ -70,7 +81,7 @@ export default function MyPage() {
                         <div className={styles.myCash}>
                             <span className={styles.label}>내 캐시:</span>
                             <span className={styles.amount}>{myCash}원</span>
-                            <button className={styles.chargeButton}>충전</button>
+                            <button onClick={handleChargeClick} className={styles.chargeButton}>충전</button>
                         </div>
                     </div>
                     <div className={styles.myMenu}>
@@ -99,6 +110,33 @@ export default function MyPage() {
                     <Outlet context={{ userSession: session, userId: myUserId }} />
                 </div>
             </div>
-        </>
-    );
+          </div>
+          <div className={styles.myMenu}>
+            <ul className={styles.myMenuUl}>
+              {menuList.map(({ name, path }) => (
+                <li key={path} className={styles.myMenuLi}>
+                  <Link
+                    to={`/mypage/${path}`}
+                    style={{
+                      textDecoration: "none",
+                      fontWeight: currentMenu === path ? "bold" : "normal",
+                      color: "black",
+                    }}
+                  >
+                    {name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* 오른쪽 콘텐츠 */}
+        <div className={styles.myPageRight}>
+          <MyHeader menuList={menuList} />
+          <Outlet context={{ userSession: session, userId: myUserId }} />
+        </div>
+      </div>
+    </>
+  );
 }

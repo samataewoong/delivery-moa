@@ -14,9 +14,9 @@ import MyQnA from "./pages/myPage/MyQnA";
 import MainPage from "./pages/MainPage";
 import RootPage from "./pages/RootPage";
 import OrderList from "./pages/myPage/OrderList";
+import CashCharge from "./components/CashCharge";
 import StoreListPage from "./pages/StoreListPage";
 import RoomCreatePage from "./pages/room_create/RoomCreatePage";
-
 
 function App() {
   return (
@@ -41,7 +41,7 @@ function App() {
             <Route path="myqna" element={<MyQnA />} />
             <Route path="orderlist" element={<OrderList />} />
           </Route>
-          
+          <Route path="cashcharge" element={<CashCharge />} />
         </Routes>
 
         <Footer />
