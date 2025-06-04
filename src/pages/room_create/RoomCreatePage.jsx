@@ -8,6 +8,7 @@ import selectUser from "../../functions/user/SelectUser";
 import selectStore from "../../functions/store/SelectStore";
 import selectRoom from "../../functions/room/SelectRoom";
 import Header from "../../components/Header";
+import MustBeLoggedIn from "../../components/login_check/MustBeLoggedIn";
 
 export default function RoomCreatePage() {
     const navigate = useNavigate();
@@ -89,6 +90,7 @@ export default function RoomCreatePage() {
     }
     return (
         <>
+            <MustBeLoggedIn />
             <Header />
             <div className={style.container}>
                 <div className={style.room_create_page_box}>
