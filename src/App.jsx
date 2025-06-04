@@ -14,9 +14,9 @@ import MyQnA from "./pages/myPage/MyQnA";
 import MainPage from "./pages/MainPage";
 import RootPage from "./pages/RootPage";
 import OrderList from "./pages/myPage/OrderList";
+import CashCharge from "./components/CashCharge";
 import StoreListPage from "./pages/StoreListPage";
 import RoomCreatePage from "./pages/room_create/RoomCreatePage";
-
 
 function App() {
   return (
@@ -32,7 +32,7 @@ function App() {
           <Route path="/gongucomplete" element={<GonguComplete />} />
           <Route path="/ordercomplete/:order_id" element={<OrderComplete />} />
           <Route path="/review/:room_id" element={<Review />} />
-          <Route path="/storelist" element={<StoreListPage/>} />
+          <Route path="/storelist" element={<StoreListPage />} />
           {/* 마이페이지 및 하위 라우트 */}
           <Route path="/mypage" element={<MyPage />}>
             <Route index element={<UserInfo />} />
@@ -41,7 +41,7 @@ function App() {
             <Route path="myqna" element={<MyQnA />} />
             <Route path="orderlist" element={<OrderList />} />
           </Route>
-          
+          <Route path="cashcharge" element={<CashCharge />} />
         </Routes>
 
         <Footer />
