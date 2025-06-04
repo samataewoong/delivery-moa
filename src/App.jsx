@@ -16,7 +16,9 @@ import RootPage from "./pages/RootPage";
 import OrderList from "./pages/myPage/OrderList";
 import CashCharge from "./components/CashCharge";
 import StoreListPage from "./pages/StoreListPage";
+import AllRoom from "./pages/roomPage/AllRoom";
 import RoomCreatePage from "./pages/room_create/RoomCreatePage";
+
 
 function App() {
   return (
@@ -27,6 +29,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/mainpage" element={<MainPage />} />
+          <Route path="/roomPage/AllRoom" element={<AllRoom />} />
           <Route path="/room/create/:store_id" element={<RoomCreatePage />} />
           <Route path="/room/:room_id" element={<RoomPage />} />
           <Route path="/store/:store_id" element={<StoreDetail />} />
