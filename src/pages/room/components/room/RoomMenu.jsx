@@ -39,6 +39,7 @@ export default function RoomMenu({ room_id }) {
             })
             .subscribe();
         const userSubscribe = supabase
+            .realtime
             .channel(`realtime:user_cash_watch_on_room_menu_in_room_${room_id}`)
             .on(
                 "postgres_changes",
@@ -55,14 +56,10 @@ export default function RoomMenu({ room_id }) {
                 const { id } = await getAuthUser();
                 user_id = id;
             } catch (error) {
-                alert("로그인 정보를 가져오는데 실패하였습니다. 다시 로그인 해 주세요.");
-                navigate("/login");
                 return;
             }
 
             if (!user_id) {
-                alert("로그인 정보를 가져오는데 실패하였습니다. 다시 로그인 해 주세요.");
-                navigate("/login");
                 return;
             }
             try {

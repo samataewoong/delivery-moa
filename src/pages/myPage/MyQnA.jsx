@@ -3,8 +3,10 @@ import styles from "./MyPage.module.css";
 import { useOutletContext } from "react-router-dom";
 import supabase from "../../config/supabaseClient";
 import FormattedDate from "../../components/FormattedDate";
-import EditModal from "./EditModal";
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import EditModal from "./EditModal"; // ✅ 모달 import
+import Modal from "../../components/Modal";
+import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import QnaWriteModal from "./QnaWriteModal";
 
 export default function MyQnA() {
   const { userSession, userId } = useOutletContext();
@@ -29,6 +31,7 @@ export default function MyQnA() {
 
     if (error) {
       console.error("Error fetching user data:", error);
+      setQnaList([]);
     } else {
       setQnaList(data || []);
       setCurrentPage(0);
@@ -79,22 +82,52 @@ export default function MyQnA() {
   );
 
   const totalPages = Math.ceil(qnaList.length / itemsPerPage);
+  //modal
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const handleQnaInsert = async ({ title, contents }) => {
+    const { error, data } = await supabase.from("qna").insert([
+      {
+        user_id: userId,
+        title,
+        q_contents: contents,
+        created_at: new Date().toISOString(),
+      },
+    ]);
+    if (error) {
+      alert("등록 중 오류");
+      return;
+    }
+    //등록 성공 시
+    fetchUserData();
+    setCurrentPage(0);
+  };
 
   return (
     <>
+      <button className={styles.qnaWriteBtn} onClick={() => setModalOpen(true)}>
+        문의 남기기
+      </button>
+
+      {/* 문의 작성 모달 */}
+      <QnaWriteModal
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onSubmit={handleQnaInsert}
+        userId={userId}
+      />
+
       {paginatedQna.length === 0 ? (
         <p>문의 내역이 없습니다.</p>
       ) : (
         paginatedQna.map((qna) => (
-          <div
-            key={qna.id}
-            className={styles.myQna}
-          >
+          <div key={qna.id} className={styles.myQna}>
             <div className={styles.qnaDate}>
-              <h1><FormattedDate dateString={qna.created_at} /></h1>
+              <h1>
+                <FormattedDate dateString={qna.created_at} />
+              </h1>
             </div>
             <div className={styles.qnaTitle}>
-
               <b>Q. {qna.title}</b>
               <div className={styles.qnaContent}>
                 <textarea
@@ -104,7 +137,10 @@ export default function MyQnA() {
                 />
               </div>
               <h3>답변유무 {qna.q_answer ? "Yes" : "No"}</h3>
-              <div style={qna.q_answer ? { cursor: 'pointer' } : {}} onClick={() => toggleAnswer(qna.id)}>
+              <div
+                style={qna.q_answer ? { cursor: "pointer" } : {}}
+                onClick={() => toggleAnswer(qna.id)}
+              >
                 <button
                   className={styles.deleteReview}
                   onClick={(e) => {
@@ -114,7 +150,9 @@ export default function MyQnA() {
                 >
                   리뷰삭제
                 </button>
-                {qna.q_answer ? "" :
+                {qna.q_answer ? (
+                  ""
+                ) : (
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
@@ -124,8 +162,12 @@ export default function MyQnA() {
                   >
                     수정하기
                   </button>
-                }
-                {qna.q_answer ? <ArrowDropDownIcon className={styles.downIcon} /> : ""}
+                )}
+                {qna.q_answer ? (
+                  <ArrowDropDownIcon className={styles.downIcon} />
+                ) : (
+                  ""
+                )}
               </div>
             </div>
             {qna.q_answer && showAnswerId === qna.id && (

@@ -349,7 +349,9 @@ export default function MainHeader() {
                     <div className={styles["body_container"]}>
                         <div className={styles["food_category_wrap"]}>
                             <div className={styles["food_category"]}>음식 카테고리</div>
-                            <div className={styles["food_category_move"]}>전체보기→</div>
+                            <Link to="/storelist">
+                                <div className={styles["food_category_move"]}>전체보기→</div>
+                            </Link>
                         </div>
                         <div className={styles["circle_category_wrap"]}>
                             {categories.map((item) => (

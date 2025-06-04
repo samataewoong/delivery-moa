@@ -1,0 +1,171 @@
+/* 크롬, 사파리, 엣지 */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* 파이어폭스 */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.hideFooter {
+  display: none !important;
+}
+
+.wrapper {
+  max-width: 420px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.05);
+  padding: 32px;
+  min-height: 80vh;
+}
+
+.headerRow {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.backButton {
+  background: none;
+  border: none;
+  font-size: 24px;
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.title {
+  flex: 1;
+  text-align: center;
+  margin: 0;
+  font-weight: 700;
+  font-size: 22px;
+  color: #ff6b6b; /* 포인트 컬러 */
+}
+
+.reserve {
+  color: #ff8c8c;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.brandRow {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.logo {
+  background: #ff6b6b;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+}
+
+.logoText {
+  color: #fff;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.brandName {
+  font-weight: bold;
+}
+
+.guide {
+  color: #777;
+  font-size: 17px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid #ffd4d4;
+  padding-bottom: 8px;
+}
+
+.presetRow {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.presetButton {
+  flex: 1;
+  border: 1px solid #ff8c8c;
+  background: #fff0f0;
+  border-radius: 8px;
+  padding: 10px 0;
+  font-weight: 500;
+  font-size: 16px;
+  cursor: pointer;
+  color: #ff6b6b;
+  transition: background 0.2s, border 0.2s;
+}
+.presetButton:active {
+  background: #ffb6b6;
+  border-color: #ff6b6b;
+}
+
+.amountInput {
+  width: 390px;
+  font-size: 20px;
+  padding: 14px;
+  border: 1.5px solid #ff6b6b;
+  border-radius: 8px;
+  margin-bottom: 22px;
+  outline: none;
+  background: #f9f9f9;
+  color: #222;
+}
+
+.accountLabel {
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #174c4f;
+}
+
+.accountSelect {
+  width: 100%;
+  padding: 14px;
+  border: 1px solid #174c4f;
+  border-radius: 10px;
+  font-size: 17px;
+  margin-bottom: 24px;
+  background: #f3f6fa;
+  color: #174c4f;
+}
+
+.chargeButton {
+  width: 100%;
+  padding: 16px;
+  background: #ff6b6b;
+  color: #fff;
+  font-weight: 700;
+  font-size: 18px;
+  border: none;
+  border-radius: 8px;
+  margin-top: 22px;
+  cursor: pointer;
+  transition: background 0.2s;
+  letter-spacing: 1px;
+}
+.chargeButton:disabled {
+  background: #ffd4d4;
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+/* number input 스핀버튼 없애기 */
+.amountInput::-webkit-inner-spin-button,
+.amountInput::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.amountInput {
+  -moz-appearance: textfield;
+}
