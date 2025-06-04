@@ -95,7 +95,7 @@ export default function StoreListPage() {
                 <div className={styles["second_body"]}>
                     <div className={styles["storelist_wrap"]}>
                         {filteredStores.map((item) => (
-                            <Link key={item.id} to="/" onClick={(e) => storeClick(e, item.id)}>
+                            <Link key={item.id} to={`/store/${item.id}`} onClick={(e) => storeClick(e, item.id)}>
                                 <div className={styles["img_explain_wrap"]}>
                                     <div className={styles["storesquare_img"]}>
                                         <img src={`${storeUrl}${item.id}.jpg`} />

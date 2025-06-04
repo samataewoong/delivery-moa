@@ -1,0 +1,376 @@
+.myPage {
+    display: flex;
+    max-width: 1350px;
+    /* 최대 넓이 지정, 필요에 따라 조절 */
+    margin: 0 auto;
+    /* 좌우 자동 마진으로 가운데 정렬 */
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    margin-bottom: 80px;
+    gap: 20px;
+    /* 메뉴와 콘텐츠 사이 간격 */
+    flex-wrap: wrap;
+    /* 화면 작아지면 줄 바꿈 */
+}
+
+.myPageLeft {
+    flex: 0 0 340px;
+    /* 고정 너비 (px 단위 권장) */
+    border-right: 1px solid #ccc;
+    padding: 20px;
+    box-sizing: border-box;
+    min-width: 200px;
+    /* 최소 너비 지정 */
+}
+
+.profile {
+    border: 1px solid #ccc;
+    margin: 2px;
+    width: 300px;
+    height: 120px;
+}
+
+.userName {
+    /*border-bottom: 2px solid #ccc;*/
+    font-size: large;
+    font-weight: bold;
+    margin: 18px 125px 1px 22px;
+}
+
+.bearImage {
+    width: 30px;
+    /* 가로 크기 조절 */
+    height: auto;
+    /* 비율 유지 */
+    margin-left: 10px;
+    /* 텍스트랑 간격 띄우기 */
+    vertical-align: middle;
+    /* 텍스트와 수직 정렬 */
+}
+
+.gaugeBar {
+    margin: -11px 20px 5px;
+    position: relative;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.gaugeFill {
+    height: 100%;
+    transition: width 0.6s ease-in-out;
+}
+
+.gaugeText {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    color: #000;
+    font-family: Arial, sans-serif;
+    pointer-events: none;
+    user-select: none;
+}
+
+.myCash {
+    display: flex;
+    /* 좌우 끝에 배치 */
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    /* 가로 전체 차지 */
+    max-width: 300px;
+    /* 최대 크기 제한 (필요하면 조정) */
+    margin-right: 180px;
+    font-size: large;
+    box-sizing: border-box;
+    padding: 0 25px;
+    /* 양옆 약간 패딩 */
+}
+
+.label {
+    flex-shrink: 0;
+    /* 줄어들지 않게 */
+}
+
+.amount {
+    text-align: left;
+    white-space: nowrap;
+    /* 줄바꿈 방지 */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* 너무 길면 말줄임표 처리 */
+    max-width: 100px;
+    /* 최소 너비 */
+    margin-left: 10px;
+}
+
+/* MyPage.module.css */
+.myMenu {
+    padding: 0px 7px 0px 95px;
+}
+
+.myMenuUl {
+    list-style-type: none;
+    padding-left: 20px;
+}
+
+.myMenuLi {
+    font-size: large;
+    margin: 10px;
+}
+
+.myMenuLi::before {
+    content: "- ";
+    color: black;
+    font-weight: bold;
+    margin-right: 8px;
+    display: inline-block;
+    width: 12px;
+}
+
+
+.myPageRight {
+    flex: 1 1 700px;
+    /* 여유 공간을 채움, 최소 700px */
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    border-right: solid 1px #ccc;
+    min-width: 300px;
+    /* 최소 너비 */
+}
+
+.myHeader {
+    text-align: left;
+    font-weight: bold;
+    font-size: x-large;
+    border-bottom: solid 1px #CCD;
+    margin-bottom: 40px;
+    padding: 14px;
+}
+
+.chargeButton {
+    padding: 4px 9px;
+    font-size: 15px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.chargeButton:hover {
+    background-color: #45a049;
+}
+
+.userInfo {
+    padding: 100px 270px 5px 200px;
+    font-size: x-large;
+}
+
+.infoRow {
+    display: flex;
+    margin-bottom: 45px;
+}
+
+.infoRow .label {
+    width: 100px;
+    /* 고정 너비 */
+    font-weight: 500;
+}
+
+.infoRow .value {
+    width: 535px;
+    margin-left: 25px;
+    border-bottom: solid #ccc 2px;
+    padding-bottom: 5px;
+    /* 남은 공간 차지 */
+}
+
+.myButtonContainer {
+    text-align: center;
+}
+
+.myButtonContainer button {
+    width: 90px;
+    height: 45px;
+    font-weight: bold;
+    font-size: medium;
+    padding: 5px;
+    margin: 10px;
+    border-radius: 7px;
+    border: 2px solid #c8d1ca;
+    background-color: #c8d1ca;
+    cursor: pointer;
+}
+
+.editInput {
+    border: none;
+    border-bottom: solid 3px black;
+    font-size: x-large;
+    outline: none;
+    margin-left: 25px;
+    width: 540px;
+    padding-bottom: 5px;
+}
+
+input[readOnly] {
+    background-color: #ccc;
+}
+
+.editButton {
+    border-radius: 7px;
+    width: 670px;
+    height: 50px;
+    font-size: x-large;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.editButton:hover {
+    background-color: #d0d0d0;
+}
+
+.passwordEye {
+    border-bottom: solid;
+    width: 540px;
+    margin-left: 25px;
+    padding-bottom: 5px;
+}
+
+.passwordEye input {
+    border: none;
+    font-size: x-large;
+    margin-right: 200px;
+}
+
+.myQna {
+    border: solid 1px gray;
+    margin: 5px 0px 15px 15px;
+    padding-bottom: 10px;
+}
+
+.qnaDate h1 {
+    padding: 0px 0px 10px 10px;
+    border-bottom: 1px dotted;
+    color: gray;
+    font-size: medium;
+}
+
+.qnaTitle {
+    padding-left: 7px;
+    position:relative;
+}
+
+.qnaTitle h3 {
+    padding: 15px;
+    font-size: medium;
+}
+
+.qnaContent {
+    margin-bottom: 10px;
+    padding-left: 15px;
+    margin-top: 10px;
+}
+
+.qnaTextArea {
+    width: 885px;
+    height: 130px;
+    font-size: medium;
+    font-weight: 1000;
+    padding-top: 7px;
+    border: none;
+}
+
+.answer {
+    border-top: 1px solid #d0d0d0;
+    margin-top: 10px;
+    padding: 10px;
+}
+
+.answer b {
+    padding-top: 10px;
+}
+
+.answer h4 {
+    padding-left: 10px;
+    font-weight: 400;
+}
+
+.deleteReview {
+    border-radius: 5px;
+    margin-left: 10px;
+    cursor: pointer;
+    width: 70px;
+    height: 30px;
+    font-weight: 400;
+}
+
+.editReview {
+    border-radius: 5px;
+    margin-left: 10px;
+    cursor: pointer;
+    width: 70px;
+    height: 30px;
+    font-weight: 400;
+}
+
+.editReview:hover {
+    background-color: rgb(198, 213, 218);
+}
+
+.deleteReview:hover {
+    background-color: rgb(198, 213, 218);
+}
+
+.qnaPages {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.qnaPages button {
+    font-size: medium;
+    border: none;
+    cursor: pointer;
+    opacity: 0.5;
+    /* 기본 연하게 */
+    font-weight: normal;
+    margin: 0 5px;
+    padding: 5px 10px;
+    background: none;
+    color: rgb(66, 64, 64);
+    /* 기본 글자색 연한 회색 */
+    transition: opacity 0.3s, font-weight 0.3s, color 0.3s;
+}
+
+.qnaPages button:hover:not(:disabled) {
+    opacity: 0.8;
+    /* 호버 시 살짝 강조 */
+    color: #333;
+    /* 호버 시 글자색 조금 진하게 */
+}
+
+.qnaPages button.activePage {
+    font-weight: bold;
+    opacity: 1;
+    color: black;
+    cursor: default;
+}
+
+.downIcon {
+    font-size: 30px;
+    color: rgb(31, 31, 31);
+    position: absolute;
+    bottom: 0px;
+    right: 15px;
+}
