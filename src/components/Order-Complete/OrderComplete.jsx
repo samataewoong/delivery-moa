@@ -107,9 +107,13 @@ const OrderComplete = () => {
     navigate('/mainpage');
   };
 
-  const goToReview =() => {
-    navigate('/review');
+  const goToReview = () => {
+  if (orderDetails?.room_id) {
+    navigate(`/review/${orderDetails.room_id}`);
+  } else {
+    alert("room_id가 존재하지 않아 리뷰 페이지로 이동할 수 없습니다.");
   }
+};
 
   if (loading) return <div className={style.loading}>주문 정보를 불러오는 중...</div>;
   if (error) return <div className={style.error}>오류 발생: {error}</div>;

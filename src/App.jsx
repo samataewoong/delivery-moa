@@ -2,7 +2,6 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import Register from "./pages/Register";
 import Header from "./components/Header";
 import OrderComplete from "./components/Order-Complete/OrderComplete";
-import GonguComplete from "./components/Gongu-Complete/GonguComplete";
 import Review from "./components/User-Review/Review";
 import Footer from "./components/Footer";
 import RoomPage from "./pages/room/RoomPage";
@@ -29,7 +28,6 @@ function App() {
           <Route path="/mainpage" element={<MainPage />} />
           <Route path="/room/create/:store_id" element={<RoomCreatePage />} />
           <Route path="/room/:room_id" element={<RoomPage />} />
-          <Route path="/gongucomplete" element={<GonguComplete />} />
           <Route path="/ordercomplete/:order_id" element={<OrderComplete />} />
           <Route path="/review/:room_id" element={<Review />} />
           <Route path="/storelist" element={<StoreListPage />} />

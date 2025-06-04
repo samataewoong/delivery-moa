@@ -1,7 +1,7 @@
 .container {
   max-width: 600px;
   margin: 0 auto;
-  padding: 24px;
+  padding: 82px;
 }
 
 .title {
@@ -50,10 +50,11 @@
   margin-top: 32px;
   width: 100%;
   padding: 12px;
-  background-color: #007bff;
-  color: white;
+  background-color: #FFB1B1;
+  color: black;
   border: none;
   border-radius: 8px;
   font-weight: bold;
   cursor: pointer;
 }
+
