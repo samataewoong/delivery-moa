@@ -8,21 +8,22 @@ import { useState, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import CashCharge from "../../components/CashCharge";
+import thousands from "thousands";
 
 export default function MyPage() {
   const handleChargeClick = () => {
     window.open("/delivery-moa/cashcharge", "_blank", "width=500,height=700");
   };
-    const navigate = useNavigate();
-    //user 정보
-    const [session, setSession] = useState(null);
-    const [myUserId, setMyUserId] = useState(null);
-    const [myNickname, setMyNickname] = useState("");
-    const [myCash, setMyCash] = useState(0);
-    const [myTemperature, setMyTemperature] = useState("");
-    useEffect(() => {
-        const fetchUserData = async () => {
-            const { data: { session } } = await supabase.auth.getSession();
+  const navigate = useNavigate();
+  //user 정보
+  const [session, setSession] = useState(null);
+  const [myUserId, setMyUserId] = useState(null);
+  const [myNickname, setMyNickname] = useState("");
+  const [myCash, setMyCash] = useState(0);
+  const [myTemperature, setMyTemperature] = useState("");
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
 
       if (!session?.user) {
         alert("로그인이 필요합니다.");
@@ -68,8 +69,11 @@ export default function MyPage() {
             <br />
             <GaugeBar value={80} />
             <div className={styles.myCash}>
-              <span className={styles.label}>내 캐시:</span>
-              <span className={styles.amount}>{myCash}원</span>
+              <span style={{display: 'flex'}}>
+                <span className={styles.label}>내 캐시:</span>
+                <span className={styles.amount}>{thousands(myCash)}</span>
+                <span>원</span>
+              </span>
               <button
                 className={styles.chargeButton}
                 onClick={handleChargeClick}
