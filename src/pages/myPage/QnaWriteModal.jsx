@@ -2,7 +2,7 @@ import { useState } from "react";
 import Modal from "../../components/Modal";
 import styles from "./QnaWriteModal.module.css";
 
-export default function QnaWriteModal({ open, onClose, onSubmit, userId }) {
+export default function QnaWriteModal({ open, onClose, onSubmit }) {
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
   const [loading, setLoading] = useState(false);
