@@ -31,6 +31,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 10px;
 }
 
 .circle_text {
@@ -43,6 +44,8 @@
     background-color: #FFFFFF;
     width: 1280px;
     height: 1800px;
+    margin-bottom: 80px;
+    border-radius: 10px;
 }
 
 .img_explain_wrap{

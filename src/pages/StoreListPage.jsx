@@ -8,6 +8,7 @@ export default function StoreListPage() {
 
     const [store, setStore] = useState([]);
     const [categories, setCategories] = useState([]);
+    const [selectedCategoryId, setSelectedCategoryId] = useState(null);
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -42,6 +43,11 @@ export default function StoreListPage() {
         console.log("store clicked:", id);
     }
 
+    // 가게 필터링
+    const filteredStores = selectedCategoryId
+    ? store.filter((item) => item.category_id === selectedCategoryId)
+    : store;
+
     const storeUrl = "https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/store/store_";
     const imgBaseUrl = "https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/category/";
     return (
@@ -50,7 +56,8 @@ export default function StoreListPage() {
             <div className={styles["storelist_body"]}>
                 <div className={styles["circle_category_wrap"]}>
                     {categories.map((item) => (
-                        <Link key={item.id} to="/storelist">
+                        <div key={item.id}
+                        onClick={() => setSelectedCategoryId(item.id)}>
                             <div className={styles["circle_with_text"]}>
                                 <div className={styles["circle"]}>
                                     <img
@@ -59,13 +66,13 @@ export default function StoreListPage() {
                                 </div>
                                 <div className={styles["circle_text"]}>{item.category}</div>
                             </div>
-                        </Link>
+                        </div>
                     ))}
                 </div>
 
                 <div className={styles["second_body"]}>
                     <div className={styles["storelist_wrap"]}>
-                        {store.map((item) => (
+                        {filteredStores.map((item) => (
                             <Link key={item.id} to="/" onClick={(e) => storeClick(e, item.id)}>
                                 <div className={styles["img_explain_wrap"]}>
                                     <div className={styles["storesquare_img"]}>
