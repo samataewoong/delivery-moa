@@ -20,7 +20,7 @@
 }
 .detail_box{
     width:1240px;
-    height:360px;
+    height:380px;
     background-color: white;
     border-radius:10px;
     box-shadow: 4px 6px 2px rgba(0, 0, 0, 0.2);
@@ -42,7 +42,7 @@
 .store_name{
     font-Size: 34px;
     font-weight: 500;
-    margin-top: 10px;
+    margin-top: 8px;
 }
 .star{
     color: rgb(255, 217, 0);
@@ -50,10 +50,100 @@
 }
 .score{
     font-size:18px;
+    margin-top: 6px;
 }
 .address_box{
     box-sizing: border-box;
     border: 1px solid black;
-    height: 160px;
-
+    height: 180px;
+    margin-top: 18px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+.address_map{
+    background-color: red;
+    margin-right: 0px;
+    border-radius: 0 10px 10px 0;
+    height: 178px;
+    width: 550px;
+    box-sizing: border-box;
+}
+.address_text{
+    padding: 28px 34px;
+    font-size: 18px;
+}
+.address_flex{
+    display: flex;
+    gap: 30px;
+    margin-bottom: 5px;
+}
+.menu_box{
+    margin: 40px 0 80px 0;
+    background-color: white;
+    width: 1240px;
+    height: auto;
+    padding: 60px 70px;
+    box-sizing: border-box;
+    border-radius: 10px;
+    box-shadow: 4px 6px 2px rgba(0, 0, 0, 0.2);
+}
+.menu_detail_box{
+    display: flex;
+    justify-content: space-between;
+}
+.menu_text{
+    align-items: center;
+    font-size:20px;
+    padding: 45px 70px;
+}
+.menu_img{
+    border-radius: 10px;
+    width: 240px;
+    height: 164px;
+}
+.menu_hr{
+    border: 0.2px solid #dddcdc;
+    margin: 10px 0;
+}
+.menu_title{
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+.menu_price{
+    font-size: 18px;
+}
+.menu_btn{
+    display: flex;
+    gap: 40px;
+    box-sizing: border-box;
+    font-size: 34px;
+    margin-top: 20px;
+}
+.menu_make_btn{
+    border: 1px solid #FF6B6B;
+    color: #FF6B6B;
+    background-color: white;
+    height: 80px;
+    width: 530px;
+    font-size: 34px;
+    border-radius: 20px;
+}
+.menu_confirm_btn{
+    border: 1px solid #FF6B6B;
+    color: #FF6B6B;
+    background-color: white;
+    height: 80px;
+    width: 530px;
+    font-size: 34px;
+    border-radius: 20px;
+}
+.menu_make_btn:hover{
+    background-color: #FF6B6B;
+    color: white;
+}
+.menu_confirm_btn:hover{
+    background-color: #FF6B6B;
+    color: white;
 }
