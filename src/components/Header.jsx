@@ -1,10 +1,19 @@
 import styles from "./Header.module.css";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, matchPath } from "react-router-dom";
 import supabase from "../config/supabaseClient";
 import Hamburger from "../components/Hamburger";
 
-export default function Header() {
+export default function Header({
+    excludes
+}) {
+    if (excludes && excludes.length) {
+        let { pathname } = document.location;
+        pathname = pathname.replace(`${import.meta.env.BASE_URL}`, "");
+        pathname = pathname.substring(0, pathname.indexOf('?') == -1 ? pathname.length : pathname.indexOf('?'));
+        const match = excludes.filter((exclude) => (matchPath(exclude, pathname)));
+        if (match.length) return <></>;
+    }
     const [isOpen, setIsOpen] = useState(false);
     const [nickname, setNickname] = useState("");
     const [session, setSession] = useState(null);

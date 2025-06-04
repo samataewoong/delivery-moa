@@ -44,7 +44,9 @@ function App() {
           <Route path="cashcharge" element={<CashCharge />} />
         </Routes>
 
-        <Footer />
+        <Footer excludes={[
+          "/cashcharge"
+        ]}/>
       </BrowserRouter>
     </>
   );

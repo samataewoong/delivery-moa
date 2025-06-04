@@ -1,8 +1,18 @@
 // Footer.jsx
 import React from 'react'; // React 컴포넌트임을 명시
 import style from './Footer.module.css'; // Footer 전용 CSS 파일 임포트
+import { matchPath, useLocation } from 'react-router-dom';
 
-export default function Footer() {
+export default function Footer({
+    excludes
+}) {
+    if (excludes && excludes.length) {
+        let { pathname } = document.location;
+        pathname = pathname.replace(`${import.meta.env.BASE_URL}`, "");
+        pathname = pathname.substring(0, pathname.indexOf('?') == -1 ? pathname.length : pathname.indexOf('?'));
+        const match = excludes.filter((exclude) => (matchPath(exclude, pathname)));
+        if (match.length) return <></>;
+    }
     return (
         <footer className={style['footer']}>
             <table className={style['footer_table']}>
