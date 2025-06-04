@@ -39,6 +39,7 @@ export default function RoomMenu({ room_id }) {
             })
             .subscribe();
         const userSubscribe = supabase
+            .realtime
             .channel(`realtime:user_cash_watch_on_room_menu_in_room_${room_id}`)
             .on(
                 "postgres_changes",
