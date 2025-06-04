@@ -16,6 +16,7 @@
     float: right;
 }
 .menu_quantity_add,.menu_quantity_sub {
+    margin-top: 3px;
     padding-left: 10px;
     padding-right: 10px;
 }
