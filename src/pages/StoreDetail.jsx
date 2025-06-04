@@ -23,7 +23,7 @@ export default function StoreDetail(){
     return (
         <>
         <Header/>
-        <main>
+        <main className={styles["main_container"]}>
             <div><img src={`${storeUrl}${store.id}.jpg`}/></div>
             <div>{store.store_name}</div>
         </main>
