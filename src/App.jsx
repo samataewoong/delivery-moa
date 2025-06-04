@@ -5,6 +5,7 @@ import OrderComplete from "./components/Order-Complete/OrderComplete";
 import Review from "./components/User-Review/Review";
 import Footer from "./components/Footer";
 import RoomPage from "./pages/room/RoomPage";
+import StoreDetail from "./pages/StoreDetail";
 import Login from "./pages/Login";
 import MyPage from "./pages/myPage/MyPage";
 import UserInfo from "./pages/myPage/UserInfo";
@@ -28,6 +29,7 @@ function App() {
           <Route path="/mainpage" element={<MainPage />} />
           <Route path="/room/create/:store_id" element={<RoomCreatePage />} />
           <Route path="/room/:room_id" element={<RoomPage />} />
+          <Route path="/store/:store_id" element={<StoreDetail />} />
           <Route path="/ordercomplete/:order_id" element={<OrderComplete />} />
           <Route path="/review/:room_id" element={<Review />} />
           <Route path="/storelist" element={<StoreListPage />} />
