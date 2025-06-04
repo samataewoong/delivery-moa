@@ -93,16 +93,25 @@ export default function RoomCreatePage() {
             <div className={style.container}>
                 <div className={style.room_create_page_box}>
                     <h1>공구방 생성</h1>
-                    <input className={style.input_box} type="text" placeholder="공구방 이름" value={roomName} onChange={(e) => {
-                        setRoomName(e.target.value);
-                    }} />
-                    <input className={style.input_box} type="text" value={roomAddress} onChange={(e) => {
-                        setRoomAddress(e.target.value);
-                    }} />
-                    <input className={style.input_box} type="number" placeholder="인원수" value={maxPeople} onChange={(e) => {
-                        setMaxPeople(parseInt(e.target.value));
-                    }} />
-                    <input className={[style.input_box, style.input_button_box].join(' ')} type="button" value="만들기" onClick={handleCreateRoom} />
+                    <div className={style.input_label_box}>
+                        <div className={style.label_box}>공구방 이름</div>
+                        <input className={style.input_box} type="text" placeholder="공구방 이름" value={roomName} onChange={(e) => {
+                            setRoomName(e.target.value);
+                        }} />
+                    </div>
+                    <div className={style.input_label_box}>
+                        <div className={style.label_box}>공구방 주소</div>
+                        <input className={style.input_box} type="text" placeholder="공구방 주소" value={roomAddress} onChange={(e) => {
+                            setRoomAddress(e.target.value);
+                        }} />
+                    </div>
+                    <div className={style.input_label_box}>
+                        <div className={style.label_box}>공구방 인원수</div>
+                        <input className={style.input_box} type="number" placeholder="공구방 인원수" value={maxPeople} onChange={(e) => {
+                            setMaxPeople(parseInt(e.target.value));
+                        }} />
+                    </div>
+                    <input className={[style.input_box, style.input_button_box].join(' ')} type="button" value="생성" onClick={handleCreateRoom} />
                 </div>
             </div>
         </>
