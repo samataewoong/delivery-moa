@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react"; 
+import { useParams, useNavigate } from "react-router-dom";
 import supabase from "../../config/supabaseClient";
 import styles from "./ReviewModel.module.css";
 import { FaStar } from "react-icons/fa";
 import Header from "../../components/Header";
 import selectRoom from "../../functions/room/SelectRoom";
+
 
 const Review = () => {
   const { room_id } = useParams(); // URL에서 room_id 추출
@@ -12,6 +13,10 @@ const Review = () => {
   const [participants, setParticipants] = useState([]);
   const [ratings, setRatings] = useState({});
   const [roomInfo, setRoomInfo] = useState(null);
+  const navigate = useNavigate();
+
+  
+
 
   // 현재 로그인한 유저 ID 가져오기
   useEffect(() => {
@@ -97,6 +102,8 @@ const Review = () => {
     }
 
     alert("모든 별점 평가가 저장되었습니다.");
+    navigate('/mainpage');
+    
   };
 
   return (
