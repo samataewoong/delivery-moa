@@ -11,7 +11,7 @@ export default function StoreDetail(){
 
     useEffect(() => {
         async function fetchStore() {
-            const { data } = await supabase.from("store").select("*").eq("id",store_id);
+            const { data } = await supabase.from("store").select("*").eq("id",store_id).single();
             setStore(data);
         }
         fetchStore();
@@ -23,9 +23,11 @@ export default function StoreDetail(){
     return (
         <>
         <Header/>
-        <main className={styles["main_container"]}>
-            <div><img src={`${storeUrl}${store.id}.jpg`}/></div>
-            <div>{store.store_name}</div>
+        <main className={styles["main_box"]}>
+            <div className={styles["main_container"]}>
+                <div><img className={styles["square_img"]} src={`${storeUrl}${store.id}.jpg`}/></div>
+                <div className={styles["square_img"]} >{store.store_name}</div>
+            </div>
         </main>
         </>
     );
