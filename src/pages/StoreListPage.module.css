@@ -1,4 +1,4 @@
-.storelist_body{
+.storelist_body {
     width: 1280px;
     margin: 0 auto;
     padding: 0 20px;
@@ -6,22 +6,56 @@
 
 .circle_category_wrap {
     display: flex;
-    gap: 30px 40px;
-    width: 1280px;
-    flex-wrap: wrap;
+    gap: 30px;
     background-color: #FFFFFF;
     padding-left: 20px;
     border-radius: 10px;
+    overflow-x: auto;
+    white-space: nowrap;
+    flex: 1;
+    min-width: 0;
+    scrollbar-width: none;
+    width: 1280px;
+}
+
+.circle_category_wrap::-webkit-scrollbar {
+    display: none;
+}
+
+.circle_category_outer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    overflow: hidden;
+    margin: 0 auto;
+    background-color: #FFFFFF;
+    border-radius: 10px;
+    padding: 20px;
     margin-top: 80px;
     margin-bottom: 40px;
 }
 
+
+.scroll_button {
+    background-color: white;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 10px;
+    z-index: 1;
+    width: 40px;
+    flex-shrink: 0;
+}
+
 .circle_with_text {
+    flex: 0 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100px;
 }
+
 .circle {
     width: 100px;
     height: 100px;
@@ -40,31 +74,37 @@
     font-size: 20px;
 }
 
-.second_body{
+.second_body {
     background-color: #FFFFFF;
-    width: 1280px;
-    height: 1800px;
+    width: 100%;
+    height: auto;
     margin-bottom: 80px;
     border-radius: 10px;
+    padding-bottom: 40px;
 }
 
-.img_explain_wrap{
+.img_explain_wrap {
     display: flex;
     padding-top: 40px;
 }
 
-.storelist_wrap img{
+.storelist_wrap img {
     margin-left: 80px;
     width: 300px;
     height: 300px;
     border-radius: 10px;
 }
-.storeexplain{
+
+.storeexplain {
     width: 800px;
     height: auto;
-    border: 1px solid black;
+    background-color: #F9F9F9;
     border-radius: 10px;
     margin-left: 20px;
     padding-left: 40px;
     padding-top: 40px;
+}
+
+.deliveryfree {
+    color: blue;
 }

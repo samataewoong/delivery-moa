@@ -9,6 +9,7 @@ export default function StoreListPage() {
     const [store, setStore] = useState([]);
     const [categories, setCategories] = useState([]);
     const [selectedCategoryId, setSelectedCategoryId] = useState(null);
+    const categoryRef = useRef(null);
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -45,8 +46,21 @@ export default function StoreListPage() {
 
     // 가게 필터링
     const filteredStores = selectedCategoryId
-    ? store.filter((item) => item.category_id === selectedCategoryId)
-    : store;
+        ? store.filter((item) => item.category_id === selectedCategoryId)
+        : store;
+
+    // 버튼 스크롤
+    const scrollRight = () => {
+        if (categoryRef.current) {
+            categoryRef.current.scrollBy({ left: 200, behavior: "smooth" });
+        }
+    };
+
+    const scrollLeft = () => {
+        if (categoryRef.current) {
+            categoryRef.current.scrollBy({ left: -200, behavior: "smooth" });
+        }
+    };
 
     const storeUrl = "https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/store/store_";
     const imgBaseUrl = "https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/category/";
@@ -54,21 +68,29 @@ export default function StoreListPage() {
         <>
             <Header />
             <div className={styles["storelist_body"]}>
-                <div className={styles["circle_category_wrap"]}>
-                    {categories.map((item) => (
-                        <div key={item.id}
-                        onClick={() => setSelectedCategoryId(item.id)}>
-                            <div className={styles["circle_with_text"]}>
-                                <div className={styles["circle"]}>
-                                    <img
-                                        src={`${imgBaseUrl}${item.id}.png`}
-                                        alt={`${item.category} 이미지`} />
+                <div className={styles["circle_category_outer"]}>
+                    <button className={styles["scroll_button"]} onClick={scrollLeft}>{"<"}</button>
+                    <div className={styles["circle_category_wrap"]} ref={categoryRef}>
+                        {categories.map((item) => (
+                            <div key={item.id}
+                                onClick={() => setSelectedCategoryId(item.id)}>
+                                <div className={styles["circle_with_text"]}>
+                                    <div className={styles["circle"]}>
+                                        <img
+                                            src={`${imgBaseUrl}${item.id}.png`}
+                                            alt={`${item.category} 이미지`} />
+                                    </div>
+                                    <div className={styles["circle_text"]}>{item.category}</div>
                                 </div>
-                                <div className={styles["circle_text"]}>{item.category}</div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
+
+                    <button className={styles["scroll_button"]} onClick={scrollRight}>{">"}</button>
                 </div>
+
+
+
 
                 <div className={styles["second_body"]}>
                     <div className={styles["storelist_wrap"]}>
@@ -81,7 +103,8 @@ export default function StoreListPage() {
                                     <div className={styles["storeexplain"]}>
                                         <h2> {item.store_name} </h2>
                                         <h4> 가게위치 {item.store_address} </h4>
-                                        <h5> 최소주문 {item.min_price} </h5>
+                                        <h5> 배달비 : <span className={styles["deliveryfree"]}> 무료배달 </span></h5>
+                                        <h5> 최소주문 {item.min_price}원 </h5>
                                         <button> 방만들기 </button>
                                         <button> 개설된 방 확인 </button>
                                     </div>
