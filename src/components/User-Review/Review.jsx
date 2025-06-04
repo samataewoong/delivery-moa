@@ -6,7 +6,6 @@ import { FaStar } from "react-icons/fa";
 import Header from "../../components/Header";
 import selectRoom from "../../functions/room/SelectRoom";
 
-
 const Review = () => {
   const { room_id } = useParams(); // URL에서 room_id 추출
   const [currentUserId, setCurrentUserId] = useState(null);
@@ -14,9 +13,6 @@ const Review = () => {
   const [ratings, setRatings] = useState({});
   const [roomInfo, setRoomInfo] = useState(null);
   const navigate = useNavigate();
-
-  
-
 
   // 현재 로그인한 유저 ID 가져오기
   useEffect(() => {
@@ -85,15 +81,17 @@ const Review = () => {
     fetchParticipants();
   }, [room_id, currentUserId]);
 
+  // 별점 클릭 시 상태 업데이트
   const handleRating = (userId, value) => {
     setRatings((prev) => ({ ...prev, [userId]: value }));
   };
 
+  // 제출 버튼 클릭 시 DB 업데이트
   const handleSubmit = async () => {
     for (const [userId, rating] of Object.entries(ratings)) {
       const { error } = await supabase
         .from("user")
-        .update({ user_rating: rating })
+        .update({ user_rating: rating })  // 단일 숫자 저장
         .eq("id", userId);
 
       if (error) {
@@ -102,8 +100,7 @@ const Review = () => {
     }
 
     alert("모든 별점 평가가 저장되었습니다.");
-    navigate('/mainpage');
-    
+    navigate("/mainpage");
   };
 
   return (
