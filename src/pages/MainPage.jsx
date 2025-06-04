@@ -249,14 +249,6 @@ export default function MainHeader() {
     const popularUrl = "https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/popular/popular_";
     // 지도 testing
     const userId = session?.user?.id;
-    // 지도 on/off
-    const [mapShowing, setMapShowing] = useState(false);
-    const viewRoom = () => {
-        setMapShowing(true);
-    }
-    const closeViewRoom = () => {
-        setMapShowing(false);
-    }
     return (
         <>
             <header className={styles["main_header"]}>
@@ -358,8 +350,6 @@ export default function MainHeader() {
                         <div className={styles["food_category_wrap"]}>
                             <div className={styles["food_category"]}>음식 카테고리</div>
                             <div className={styles["food_category_move"]}>전체보기→</div>
-                            <div><button onClick={viewRoom}>가까운 공구방 보기</button></div>
-                            {mapShowing && <CloseRoom userId={userId} closeModule={closeViewRoom} />}
                         </div>
                         <div className={styles["circle_category_wrap"]}>
                             {categories.map((item) => (
@@ -377,7 +367,10 @@ export default function MainHeader() {
                         </div>
                         <div className={styles["gongu_wrap"]}>
                             <div className={styles["gongu_list"]}>진행중인 공구방</div>
-                            <div className={styles["gongu_list_move"]}><Link to="/roomPage/AllRoom" userId={userId}>전체보기→</Link></div>
+                            <div className={styles["gongu_list_move"]}><Link
+                                to="/roomPage/AllRoom"
+                                state={{ userId }}
+                            >전체보기→</Link></div>
                         </div>
                         <div className={styles["gongu_list_wrap"]}>
                             {rooms.slice(0, 6).map((items) => (

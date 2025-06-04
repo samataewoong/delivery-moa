@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import supabase from "../config/supabaseClient";
 import styles from "./CloseRoom.module.css";
 
-export default function CloseRoom({ userId, closeModule }) {
+export default function CloseRoom({ userId }) {
     const [userAddress, setUserAddress] = useState("");
     const [roomList, setRoomList] = useState([]); // 전체 room 객체 리스트
     const mapRef = useRef(null);
@@ -121,14 +121,10 @@ export default function CloseRoom({ userId, closeModule }) {
     }, [userAddress, roomList]);
 
     return (
-        <div className={styles.overlay}>
-            <div className={styles.modal}>
-                <div ref={mapRef} style={{ width: "100%", height: "400px" }} />
-                <div className={styles.buttons}>
-                    <button className={styles.closeButton} onClick={closeModule}>취소</button>
-                </div>
+        <div>
+            <div>
+                <div ref={mapRef} style={{ width: "700px", height: "400px" }} />
             </div>
-
         </div>
 
     )
