@@ -95,7 +95,7 @@ export default function StoreListPage() {
                 <div className={styles["second_body"]}>
                     <div className={styles["storelist_wrap"]}>
                         {filteredStores.map((item) => (
-                            <Link key={item.id} to={`/room/create/${item.id}`} onClick={(e) => storeClick(e, item.id)}>
+                            <Link key={item.id} to={`/store/${item.id}`} onClick={(e) => storeClick(e, item.id)}>
                                 <div className={styles["img_explain_wrap"]}>
                                     <div className={styles["storesquare_img"]}>
                                         <img src={`${storeUrl}${item.id}.jpg`} />
@@ -105,7 +105,7 @@ export default function StoreListPage() {
                                         <h4> 가게위치 {item.store_address} </h4>
                                         <h5> 배달비 : <span className={styles["deliveryfree"]}> 무료배달 </span></h5>
                                         <h5> 최소주문 {item.min_price}원 </h5>
-                                        <button> 방만들기 </button>
+                                        <button onClick={() => navigate("/room/create/${item.id}")}> 방만들기 </button>
                                         <button> 개설된 방 확인 </button>
                                     </div>
                                 </div>
