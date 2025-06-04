@@ -144,7 +144,7 @@ export default function MainHeader() {
                 .eq("id", session.user.id);
 
             if (error) {
-                console.error("address 불러오기 실��:", error);
+                console.error("address 불러오기 실패패:", error);
             } else {
                 setAddress(data[0].address);
             }
@@ -264,8 +264,10 @@ export default function MainHeader() {
                     </div>
                     <div>
                         <ul className={styles["main_menu"]}>
-                            <li>메뉴</li>
-                            <li>진행중인 공구</li>
+                            <li><Link to="/storelist">메뉴</Link></li>
+                            <li>
+                                <Link to="/roomPage/AllRoom" state={{ userId }}>진행중인 공구</Link>
+                            </li>
                             <li>랭킹</li>
                             <li>이벤트</li>
                         </ul>
@@ -275,7 +277,7 @@ export default function MainHeader() {
                             {session && nickname ? (
                                 <>
                                     <button className={styles["location_btn"]} onClick={handleClick}>
-                                        <img src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/location_imo.png" />
+                                        <img className={styles["location_icon"]} src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/location_icon_red.png" />
                                     </button>
                                     {address ? (
                                         <div onClick={handleClick}>{address}</div>
@@ -320,7 +322,7 @@ export default function MainHeader() {
                             nickname={nickname}
                             handleLogout={handleLogout}
                             onClose={() => setIsOpen(false)}
-                            style={{ height: '1945px' }}
+
                         />
                     )}
                 </div>

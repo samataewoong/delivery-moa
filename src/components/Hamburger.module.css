@@ -1,12 +1,17 @@
+.main{
+    width: 1280px;
+    display: flex;
+    justify-content: center;
+}
 .hamburger_nav {
     position: absolute;
     top: 115px;
     right: 0;
     width: 434px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     background-color: white;
-    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     padding: 30px 45px;
+    z-index: 1000;
 }
 
 .mypage_icon {
