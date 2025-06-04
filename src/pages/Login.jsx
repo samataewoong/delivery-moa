@@ -9,6 +9,7 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState("");
+  const [session, setSession] = useState("");
   const navigate = useNavigate();
 
   // 닉네임 불러오기
@@ -81,7 +82,7 @@ function Login() {
       <div className={style["login-container"]}>
         {user && nickname ? (
           <div id="user_login">
-            <h2>{nickname}님</h2>
+            {navigate("/mainpage")}
           </div>
         ) : (
           <div className={style["login-box"]}>
