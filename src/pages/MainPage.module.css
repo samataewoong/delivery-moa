@@ -18,7 +18,10 @@ html, main {
 
 .main_menu li {
     white-space: nowrap;
-
+    transition: transform 0.2s;
+}
+.main_menu li:hover{
+    transform: translateY(-3px);
 }
 
 .hLogo_img:hover {
@@ -120,6 +123,10 @@ html, main {
     font-size: 16px;
     width: 150px;
     height: 20px;
+}
+.location_icon{
+    width: 13px;
+    height: auto;
 }
 
 .location_btn {

@@ -12,10 +12,10 @@
 }
 .square_img {
     width: 1240px;
-    height: 340px;
+    height: 450px;
     border-radius: 10px 10px 0 0;
     object-fit: cover;
-    object-position: center 90%;
+    object-position: center 30%;
     display: block;
 }
 .detail_box{
