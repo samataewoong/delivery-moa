@@ -81,18 +81,18 @@ export default function CloseRoom({ userId, closeModule }) {
                             );
 
                             // 거리 계산 (3km 이내만 표시)
-                            const distance = window.kakao.maps.geometry.spherical.computeDistanceBetween(
-                                userCoords,
-                                roomCoords
-                            );
-
-                            if (distance <= 10000) {
+                            // const distance = window.kakao.maps.geometry.spherical.computeDistanceBetween(
+                            //     userCoords,
+                            //     roomCoords
+                            // );
+                            const boguen = true;
+                            if (boguen) {
                                 const marker = new window.kakao.maps.Marker({
                                     map: mapInstance.current,
                                     position: roomCoords,
                                     title: room.room_name,
                                     image: new window.kakao.maps.MarkerImage(
-                                        "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png",
+                                        "https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/popular/popular_1.jpg",
                                         new window.kakao.maps.Size(24, 35)
                                     ),
 
