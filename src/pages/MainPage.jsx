@@ -189,7 +189,7 @@ export default function MainHeader() {
                         ...room,
                         join_count: joinCount
                     };
-                });
+                }).filter(room  => room.join_count < room.max_people);
 
                 console.log("formattedRooms:", formattedRooms);
                 setRooms(formattedRooms);

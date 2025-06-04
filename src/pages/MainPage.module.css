@@ -192,6 +192,10 @@ html, main {
     flex-direction: column;
     align-items: center;
     width: 100px;
+    transition: transform 0.2s;
+}
+.circle_with_text:hover{
+    transform: translateY(-5px);
 }
 
 .circle {
@@ -278,7 +282,13 @@ html, main {
 
 .gongu_with_text {
     box-shadow: 4px 6px 2px rgba(0, 0, 0, 0.2);
+    /* box-shadow: 0 4px 12px rgba(0,0,0,0.05); */
     border-radius: 10px;
+    transition: transform 0.2s;
+}
+
+.gongu_with_text:hover {
+    transform: translateY(-5px);
 }
 
 .square_img {
@@ -394,7 +404,12 @@ html, main {
 .popular_with_text{
     box-shadow: 4px 6px 2px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
+    transition: transform 0.2s;
 }
+.popular_with_text:hover {
+    transform: translateY(-5px);
+}
+
 .popular_square{
     width: 216px;
     height: 72px;
