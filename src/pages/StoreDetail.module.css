@@ -12,9 +12,48 @@
 }
 .square_img {
     width: 1240px;
-    height: 500px;
+    height: 340px;
     border-radius: 10px 10px 0 0;
     object-fit: cover;
     object-position: center 90%;
     display: block;
+}
+.detail_box{
+    width:1240px;
+    height:360px;
+    background-color: white;
+    border-radius:10px;
+    box-shadow: 4px 6px 2px rgba(0, 0, 0, 0.2);
+    padding: 20px 70px;
+    box-sizing: border-box;
+    position: relative;
+}
+.detail_img{
+    object-fit: cover;
+}
+.detail_text{
+    position: absolute;
+    color: white;
+    font-Size: 28px;
+    font-weight: 500;
+    top: 23px;
+    left: 80px;
+}
+.store_name{
+    font-Size: 34px;
+    font-weight: 500;
+    margin-top: 10px;
+}
+.star{
+    color: rgb(255, 217, 0);
+    font-size:20px;
+}
+.score{
+    font-size:18px;
+}
+.address_box{
+    box-sizing: border-box;
+    border: 1px solid black;
+    height: 160px;
+
 }
