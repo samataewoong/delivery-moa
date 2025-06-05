@@ -28,7 +28,7 @@ a {
 
 .search {
     display: flex;
-    padding: 31px 85px;
+    padding: 31px 111px  ;
     gap: 0;
 }
 
@@ -41,7 +41,7 @@ a {
 }
 
 .search_value {
-    width: 502.25px;
+    width: 450px;
     height: 53px;
     border: 0px;
     border-radius: 10px 0px 0px 10px;

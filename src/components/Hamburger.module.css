@@ -6,12 +6,13 @@
 .hamburger_nav {
     position: absolute;
     top: 115px;
-    right: 0;
+    right: calc((100vw - 1280px) / 2 );
     width: 434px;
     background-color: white;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     padding: 30px 45px;
     z-index: 1000;
+    overflow-y: auto;
 }
 
 .mypage_icon {

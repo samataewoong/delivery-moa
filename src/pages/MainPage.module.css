@@ -82,51 +82,6 @@ html, main {
 
 }
 
-.location {
-    display: flex;
-    margin: 48px 20px;
-}
-
-.location_btn,
-.location_gps {
-    display: flex;
-    box-sizing: border-box;
-    font-size: 16px;
-    width: 150px;
-    height: 20px;
-}
-.location_icon{
-    width: 13px;
-    height: auto;
-}
-
-.location_btn {
-    all: unset;
-    margin-top: 3px;
-    margin-right: 8px;
-    cursor: pointer;
-}
-
-.location_gps {
-    margin-top: -2px;
-    cursor: pointer;
-}
-.location_login{
-    font-size: 18px;
-    margin-right: 15px;
-}
-
-.main_hamburger {
-    position: absolute;
-    padding: 27.5px 20px;
-    right: 0;
-}
-
-.main_hamburger_btn {
-    all: unset;
-    cursor: pointer;
-}
-
 .body_box {
     width: 100%;
     display: flex;
