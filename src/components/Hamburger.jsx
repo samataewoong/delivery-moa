@@ -4,12 +4,13 @@ import styles from "./Hamburger.module.css";
 import supabase from "../config/supabaseClient";
 
 
-export default function HamburgerMenu({ isOpen, session, nickname, handleLogout, onClose }) {
+export default function HamburgerMenu({ isOpen, session, nickname, handleLogout }) {
 
     if (!isOpen) return null;
 
-  const [userRoom, setUserRoom] = useState([]);
-  const [cash, setCash] = useState(0);
+    const [userRoom, setUserRoom] = useState([]);
+    const [cash, setCash] = useState(0);
+    const [menuHeight, setMenuHeight] = useState("auto");
 
 
     //사용자가 있는 채팅방만 불러오기
@@ -19,79 +20,99 @@ export default function HamburgerMenu({ isOpen, session, nickname, handleLogout,
             if (!userId) return;
 
 
-      //Cash(코인)값 가져오기
-      const { data: userData, error: userError } = await supabase
-        .from("user")
-        .select("cash")
-        .eq("id", userId)
-        .single();
-      if (!userError && userData) {
-        setCash(userData.cash);
-      }
+            //Cash(코인)값 가져오기
+            const { data: userData, error: userError } = await supabase
+                .from("user")
+                .select("cash")
+                .eq("id", userId)
+                .single();
+            if (!userError && userData) {
+                setCash(userData.cash);
+            }
 
-      const { data, error } = await supabase
-        .from("room_join")
-        .select("room_id")
-        .eq("user_id", userId);
-      if (error || !data) return;
-      const roomIds = data.map((j) => j.room_id);
+            const { data, error } = await supabase
+                .from("room_join")
+                .select("room_id")
+                .eq("user_id", userId);
+            if (error || !data) return;
+            const roomIds = data.map((j) => j.room_id);
 
 
-      const { data: roomData, error: roomError } = await supabase
-        .from("room")
-        .select("id, room_name, store_id, max_people, status")
-        .in("id", roomIds);
-      if (roomError || !roomData) return;
+            const { data: roomData, error: roomError } = await supabase
+                .from("room")
+                .select("id, room_name, store_id, max_people, status")
+                .in("id", roomIds);
+            if (roomError || !roomData) return;
 
-      const { data: countpeople, error: countError } = await supabase
-        .from("room_join")
-        .select("room_id, user_id", { count: "exact" });
+            const { data: countpeople, error: countError } = await supabase
+                .from("room_join")
+                .select("room_id, user_id", { count: "exact" });
 
-      const chatTimes = await Promise.all(
-        roomIds.map(async (roomId) => {
-          const { data: chatData } = await supabase
-            .from("chat")
-            .select("created_at")
-            .eq("room_id", roomId)
-            .order("created_at", { ascending: false })
-            .limit(1)
-            .single();
+            const chatTimes = await Promise.all(
+                roomIds.map(async (roomId) => {
+                    const { data: chatData } = await supabase
+                        .from("chat")
+                        .select("created_at")
+                        .eq("room_id", roomId)
+                        .order("created_at", { ascending: false })
+                        .limit(1)
+                        .single();
 
-          return {
-            room_id: roomId,
-            latest_chat: chatData?.created_at || null,
-          };
-        })
-      );
+                    return {
+                        room_id: roomId,
+                        latest_chat: chatData?.created_at || null,
+                    };
+                })
+            );
 
-      const formattedRooms = roomData.map((room) => {
-        const count =
-          countpeople?.filter((j) => j.room_id === room.id).length || 0;
-        const chatInfo = chatTimes.find((c) => c.room_id === room.id);
+            const formattedRooms = roomData.map((room) => {
+                const count =
+                    countpeople?.filter((j) => j.room_id === room.id).length || 0;
+                const chatInfo = chatTimes.find((c) => c.room_id === room.id);
 
-        return {
-          id: room.id,
-          name: room.room_name,
-          store_id: room.store_id,
-          max_people: room.max_people,
-          status: room.status,
-          count,
-          latest_chat: chatInfo?.latest_chat,
+                return {
+                    id: room.id,
+                    name: room.room_name,
+                    store_id: room.store_id,
+                    max_people: room.max_people,
+                    status: room.status,
+                    count,
+                    latest_chat: chatInfo?.latest_chat,
+                };
+            });
+            setUserRoom(formattedRooms);
         };
-      });
-      setUserRoom(formattedRooms);
-    };
-    if (session) {
-      fetchUserRooms();
-    }
-  }, [session]);
+        if (session) {
+            fetchUserRooms();
+        }
+    }, [session]);
 
-  const roomUrl =
-    "https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/store/store_";
+    useEffect(() => {
+        function updateHeight() {
+            const footer = document.querySelector("footer");
+            const footerHeight = footer ? footer.offsetHeight : 0;
+            const docHeight = document.body.scrollHeight;
+            const topOffset = 115;
+
+            const calculatedHeight = docHeight - footerHeight - topOffset;
+
+            setMenuHeight(calculatedHeight > 0 ? calculatedHeight : "auto");
+        }
+
+        updateHeight();
+        window.addEventListener("resize", updateHeight);
+
+        return () => {
+            window.removeEventListener("resize", updateHeight);
+        };
+    }, []);
+
+    const roomUrl =
+        "https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/store/store_";
 
     return (
         <div className={styles["main"]}>
-            <div className={styles["hamburger_nav"]}>
+            <div className={styles["hamburger_nav"]} style={{ height: `${menuHeight - 60}px` }}>
                 <div className={styles["mypage"]}>
                     <img
                         className={styles["mypage_icon"]}
@@ -115,7 +136,7 @@ export default function HamburgerMenu({ isOpen, session, nickname, handleLogout,
                                 alt="코인"
                             />
                             <div className={styles["coin_confirm"]}>
-                              {cash !== null ? cash.toLocaleString() : "0"}
+                                {cash !== null ? cash.toLocaleString() : "0"}
                             </div>
                         </div>
                         <progress className={styles["gongu_progress"]} value={3} max={4}></progress>

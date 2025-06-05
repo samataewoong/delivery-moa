@@ -66,7 +66,6 @@ export default function StoreListPage() {
     const imgBaseUrl = "https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/category/";
     return (
         <>
-            <Header />
             <div className={styles["storelist_body"]}>
                 <div className={styles["circle_category_outer"]}>
                     <button className={styles["scroll_button"]} onClick={scrollLeft}>{"<"}</button>
