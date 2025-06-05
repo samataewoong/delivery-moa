@@ -91,7 +91,7 @@ export default function RoomCreatePage() {
     return (
         <>
             <MustBeLoggedIn />
-            <Header />
+            
             <div className={style.container}>
                 <div className={style.room_create_page_box}>
                     <h1>공구방 생성</h1>

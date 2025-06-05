@@ -22,7 +22,7 @@ export default function StoreDetail(){
     const storeUrl="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/store/store_"
     return (
         <>
-        <Header/>
+
         <main>
             <div><img src={`${storeUrl}${store.id}.jpg`}/></div>
             <div>{store.store_name}</div>

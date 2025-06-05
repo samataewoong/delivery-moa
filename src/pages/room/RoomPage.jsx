@@ -14,7 +14,6 @@ export default function RoomPage() {
             flexDirection: "column",
             alignItems: "center",
         }}>
-            <Header />
             <RoomJoin room_id={room_id} />
             <RoomHeader room_id={room_id} />
             <RoomBody room_id={room_id} />

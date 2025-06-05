@@ -108,7 +108,6 @@ const Review = () => {
 
   return (
     <>
-      <Header />
       <div className={styles.container}>
         <h2 className={styles.title}>
           {roomInfo

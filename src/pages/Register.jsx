@@ -98,7 +98,7 @@ function Register() {
 
     return (
         <>
-            <Header />
+        
             <div className={style['register_container']}>
                 <div className={style['register_h2h3']}>
                     <h2>회원가입</h2>

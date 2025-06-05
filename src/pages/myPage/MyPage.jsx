@@ -60,7 +60,7 @@ export default function MyPage() {
 
   return (
     <>
-      <Header />
+      
       <div className={styles.myPage}>
         {/* 왼쪽 메뉴 */}
         <div className={styles.myPageLeft}>

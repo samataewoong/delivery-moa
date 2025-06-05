@@ -120,7 +120,6 @@ const OrderComplete = () => {
 
   return (
     <>
-      <Header />
       <div className={style.container}>
         <div className={style.header}>
           <i className="fas fa-check-circle"></i>
