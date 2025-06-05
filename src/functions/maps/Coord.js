@@ -7,7 +7,7 @@
  */
 export async function getCoordinates(address) {
     return await new Promise((resolve, reject) => {
-        if (!userAddress || !window.kakao || !window.kakao.maps) {
+        if (!window.kakao || !window.kakao.maps) {
             reject(new Error("Kakao Maps API is not loaded."));
         }
 
