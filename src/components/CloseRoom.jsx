@@ -85,28 +85,38 @@ export default function CloseRoom({ userId, roomList }) {
                             //     userCoords,
                             //     roomCoords
                             // );
-                            const boguen = true;
-                            if (boguen) {
+                            if (true) {
                                 const marker = new window.kakao.maps.Marker({
                                     map: mapInstance.current,
                                     position: roomCoords,
                                     title: room.room_name,
                                     image: new window.kakao.maps.MarkerImage(
-                                        "https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/popular/popular_1.jpg",
-                                        new window.kakao.maps.Size(24, 35)
+                                        `${import.meta.env.BASE_URL}/web_logo.png`,
+                                        new window.kakao.maps.Size(30, 35)
                                     ),
 
                                 });
-
+                                const buttonCss = styles.infowindowClose;
+                                const roomImg = styles.infowindowImg;
                                 const infowindow = new window.kakao.maps.InfoWindow({
-                                    content: `<div style="padding:5px; font-size:14px;">
-                              <strong>${room.room_name}</strong><br/>
+                                    content: `<div style="position: relative; padding:5px; font-size:14px;">
+                                    <div>
+                                    <img class="${roomImg}" alt="undefined 이미지" src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/store/store_${room.store_id}.jpg"></div>
+                              <strong>${room.room_name}
+                              <button id="closeButton-${room.id}"  class="${buttonCss}">x</button></strong><br/>
                               ${room.room_address}
                             </div>`,
                                 });
 
                                 window.kakao.maps.event.addListener(marker, "click", () => {
                                     infowindow.open(mapInstance.current, marker);
+
+                                    setTimeout(() => {
+                                        const closeButton = document.getElementById(`closeButton-${room.id}`);
+                                        if (closeButton) {
+                                            closeButton.onclick = () => infowindow.close();
+                                        }
+                                    })
                                 });
                             }
                         } else {
