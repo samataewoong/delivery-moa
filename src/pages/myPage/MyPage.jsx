@@ -81,7 +81,7 @@ export default function MyPage() {
 
   return (
     <>
-      <Header />
+      
       <div className={styles.myPage}>
         <div className={styles.myPageLeft}>
           <div className={styles.profile}>
