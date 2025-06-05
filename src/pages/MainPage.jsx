@@ -2,8 +2,8 @@ import styles from "./MainPage.module.css";
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import supabase from "../config/supabaseClient";
-import Hamburger from "../components/Hamburger";
 import CloseRoom from "../components/CloseRoom";
+import { useNavigate } from "react-router-dom";
 
 export default function MainPage({ toggleMenu }) {
     const [nickname, setNickname] = useState("");
@@ -13,6 +13,7 @@ export default function MainPage({ toggleMenu }) {
     const [categories, setCategories] = useState([]);
     const [rooms, setRooms] = useState([]);
     const [menu, setMenu] = useState([]);
+    const navigate = useNavigate();
 
     const onKeyDown = (e) => {
         if (e.key === "Enter") {
@@ -53,7 +54,7 @@ export default function MainPage({ toggleMenu }) {
             alert("검색어를 입력하세요.");
             return;
         }
-        alert(`검색어: ${keyword}`);
+        navigate(`/search?keyword=${encodeURIComponent(keyword)}`);
     };
     //공구방 데이터
     useEffect(() => {
