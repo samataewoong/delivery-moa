@@ -1,0 +1,11 @@
+.main_box {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.main_container {
+    width: 1280px;
+    padding: 80px 20px;
+    box-sizing: border-box;
+}
