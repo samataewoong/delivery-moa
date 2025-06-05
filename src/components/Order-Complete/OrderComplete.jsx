@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import supabase from "../../config/supabaseClient";
 import style from './OrderModel.module.css'; 
-import Header from "../../components/Header";
 import thousands from 'thousands';
 import selectRoom from "../../functions/room/SelectRoom";
 
@@ -119,8 +118,6 @@ const OrderComplete = () => {
   if (error) return <div className={style.error}>오류 발생: {error}</div>;
 
   return (
-    <>
-      <Header />
       <div className={style.container}>
         <div className={style.header}>
           <i className="fas fa-check-circle"></i>
@@ -201,7 +198,6 @@ const OrderComplete = () => {
           </button>
         </div>
       </div>
-    </>
   );
 };
 
