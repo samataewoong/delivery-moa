@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import supabase from "../config/supabaseClient";
 import Hamburger from "../components/Hamburger";
+import CloseRoom from "../components/CloseRoom";
 
 export default function MainHeader() {
     const [isOpen, setIsOpen] = useState(false);
@@ -143,7 +144,7 @@ export default function MainHeader() {
                 .eq("id", session.user.id);
 
             if (error) {
-                console.error("address 불러오기 실��:", error);
+                console.error("address 불러오기 실패패:", error);
             } else {
                 setAddress(data[0].address);
             }
@@ -188,7 +189,7 @@ export default function MainHeader() {
                         ...room,
                         join_count: joinCount
                     };
-                });
+                }).filter(room  => room.join_count < room.max_people);
 
                 console.log("formattedRooms:", formattedRooms);
                 setRooms(formattedRooms);
@@ -246,7 +247,8 @@ export default function MainHeader() {
     const imgBaseUrl = "https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/category/";
 
     const popularUrl = "https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/popular/popular_";
-
+    // 지도 testing
+    const userId = session?.user?.id;
     return (
         <>
             <header className={styles["main_header"]}>
@@ -262,8 +264,10 @@ export default function MainHeader() {
                     </div>
                     <div>
                         <ul className={styles["main_menu"]}>
-                            <li>메뉴</li>
-                            <li>진행중인 공구</li>
+                            <li><Link to="/storelist">메뉴</Link></li>
+                            <li>
+                                <Link to="/roomPage/AllRoom" state={{ userId }}>진행중인 공구</Link>
+                            </li>
                             <li>랭킹</li>
                             <li>이벤트</li>
                         </ul>
@@ -273,7 +277,7 @@ export default function MainHeader() {
                             {session && nickname ? (
                                 <>
                                     <button className={styles["location_btn"]} onClick={handleClick}>
-                                        <img src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/location_imo.png" />
+                                        <img className={styles["location_icon"]} src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/location_icon_red.png" />
                                     </button>
                                     {address ? (
                                         <div onClick={handleClick}>{address}</div>
@@ -318,7 +322,7 @@ export default function MainHeader() {
                             nickname={nickname}
                             handleLogout={handleLogout}
                             onClose={() => setIsOpen(false)}
-                            style={{ height: '1945px' }}
+
                         />
                     )}
                 </div>
@@ -350,7 +354,6 @@ export default function MainHeader() {
                             <Link to="/storelist">
                                 <div className={styles["food_category_move"]}>전체보기→</div>
                             </Link>
-
                         </div>
                         <div className={styles["circle_category_wrap"]}>
                             {categories.map((item) => (
@@ -368,7 +371,10 @@ export default function MainHeader() {
                         </div>
                         <div className={styles["gongu_wrap"]}>
                             <div className={styles["gongu_list"]}>진행중인 공구방</div>
-                            <div className={styles["gongu_list_move"]}>전체보기→</div>
+                            <div className={styles["gongu_list_move"]}><Link
+                                to="/roomPage/AllRoom"
+                                state={{ userId }}
+                            >전체보기→</Link></div>
                         </div>
                         <div className={styles["gongu_list_wrap"]}>
                             {rooms.slice(0, 6).map((items) => (

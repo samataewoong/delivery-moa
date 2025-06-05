@@ -15,7 +15,6 @@ export default async function deleteRoomJoin({
             .eq('room_id', room_id);
 
         if (error) throw error;
-        return;
     }
     const roomJoinData = await selectRoomJoin({ room_id,user_id})
     if(roomData[0].leader_id === user_id) {

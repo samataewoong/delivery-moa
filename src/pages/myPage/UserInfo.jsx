@@ -3,6 +3,8 @@ import styles from "./MyPage.module.css";
 import { useEffect, useState } from "react";
 import supabase from "../../config/supabaseClient";
 import FormattedDate from "../../components/FormattedDate";
+import MapComponent from "./MapComponent";
+//import KakaoMap from "../../components/KakaoMap";
 
 export default function UserInfo() {
   const navigate = useNavigate();
@@ -64,6 +66,7 @@ export default function UserInfo() {
   const editButton = () => {
     navigate("../edituser");
   };
+
   return (
     <div className={styles.userInfo}>
       <div className={styles.infoRow}>
@@ -81,7 +84,12 @@ export default function UserInfo() {
       <div className={styles.myButtonContainer}>
         <button onClick={editButton}>수정하기</button>
         <button onClick={quitButton}>회원탈퇴</button>
+        <MapComponent address="서울 종로구 종로 지하 73" />
       </div>
+      {/* <div>
+        카카오맵 <KakaoMap />
+      </div> */}
     </div>
+    
   );
 }

@@ -18,6 +18,49 @@ export default function Header({
     const [nickname, setNickname] = useState("");
     const [session, setSession] = useState(null);
     const [keyword, setKeyword] = useState("");
+    const [address, setAddress] = useState("");
+
+    useEffect(() => {
+        if (session?.user) {
+            const fetchAddress = async () => {
+                const { data: addressData } = await supabase
+                    .from("user")
+                    .select("address")
+                    .eq("id", session.user.id)
+                    .single();
+    
+                setAddress(addressData?.address || "");
+            };
+            fetchAddress();
+        }
+    }, [session]);
+
+    async function updateAddress(address) {
+        try {
+            const { data, error } = await supabase
+                .from("user")
+                .update({ address })
+                .eq('id', session.user.id);
+
+            if (error) {
+                throw error;
+            }
+
+            setNickname(data.nickname);
+            setAddress(data.address);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    const handleClick = () => {
+        new window.daum.Postcode({
+            oncomplete: function (data) {
+                setAddress(data.address);
+                updateAddress(data.address);
+            },
+        }).open();
+    };
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
@@ -49,6 +92,10 @@ export default function Header({
 
         return () => subscription.unsubscribe();
     }, []);
+
+    useEffect(() => {
+        
+    })
 
     const handleLogout = async () => {
         const { error } = await supabase.auth.signOut();
@@ -96,6 +143,27 @@ export default function Header({
                                 alt="햄버거 메뉴"
                             />
                         </button>
+                    </div>
+                    <div className={styles["location"]}>
+                        <div className={styles["location_gps"]}>
+                            {session && nickname ? (
+                                <>
+                                    <button className={styles["location_btn"]} onClick={handleClick}>
+                                        <img className={styles["location_icon"]} src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/location_icon_white.png" />
+                                    </button>
+                                    {address ? (
+                                        <div onClick={handleClick}>{address}</div>
+                                    ) : (
+                                        <div onClick={handleClick}>주소를 입력하세요</div>
+                                    )}
+                                </>
+                            ) : (
+                                <div className={styles["main_login"]}>
+                                    <Link className={styles["location_login"]} to="/login">로그인</Link>
+                                    <Link className={styles["location_login"]} to="/register">회원가입</Link>
+                                </div>
+                            )}
+                        </div>
                     </div>
                     <Hamburger
                         isOpen={isOpen}
