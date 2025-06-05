@@ -2,15 +2,15 @@ import { useState, useRef, useEffect } from "react";
 import supabase from "../config/supabaseClient";
 import styles from "./CloseRoom.module.css";
 
-export default function CloseRoom({ userId }) {
+export default function CloseRoom({ userId, roomList }) {
     const [userAddress, setUserAddress] = useState("");
-    const [roomList, setRoomList] = useState([]); // 전체 room 객체 리스트
+    //const [roomList, setRoomList] = useState([]); // 전체 room 객체 리스트
     const mapRef = useRef(null);
     const mapInstance = useRef(null);
 
     useEffect(() => {
         const fetchUserData = async () => {
-            if (!userId) return;
+            //if (!userId) return;
 
             const { data: user, error: userError } = await supabase
                 .from("user")
@@ -24,15 +24,15 @@ export default function CloseRoom({ userId }) {
                 setUserAddress(user.address);
             }
 
-            const { data: rooms, error: roomError } = await supabase
-                .from("room")
-                .select("id, room_name, room_address");
+            // const { data: rooms, error: roomError } = await supabase
+            //     .from("room")
+            //     .select("id, room_name, room_address");
 
-            if (roomError) {
-                console.log("Error fetching rooms:", roomError);
-            } else {
-                setRoomList(rooms || []);
-            }
+            // if (roomError) {
+            //     console.log("Error fetching rooms:", roomError);
+            // } else {
+            //     setRoomList(rooms || []);
+            // }
         };
 
         fetchUserData();
@@ -120,12 +120,20 @@ export default function CloseRoom({ userId }) {
         });
     }, [userAddress, roomList]);
 
-    return (
-        <div>
-            <div>
-                <div ref={mapRef} style={{ width: "700px", height: "400px" }} />
-            </div>
+    return userId ? (
+        <div className={styles.mapContainer}>
+            <div
+                className={styles.closeMap}
+                ref={mapRef}
+                style={{ width: "900px", height: "400px" }}
+            ></div>
         </div>
-
-    )
+    ) : <div className={styles.mapContainer}>
+        <div
+            className={styles.closeMap}
+            style={{ width: "900px", height: "400px" }}
+        >
+            <p>로그인이 필요합니다.</p>
+        </div>
+    </div>
 };

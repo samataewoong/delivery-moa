@@ -1,0 +1,37 @@
+.AllRoomPage {
+    width: 1280px;
+    padding: 0 20px;
+    margin: 0px 400px 0px 400px;
+}
+
+.roomContainer{
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+}
+
+.roomList{
+    border: solid 1px black;
+    border-radius: 11px;
+    margin: 5px 5px 10px 5px;
+    width: 580px;
+    height: 150px;
+}
+
+.roomTitle{
+    text-align: end;
+    margin-right: 15px;
+    margin-top: 95px;
+    font-weight: bold;
+    font-size: large;
+}
+
+.roomAddress{
+    text-align: end;
+    margin-right: 15px;
+    font-weight: 600px;
+}
+
+.roomListLeft{
+    width:50%;
+}
