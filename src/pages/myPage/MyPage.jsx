@@ -1,42 +1,46 @@
-import { Link, Outlet, useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import GaugeBar from "../../components/gaugeBar";
 import MyHeader from "./MyHeader";
 import styles from "./MyPage.module.css";
 import Header from "../../components/Header";
 import supabase from "../../config/supabaseClient";
-import { useState, useEffect } from "react";
-import { useOutletContext } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import CashCharge from "../../components/CashCharge";
 import thousands from "thousands";
 
 export default function MyPage() {
-  const handleChargeClick = () => {
-    window.open("/delivery-moa/cashcharge", "_blank", "width=500,height=700");
-  };
   const navigate = useNavigate();
-  //user 정보
+  const location = useLocation();
+
+  // user 정보 상태
   const [session, setSession] = useState(null);
   const [myUserId, setMyUserId] = useState(null);
   const [myNickname, setMyNickname] = useState("");
   const [myCash, setMyCash] = useState(0);
-  const [myTemperature, setMyTemperature] = useState("");
-  useEffect(() => {
-    const fetchUserData = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
+  const [myRating, setMyRating] = useState(0); // 평점 0~5
 
-      if (!session?.user) {
+  const handleChargeClick = () => {
+    window.open("/delivery-moa/cashcharge", "_blank", "width=500,height=700");
+  };
+
+  useEffect(() => {
+    let user_id = null;
+    const fetchUserData = async () => {
+      const {
+        data: { session: sessionData },
+      } = await supabase.auth.getSession();
+
+      if (!sessionData?.user) {
         alert("로그인이 필요합니다.");
-        navigate("/", { replace: true }); // replace로 뒤로 가기 방지
+        navigate("/", { replace: true });
         return;
       }
-
-      setSession(session);
+      user_id = sessionData.user.id;
+      setSession(sessionData);
 
       const { data, error } = await supabase
         .from("user")
-        .select("nickname, cash")
-        .eq("id", session.user.id)
+        .select("nickname, cash, user_rating") // 평점도 포함
+        .eq("id", sessionData.user.id)
         .single();
 
       if (error) {
@@ -44,11 +48,28 @@ export default function MyPage() {
       } else {
         setMyNickname(data.nickname);
         setMyCash(data.cash);
-        setMyUserId(session.user.id);
+        setMyUserId(sessionData.user.id);
+        setMyRating(data.user_rating ?? 50); // 평점 없으면 50
       }
     };
 
     fetchUserData();
+    const userSubscriber = supabase
+      .realtime
+      .channel("realtime:user_cash_watch_on_mypage_in_mypage")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "user" },
+        (payload) => {
+          if (payload.new.id === user_id) {
+            fetchUserData();
+          }
+        }
+      )
+      .subscribe();
+    return () => {
+      userSubscriber.unsubscribe();
+    };
   }, [navigate]);
 
   const currentMenu = location.pathname.split("/").pop();
@@ -62,22 +83,19 @@ export default function MyPage() {
     <>
       
       <div className={styles.myPage}>
-        {/* 왼쪽 메뉴 */}
         <div className={styles.myPageLeft}>
           <div className={styles.profile}>
             <h2 className={styles.userName}>{myNickname} 님</h2>
             <br />
-            <GaugeBar value={80} />
+            {/* 평점 0~5 → 0~100으로 변환해서 GaugeBar에 전달 */}
+            <GaugeBar value={myRating} />
             <div className={styles.myCash}>
-              <span style={{display: 'flex'}}>
+              <span style={{ display: "flex" }}>
                 <span className={styles.label}>내 캐시:</span>
                 <span className={styles.amount}>{thousands(myCash)}</span>
                 <span>원</span>
               </span>
-              <button
-                className={styles.chargeButton}
-                onClick={handleChargeClick}
-              >
+              <button className={styles.chargeButton} onClick={handleChargeClick}>
                 충전
               </button>
             </div>
@@ -102,7 +120,6 @@ export default function MyPage() {
           </div>
         </div>
 
-        {/* 오른쪽 콘텐츠 */}
         <div className={styles.myPageRight}>
           <MyHeader menuList={menuList} />
           <Outlet context={{ userSession: session, userId: myUserId }} />

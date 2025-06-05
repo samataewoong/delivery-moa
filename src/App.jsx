@@ -18,17 +18,75 @@ import CashCharge from "./components/CashCharge";
 import StoreListPage from "./pages/StoreListPage";
 import AllRoom from "./pages/roomPage/AllRoom";
 import RoomCreatePage from "./pages/room_create/RoomCreatePage";
+import Hamburger from "./components/Hamburger";
+import MainHeader from "./components/MainHeader";
+import React, { useState, useEffect } from "react";
+import supabase from "./config/supabaseClient";
+import { useLocation } from "react-router-dom";
 
 
 function App() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [nickname, setNickname] = useState("");
+  const [session, setSession] = useState(null);
+
+  const fetchNickname = async (user_id) => {
+    const { data } = await supabase.from("user").select("nickname").eq("id", user_id).single();
+    setNickname(data?.nickname || "");
+  };
+
+  useEffect(() => {
+    const getSession = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      setSession(session);
+      if (session?.user) fetchNickname(session.user.id);
+    };
+
+    getSession();
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+      if (session?.user) fetchNickname(session.user.id);
+      else setNickname("");
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      alert("로그아웃 실패!" + error.message);
+    } else {
+      setSession(null);
+      setNickname("");
+    }
+  };
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
+  };
+  const location = useLocation();
+  const isMainPage = location.pathname === "/mainpage";
+
   return (
     <>
-      <BrowserRouter basename={import.meta.env.BASE_URL}>
+        {isMainPage ? (
+          <MainHeader toggleMenu={toggleMenu} />
+        ) : (
+          <Header toggleMenu={toggleMenu} excludes={[
+            "/mainpage",
+            "/cashcharge",
+          ]} />
+        )}
         <Routes>
           <Route path="/" element={<RootPage />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/mainpage" element={<MainPage />} />
+          <Route path="/mainpage" element={<MainPage toggleMenu={toggleMenu} />} />
           <Route path="/roomPage/AllRoom" element={<AllRoom />} />
           <Route path="/room/create/:store_id" element={<RoomCreatePage />} />
           <Route path="/room/:room_id" element={<RoomPage />} />
@@ -46,11 +104,19 @@ function App() {
           </Route>
           <Route path="cashcharge" element={<CashCharge />} />
         </Routes>
+        {isOpen && (
+          <Hamburger
+            isOpen={isOpen}
+            session={session}
+            nickname={nickname}
+            handleLogout={handleLogout}
+            onClose={() => setIsOpen(false)}
 
+          />
+        )}
         <Footer excludes={[
           "/cashcharge"
-        ]}/>
-      </BrowserRouter>
+        ]} />
     </>
   );
 }

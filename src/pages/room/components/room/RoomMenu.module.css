@@ -25,8 +25,10 @@
     font-weight: 400;
 }
 .room_menus {
-    width: calc(522px - 20px);
+    width: calc(522px);
     height: calc(828px - 300px);
+    margin-top: 20px;
+    overflow: auto;
     border-radius: 10px;
 }
 .total_price_box {
