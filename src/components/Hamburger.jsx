@@ -43,11 +43,6 @@ export default function HamburgerMenu({ isOpen, session, nickname, handleLogout 
         .in("id", roomIds);
       if (roomError || !roomData) return;
 
-            const { data: countpeople } = await supabase
-                .from("room_join")
-                .select("room_id, user_id", { count: "exact" });
-
-
       const { data: countpeople, error: countError } = await supabase
         .from("room_join")
         .select("room_id, user_id", { count: "exact" });
