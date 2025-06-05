@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import styles from "./Hamburger.module.css";
 import supabase from "../config/supabaseClient";
 
 
-export default function HamburgerMenu({ isOpen, session, nickname, handleLogout }) {
+export default function HamburgerMenu({ isOpen, session, nickname, handleLogout, onClose }) {
 
-    if (!isOpen) return null;
+    const menuRef = useRef();
 
     const [userRoom, setUserRoom] = useState([]);
     const [cash, setCash] = useState(0);
@@ -93,6 +93,7 @@ export default function HamburgerMenu({ isOpen, session, nickname, handleLogout 
             const footerHeight = footer ? footer.offsetHeight : 0;
             const docHeight = document.body.scrollHeight;
             const topOffset = 115;
+            const bottomPadding = 20;
 
             const calculatedHeight = docHeight - footerHeight - topOffset;
 
@@ -107,12 +108,31 @@ export default function HamburgerMenu({ isOpen, session, nickname, handleLogout 
         };
     }, []);
 
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (menuRef.current && !menuRef.current.contains(e.target)) {
+                onClose();
+            }
+        };
+
+        if (isOpen) {
+            document.addEventListener("mousedown", handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [isOpen, onClose]);
+
+    if (!isOpen) return null;
+
     const roomUrl =
         "https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/store/store_";
 
     return (
-        <div className={styles["main"]}>
-            <div className={styles["hamburger_nav"]} style={{ height: `${menuHeight - 60}px` }}>
+        <div className={styles["main"]} ref={menuRef}>
+            <div className={styles["hamburger_nav"]} 
+            style={{ height: `${menuHeight - 60}px` }}>
                 <div className={styles["mypage"]}>
                     <img
                         className={styles["mypage_icon"]}
