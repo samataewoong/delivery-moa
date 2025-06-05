@@ -5,6 +5,7 @@ import styles from "./ReviewModel.module.css";
 import { FaStar } from "react-icons/fa";
 import Header from "../../components/Header";
 import selectRoom from "../../functions/room/SelectRoom";
+import selectUser from "../../functions/user/SelectUser";
 
 const Review = () => {
   const { room_id } = useParams(); // URL에서 room_id 추출
@@ -89,18 +90,31 @@ const Review = () => {
   // 제출 버튼 클릭 시 DB 업데이트
   const handleSubmit = async () => {
     for (const [userId, rating] of Object.entries(ratings)) {
-      const { error } = await supabase
-        .from("user")
-        .update({ user_rating: rating })  // 단일 숫자 저장
-        .eq("id", userId);
+      try {
+        const userData = await selectUser({ user_id: userId });
+        let userRating = userData[0]?.user_rating ?? 50;
+        if(rating + (rating - 3) < 0){
+          userRating = 0;
+        } else if(rating + (rating - 3) > 100){
+          userRating = 100;
+        } else {
+          userRating = (userRating + (rating - 3));
+        }
+        const { error } = await supabase
+          .from("user")
+          .update({ user_rating: userRating })  // 단일 숫자 저장
+          .eq("id", userId);
 
-      if (error) {
-        console.error(`user ${userId} 업데이트 실패:`, error.message);
+        if (error) {
+          console.error(`user ${userId} 업데이트 실패:`, error.message);
+        }
+      } catch (error) {
+        console.error(`user ${userId} 정보 불러오기 실패:`, error.message);
       }
     }
 
     alert("모든 별점 평가가 저장되었습니다.");
-    navigate("/mainpage");
+    navigate("/mainpage", { replace: true });
   };
 
   return (

@@ -48,7 +48,7 @@ export default function MyPage() {
         setMyNickname(data.nickname);
         setMyCash(data.cash);
         setMyUserId(session.user.id);
-        setMyRating(data.user_rating ?? 0); // 평점 없으면 0
+        setMyRating(data.user_rating ?? 50); // 평점 없으면 50
       }
     };
 
@@ -71,7 +71,7 @@ export default function MyPage() {
             <h2 className={styles.userName}>{myNickname} 님</h2>
             <br />
             {/* 평점 0~5 → 0~100으로 변환해서 GaugeBar에 전달 */}
-            <GaugeBar value={myRating * 20} />
+            <GaugeBar value={myRating} />
             <div className={styles.myCash}>
               <span style={{ display: "flex" }}>
                 <span className={styles.label}>내 캐시:</span>
