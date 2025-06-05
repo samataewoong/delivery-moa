@@ -135,7 +135,7 @@ export default function CloseRoom({ userId, roomList }) {
             <div
                 className={styles.closeMap}
                 ref={mapRef}
-                style={{ width: "900px", height: "400px" }}
+                style={{ width: "950px", height: "600px" }}
             ></div>
         </div>
     ) : <div className={styles.mapContainer}>

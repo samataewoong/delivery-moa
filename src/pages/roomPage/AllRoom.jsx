@@ -16,7 +16,8 @@ export default function AllRoom() {
         const fetchUserData = async () => {
             const { data: rooms, error: roomError } = await supabase
                 .from("room")
-                .select("id, store_id,  room_name, room_address");
+                .select("id, store_id,  room_name, room_address")
+                .eq('status',"모집중");
 
             if (roomError) {
                 console.log("Error fetching rooms:", roomError);
@@ -30,18 +31,19 @@ export default function AllRoom() {
     return (
         <>
             <MustBeLoggedIn />
-            <div>
-                <div>
-                {roomList.map((room, index) => (
-                    <div key={room.id} className={styles.roomList}>
-                        <div className={styles.roomTitle}>{room.room_name} 인덱스:{index}</div>
-                        <div className={styles.roomAddress}>{room.room_address}</div>
-                    </div>
-                ))}
+            <div className={styles.AllRoomBody}>
+                <div className={styles.rooms}>
+                    {roomList.map((room, index) => (
+                        <div key={room.id} className={styles.roomList}>
+                            <div className={styles.roomTitle}>{room.room_name}</div>
+                            <div className={styles.roomAddress}>{room.room_address}</div>
+                        </div>
+                    ))}
                 </div>
-                <CloseRoom userId={userId} roomList={roomList} />
+                <div className={styles.roomMap}>
+                    <CloseRoom userId={userId} roomList={roomList} />
+                </div>
             </div>
-
         </>
     )
 }
