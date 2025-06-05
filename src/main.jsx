@@ -4,9 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-    <StrictMode>
-        <BrowserRouter basename={import.meta.env.BASE_URL}>
-            <App />
-        </BrowserRouter>
-    </StrictMode>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
+        <App />
+    </BrowserRouter>
 );
