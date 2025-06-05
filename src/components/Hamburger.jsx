@@ -11,6 +11,9 @@ export default function HamburgerMenu({ isOpen, session, nickname, handleLogout,
     const [userRoom, setUserRoom] = useState([]);
     const [cash, setCash] = useState(0);
     const [menuHeight, setMenuHeight] = useState("auto");
+    const [myRating, setMyRating] = useState(0);
+
+    const [face, setFace] = useState("soso");
 
 
     //사용자가 있는 채팅방만 불러오기
@@ -30,6 +33,20 @@ export default function HamburgerMenu({ isOpen, session, nickname, handleLogout,
                 setCash(userData.cash);
             }
 
+            const { data: userRate} = await supabase.from("user")
+                .select("user_rating")
+                .eq("id", userId)
+                .single();
+            setMyRating(userRate.user_rating);
+
+            if (userRate.user_rating >= 80) {
+                setFace("good");
+            } else if (userRate.user_rating < 30) {
+                setFace("bad");
+            } else {
+                setFace("soso");
+            }
+
             const { data, error } = await supabase
                 .from("room_join")
                 .select("room_id")
@@ -44,7 +61,7 @@ export default function HamburgerMenu({ isOpen, session, nickname, handleLogout,
                 .in("id", roomIds);
             if (roomError || !roomData) return;
 
-            const { data: countpeople, error: countError } = await supabase
+            const { data: countpeople} = await supabase
                 .from("room_join")
                 .select("room_id, user_id", { count: "exact" });
 
@@ -93,10 +110,8 @@ export default function HamburgerMenu({ isOpen, session, nickname, handleLogout,
             const footerHeight = footer ? footer.offsetHeight : 0;
             const docHeight = document.body.scrollHeight;
             const topOffset = 115;
-            const bottomPadding = 20;
 
             const calculatedHeight = docHeight - footerHeight - topOffset;
-
             setMenuHeight(calculatedHeight > 0 ? calculatedHeight : "auto");
         }
 
@@ -123,16 +138,18 @@ export default function HamburgerMenu({ isOpen, session, nickname, handleLogout,
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, [isOpen, onClose]);
+    
 
     if (!isOpen) return null;
 
     const roomUrl =
         "https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/store/store_";
+    const scoreUrl = "https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/";
 
     return (
         <div className={styles["main"]} ref={menuRef}>
-            <div className={styles["hamburger_nav"]} 
-            style={{ height: `${menuHeight - 60}px` }}>
+            <div className={styles["hamburger_nav"]}
+                style={{ height: `${menuHeight - 60}px` }}>
                 <div className={styles["mypage"]}>
                     <img
                         className={styles["mypage_icon"]}
@@ -140,7 +157,7 @@ export default function HamburgerMenu({ isOpen, session, nickname, handleLogout,
                         alt="마이페이지"
                     />
                     <div className={styles["mypage_text"]}>
-                        {session && nickname ? <Link to="/mypage/userinfo" state={{ session }}>마이페이지</Link> : <Link to="/mainpage">마이페이지</Link>}
+                        {session && nickname ? <Link to="/mypage/userinfo" onClick={onClose} state={{ session }}>마이페이지</Link> : <Link to="/mainpage">마이페이지</Link>}
                     </div>
 
                 </div>
@@ -148,18 +165,26 @@ export default function HamburgerMenu({ isOpen, session, nickname, handleLogout,
                 {session && nickname ? (
                     <>
                         <div className={styles["user_coin"]}>
-                            <div className={styles["userName"]}>{nickname}님</div>
-                            <button className={styles["userName_btn"]} onClick={handleLogout}>로그아웃</button>
-                            <img
-                                className={styles["coin_imo"]}
-                                src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/coin.png"
-                                alt="코인"
-                            />
-                            <div className={styles["coin_confirm"]}>
-                                {cash !== null ? cash.toLocaleString() : "0"}
+                            <div className={styles["user_box"]}>
+                                <div className={styles["userName"]}>{nickname}님</div>
+                                <button className={styles["userName_btn"]} onClick={handleLogout}>로그아웃</button>
+                            </div>
+                            <div className={styles["coin_box"]}>
+                                <img
+                                    className={styles["coin_imo"]}
+                                    src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/coin.png"
+                                    alt="코인"
+                                />
+                                <div className={styles["coin_confirm"]}>
+                                    {cash !== null ? cash.toLocaleString() : "0"}
+                                </div>
                             </div>
                         </div>
-                        <progress className={styles["gongu_progress"]} value={3} max={4}></progress>
+                        <div className={styles["score_box"]}>
+                            <div className={styles["score_text"]}>{myRating}%</div>
+                            <img className={styles["score_img"]} src={`${scoreUrl}${face}.png`} />
+                        </div>
+                        <progress className={styles["gongu_progress"]} value={myRating} max={100}></progress>
                     </>
                 ) : (
                     <div id={styles["user_notlogin"]}>

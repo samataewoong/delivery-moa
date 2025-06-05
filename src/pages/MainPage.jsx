@@ -23,8 +23,7 @@ export default function MainPage({ toggleMenu }) {
     //로그인 정보
     useEffect(() => {
         const getSession = async () => {
-            const {
-                data: { session },
+            const { data: { session },
             } = await supabase.auth.getSession();
             setSession(session);
             if (session?.user) fetchNickname(session.user.id);

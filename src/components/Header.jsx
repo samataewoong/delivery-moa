@@ -91,6 +91,12 @@ export default function Header({ excludes, toggleMenu }) {
 
     })
 
+    const onKeyDown = (e) => {
+        if (e.key === "Enter") {
+            search();
+        }
+    }
+
     const search = () => {
         if (!keyword.trim()) {
             alert("검색어를 입력하세요.");
@@ -118,6 +124,7 @@ export default function Header({ excludes, toggleMenu }) {
                             className={styles["search_value"]}
                             value={keyword}
                             onChange={(e) => setKeyword(e.target.value)}
+                            onKeyDown={onKeyDown}
                             placeholder="음식점 또는 메뉴를 검색해보세요"
                         />
                         <button onClick={search} className={styles["search_btn"]}>
