@@ -20,11 +20,11 @@
 }
 .detail_box{
     width:1240px;
-    height:380px;
+    height:400px;
     background-color: white;
     border-radius:10px;
     box-shadow: 4px 6px 2px rgba(0, 0, 0, 0.2);
-    padding: 20px 70px;
+    padding: 30px 70px;
     box-sizing: border-box;
     position: relative;
 }
@@ -36,7 +36,7 @@
     color: white;
     font-Size: 28px;
     font-weight: 500;
-    top: 23px;
+    top: 33px;
     left: 80px;
 }
 .store_name{
@@ -62,10 +62,10 @@
     justify-content: space-between;
 }
 .address_map{
-    background-color: red;
+    background-color: white;
     margin-right: 0px;
     border-radius: 0 10px 10px 0;
-    height: 178px;
+    height: 176px;
     width: 550px;
     box-sizing: border-box;
 }

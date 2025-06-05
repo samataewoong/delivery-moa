@@ -76,7 +76,7 @@ export default function StoreDetail(){
         async function fetchMenu(){
             const {data:menuData} = await supabase.from("menu")
             .select("*, img_id(bucket, folder, filename)").eq("store_id",store_id);
-            setmenu(menuData).order("id", { ascending: true });
+            setmenu(menuData);
         }
         fetchMenu();
     },[store_id]);
@@ -85,7 +85,6 @@ export default function StoreDetail(){
 
     return (
         <>
-        <Header/>
         <main className={styles["main_box"]}>
             <div className={styles["main_container"]}>
                 <div><img className={styles["square_img"]} src={`${storeUrl}${store.id}.jpg`}/></div>
