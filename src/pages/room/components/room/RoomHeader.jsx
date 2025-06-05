@@ -14,7 +14,7 @@ export default function RoomHeader({ room_id }) {
     const [canLeave, setCanLeave] = useState(false);
     const backBtnLogo = 'https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/backbtn.png';
     const leaveBtnLogo = 'https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/leavebtn.png';
-    const locationIcon = 'https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/location_icon.png';
+    const locationIcon = 'https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/location_icon_red.png';
     const [error, setError] = useState(null);
 
     useEffect(() => {
