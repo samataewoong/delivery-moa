@@ -54,6 +54,7 @@ export default function AllRoom() {
                         <div key={room.id} className={styles.roomList}>
                             <div className={styles.roomTitle}>{room.room_name}</div>
                             <div className={styles.roomAddress}>{room.room_address}</div>
+                            <div className={styles.roomDistance}>{Math.round(room.distance * 10) / 10}km</div>
                         </div>
                     ))}
                 </div>
