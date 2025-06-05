@@ -24,6 +24,7 @@ export default function RoomMenu({ room_id }) {
     const menuIcon = 'https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/cart.png';
 
     useEffect(() => {
+        let user_id = null;
         const orderSubscribe = supabase
             .realtime
             .channel(`realtime:order_ready_check_on_room_menu_in_room_${room_id}`)
@@ -51,7 +52,6 @@ export default function RoomMenu({ room_id }) {
             })
             .subscribe();
         async function fetchAll() {
-            let user_id = null;
             try {
                 const { id } = await getAuthUser();
                 user_id = id;
@@ -181,8 +181,10 @@ export default function RoomMenu({ room_id }) {
                             주문하기
                         </button>
                     ) : (
-                        <button className={style.room_menu_order_button_disabled} disabled>
-                            잔액이 부족합니다
+                        <button className={style.room_menu_order_button} onClick={() => {
+                            window.open("/delivery-moa/cashcharge", "_blank", "width=500,height=700");
+                        }} >
+                            잔액이 부족합니다. 충전 해 주세요.
                         </button>
                     )
                 ) : (

@@ -9,7 +9,7 @@ export default function Footer({
     if (excludes && excludes.length) {
         let { pathname } = document.location;
         pathname = pathname.replace(`${import.meta.env.BASE_URL}`, "");
-        pathname = pathname.substring(0, pathname.indexOf('?') == -1 ? pathname.length : pathname.indexOf('?'));
+        pathname = pathname.substring(0, pathname.indexOf('?') == -1 ? (pathname.indexOf('#') == -1 ? pathname.length : pathname.indexOf('#')) : pathname.indexOf('?'));
         const match = excludes.filter((exclude) => (matchPath(exclude, pathname)));
         if (match.length) return <></>;
     }

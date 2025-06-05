@@ -23,23 +23,24 @@ export default function MyPage() {
   };
 
   useEffect(() => {
+    let user_id = null;
     const fetchUserData = async () => {
       const {
-        data: { session },
+        data: { session: sessionData },
       } = await supabase.auth.getSession();
 
-      if (!session?.user) {
+      if (!sessionData?.user) {
         alert("로그인이 필요합니다.");
         navigate("/", { replace: true });
         return;
       }
-
-      setSession(session);
+      user_id = sessionData.user.id;
+      setSession(sessionData);
 
       const { data, error } = await supabase
         .from("user")
         .select("nickname, cash, user_rating") // 평점도 포함
-        .eq("id", session.user.id)
+        .eq("id", sessionData.user.id)
         .single();
 
       if (error) {
@@ -47,12 +48,28 @@ export default function MyPage() {
       } else {
         setMyNickname(data.nickname);
         setMyCash(data.cash);
-        setMyUserId(session.user.id);
+        setMyUserId(sessionData.user.id);
         setMyRating(data.user_rating ?? 50); // 평점 없으면 50
       }
     };
 
     fetchUserData();
+    const userSubscriber = supabase
+      .realtime
+      .channel("realtime:user_cash_watch_on_mypage_in_mypage")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "user" },
+        (payload) => {
+          if (payload.new.id === user_id) {
+            fetchUserData();
+          }
+        }
+      )
+      .subscribe();
+    return () => {
+      userSubscriber.unsubscribe();
+    };
   }, [navigate]);
 
   const currentMenu = location.pathname.split("/").pop();
