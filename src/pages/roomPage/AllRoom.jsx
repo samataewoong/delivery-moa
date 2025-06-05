@@ -16,7 +16,7 @@ export default function AllRoom() {
         const fetchUserData = async () => {
             const { data: rooms, error: roomError } = await supabase
                 .from("room")
-                .select("id, room_name, room_address");
+                .select("id, store_id,  room_name, room_address");
 
             if (roomError) {
                 console.log("Error fetching rooms:", roomError);
@@ -29,29 +29,19 @@ export default function AllRoom() {
     }, [userId]);
     return (
         <>
-            
             <MustBeLoggedIn />
-            <div className={styles.AllRoomPage}>
-                <CloseRoom userId={userId} roomList={roomList}></CloseRoom>
-                <div className={styles.roomContainer}>
-                    <div className={styles.roomListLeft}>
-                        {roomList.map((room, index) => (index % 2 === 0 &&
-                            <div key={room.id} className={styles.roomList}>
-                                <div className={styles.roomTitle}>{room.room_name} 인덱스:{index}</div>
-                                <div className={styles.roomAddress}>{room.room_address}</div>
-                            </div>
-                        ))}
+            <div>
+                <div>
+                {roomList.map((room, index) => (
+                    <div key={room.id} className={styles.roomList}>
+                        <div className={styles.roomTitle}>{room.room_name} 인덱스:{index}</div>
+                        <div className={styles.roomAddress}>{room.room_address}</div>
                     </div>
-                    <div  className={styles.roomListLeft}>
-                        {roomList.map((room, index) => (index % 2 === 1 &&
-                            <div key={room.id}  className={styles.roomList}>
-                                <div className={styles.roomTitle}>{room.room_name}인덱스:{index}</div>
-                                <div className={styles.roomAddress}>{room.room_address}</div>
-                            </div>
-                        ))}
-                    </div>
+                ))}
                 </div>
+                <CloseRoom userId={userId} roomList={roomList} />
             </div>
+
         </>
     )
 }
