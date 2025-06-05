@@ -4,12 +4,12 @@ import styles from "./Hamburger.module.css";
 import supabase from "../config/supabaseClient";
 
 
-export default function HamburgerMenu({ isOpen, session, nickname, handleLogout }) {
+export default function HamburgerMenu({ isOpen, session, nickname, handleLogout, onClose }) {
+
     if (!isOpen) return null;
 
   const [userRoom, setUserRoom] = useState([]);
   const [cash, setCash] = useState(0);
-
 
 
     //사용자가 있는 채팅방만 불러오기
@@ -167,21 +167,6 @@ export default function HamburgerMenu({ isOpen, session, nickname, handleLogout 
                         )}
                     </div>
                 )}
-                {/* <div className={styles["chat_list_room"]}>
-                        <img className={styles["chat_list_circle"]} src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/store/store_1.jpg" />
-                        <div className={styles["chat_room"]}>
-                            <div className={styles["chat_title_time"]}>
-                                <div className={styles["chat_title"]}>짜장면 같이 먹어요~</div>
-                                <div className={styles["chat_time"]}>02:34</div>
-                            </div>
-                            <div className={styles["chat_room_detail"]}>
-                                <img src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/octicon_people-24.png" />
-                                <div className={styles["chat_people"]}>3/4 참여중</div>
-                                <div className={styles["chat_state"]}>모집중</div>
-                            </div>
-                        </div>
-                    </div> */}
-
             </div>
         </div>
     );

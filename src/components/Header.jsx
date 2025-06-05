@@ -4,9 +4,7 @@ import { Link, matchPath } from "react-router-dom";
 import supabase from "../config/supabaseClient";
 import Hamburger from "../components/Hamburger";
 
-export default function Header({
-    excludes
-}) {
+export default function Header({excludes, toggleMenu}) {
     if (excludes && excludes.length) {
         let { pathname } = document.location;
         pathname = pathname.replace(`${import.meta.env.BASE_URL}`, "");
@@ -60,10 +58,6 @@ export default function Header({
                 updateAddress(data.address);
             },
         }).open();
-    };
-
-    const toggleMenu = () => {
-        setIsOpen(!isOpen);
     };
 
     const fetchNickname = async (user_id) => {
@@ -165,13 +159,6 @@ export default function Header({
                             )}
                         </div>
                     </div>
-                    <Hamburger
-                        isOpen={isOpen}
-                        session={session}
-                        nickname={nickname}
-                        handleLogout={handleLogout}
-                        onClose={() => setIsOpen(false)}
-                    />
                 </div>
             </div>
         </>
