@@ -17,7 +17,7 @@ export default function AllRoom() {
             const { data: rooms, error: roomError } = await supabase
                 .from("room")
                 .select("id, store_id,  room_name, room_address")
-                .eq('status',"모집중");
+                .eq('status', "모집중");
 
             if (roomError) {
                 console.log("Error fetching rooms:", roomError);
@@ -35,6 +35,12 @@ export default function AllRoom() {
                 <div className={styles.rooms}>
                     {roomList.map((room, index) => (
                         <div key={room.id} className={styles.roomList}>
+                            <div><img
+                                className="_square_img_ira4s_375"
+                                alt="undefined 이미지"
+                                src={`https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/store/store_${room.store_id}.jpg`}
+                            />
+                            </div>
                             <div className={styles.roomTitle}>{room.room_name}</div>
                             <div className={styles.roomAddress}>{room.room_address}</div>
                         </div>
