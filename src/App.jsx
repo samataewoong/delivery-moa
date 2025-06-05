@@ -77,7 +77,10 @@ function App() {
         {isMainPage ? (
           <MainHeader toggleMenu={toggleMenu} />
         ) : (
-          <Header toggleMenu={toggleMenu} />
+          <Header toggleMenu={toggleMenu} excludes={[
+            "/mainpage",
+            "/cashcharge",
+          ]} />
         )}
         <Routes>
           <Route path="/" element={<RootPage />} />
