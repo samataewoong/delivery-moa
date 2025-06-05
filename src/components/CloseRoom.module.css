@@ -5,7 +5,6 @@
 .closeMap {
   border: solid 4px #ccc;
   border-radius: 7px;
-  margin-left: 145px;
   display: flex;
   justify-content: center;
   /* 가로 정렬 */
