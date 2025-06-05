@@ -47,9 +47,6 @@ export default function CashCharge() {
       alert("충전이 정상적으로 반영되지 않았습니다. (데이터 없음)");
     } else {
       alert("충전 완료!");
-      if (window.opener) {
-        window.opener.location.reload();
-      }
       window.close();
     }
   };
