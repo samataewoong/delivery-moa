@@ -75,7 +75,7 @@ export default function MainPage({ toggleMenu }) {
                         ...room,
                         join_count: joinCount
                     };
-                }).filter(room  => room.join_count < room.max_people);
+                }).filter(room => room.join_count < room.max_people);
 
                 console.log("formattedRooms:", formattedRooms);
                 setRooms(formattedRooms);
@@ -187,28 +187,32 @@ export default function MainPage({ toggleMenu }) {
                             >전체보기→</Link></div>
                         </div>
                         <div className={styles["gongu_list_wrap"]}>
-                            {rooms.slice(0, 6).map((items) => (
-                                <Link key={items.id} to={`/room/${items.id}`} onClick={(e) => roomClick(e, items.id)} style={{ cursor: "pointer" }}>
-                                    <div className={styles["gongu_with_text"]}>
-                                        <img className={styles["square_img"]}
-                                            src={`${storeUrl}${items.store_id}.jpg`}
-                                            alt={`${items.category} 이미지`} />
-                                        <div className={styles["square"]}>
-                                            <div className={styles["gongu_title"]}>{items.room_name}</div>
-                                            <div className={styles["gongu_date"]}>{items.room_address}
-                                            </div>
-                                            <progress className={styles["gongu_progress"]} value={items.join_count} max={items.max_people}></progress>
-                                            <div className={styles["gongu_bottom"]}>
-                                                <div style={{ display: "flex", alignItems: "center" }}>
-                                                    <img src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/octicon_people-24.png" />
-                                                    <div className={styles["gongu_people"]}>{items.join_count}/{items.max_people} 참여중</div>
+                            {rooms.length === 0 ? (
+                                <div className={styles["no_room_message"]}>참여 가능한 공구가 없습니다.</div>
+                            ) : (
+                                rooms.slice(0, 6).map((items) => (
+                                    <Link key={items.id} to={`/room/${items.id}`} onClick={(e) => roomClick(e, items.id)} style={{ cursor: "pointer" }}>
+                                        <div className={styles["gongu_with_text"]}>
+                                            <img className={styles["square_img"]}
+                                                src={`${storeUrl}${items.store_id}.jpg`}
+                                                alt={`${items.category} 이미지`} />
+                                            <div className={styles["square"]}>
+                                                <div className={styles["gongu_title"]}>{items.room_name}</div>
+                                                <div className={styles["gongu_date"]}>{items.room_address}
                                                 </div>
-                                                <div className={styles["gongu_delivery"]}>배달비 무료</div>
+                                                <progress className={styles["gongu_progress"]} value={items.join_count} max={items.max_people}></progress>
+                                                <div className={styles["gongu_bottom"]}>
+                                                    <div style={{ display: "flex", alignItems: "center" }}>
+                                                        <img src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/octicon_people-24.png" />
+                                                        <div className={styles["gongu_people"]}>{items.join_count}/{items.max_people} 참여중</div>
+                                                    </div>
+                                                    <div className={styles["gongu_delivery"]}>배달비 무료</div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </Link>
-                            ))}
+                                    </Link>
+                                ))
+                            )}
                         </div>
                     </div>
                 </div>

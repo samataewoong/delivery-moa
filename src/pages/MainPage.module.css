@@ -116,8 +116,9 @@ html, main {
     display: flex;
     padding: 20px 30px;
     gap: 30px 80px;
-    width: 1280px;
+    width: 1240px;
     flex-wrap: wrap;
+    box-sizing: border-box;
 }
 
 .circle_with_text {
@@ -170,8 +171,22 @@ html, main {
     display: flex;
     padding: 20px 0 100px 0;
     gap: 60px;
-    width: 1280px;
+    width: 1240px;
     flex-wrap: wrap;
+    box-sizing: border-box;
+}
+
+.no_room_message{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    border-radius: 10px;
+    height: 295px;
+    background-color: rgba(0, 0, 0, 0.2);
+    color: white;
+    font-size: 24px;
+    font-weight: 500;
 }
 
 .gongu_with_text {
@@ -268,7 +283,7 @@ html, main {
 .body_bottom{
     background-color: #F0F6FF;
     height: 360px;
-    margin-bottom: 100px;
+    margin-bottom: 80px;
 }
 .body_bottom_container{
     width: 1280px;

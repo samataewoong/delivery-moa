@@ -14,14 +14,11 @@
     box-shadow: 4px 6px 2px rgba(0, 0, 0, 0.2);
     margin: 80px 0 ;
     gap: 20px;
-    /* 메뉴와 콘텐츠 사이 간격 */
     flex-wrap: wrap;
     /* 화면 작아지면 줄 바꿈 */
 }
 
 .myPageLeft {
-    flex: 0 0 340px;
-    /* 고정 너비 (px 단위 권장) */
     border-right: 1px solid #ccc;
     padding: 20px;
     box-sizing: border-box;
@@ -139,12 +136,10 @@
 
 
 .myPageRight {
-    flex: 1 1 700px;
-    /* 여유 공간을 채움, 최소 700px */
+    width: 900px;
     padding: 20px;
     box-sizing: border-box;
     overflow-y: auto;
-    border-right: solid 1px #ccc;
     min-width: 300px;
     /* 최소 너비 */
 }
@@ -152,7 +147,7 @@
 .myHeader {
     text-align: left;
     font-weight: bold;
-    font-size: x-large;
+    font-size: 24px;
     border-bottom: solid 1px #CCD;
     margin-bottom: 40px;
     padding: 14px;
@@ -174,7 +169,7 @@
 }
 
 .userInfo {
-    padding: 100px 30px 5px 135px;
+    padding: 52.5px 82.5px;
     font-size: x-large;
 }
 

@@ -29,10 +29,10 @@
 .main_container {
     max-width: 1280px;
     width: 100%;
-    padding: 0 20px;
     margin: 0 auto;
     display: flex;
     position: relative;
+    box-sizing: border-box;
 }
 
 .main_header {
@@ -40,7 +40,6 @@
     height: 115px;
     display: flex;
     justify-content: center;
-
 }
 
 .location {
