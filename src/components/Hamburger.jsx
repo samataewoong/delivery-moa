@@ -26,25 +26,20 @@ export default function HamburgerMenu({ isOpen, session, nickname, handleLogout,
             //Cash(코인)값 가져오기
             const { data: userData, error: userError } = await supabase
                 .from("user")
-                .select("cash")
+                .select("cash, user_rating")
                 .eq("id", userId)
                 .single();
+
             if (!userError && userData) {
                 setCash(userData.cash);
-            }
-
-            const { data: userRate} = await supabase.from("user")
-                .select("user_rating")
-                .eq("id", userId)
-                .single();
-            setMyRating(userRate.user_rating);
-
-            if (userRate.user_rating >= 80) {
-                setFace("good");
-            } else if (userRate.user_rating < 30) {
-                setFace("bad");
-            } else {
-                setFace("soso");
+                setMyRating(userData.user_rating);
+                if (userData.user_rating >= 80) {
+                    setFace("good");
+                } else if (userData.user_rating < 30) {
+                    setFace("bad");
+                } else {
+                    setFace("soso");
+                }
             }
 
             const { data, error } = await supabase
