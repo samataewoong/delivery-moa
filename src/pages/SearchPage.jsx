@@ -35,15 +35,23 @@ export default function SearchPage() {
     return(
         <main className={styles["main_box"]}>
             <div className={styles["main_container"]}>
-                <h2>"{keyword}"에 대한 검색결과</h2>
+                <h1>"{keyword}"에 대한 검색결과</h1>
                 <hr/>
                 <div className={styles["search_hitory_box"]}>
-                    <h1>배달</h1>
+                    <div>
+                        <ul className={styles["search_category"]}>
+                            <li>전체</li>
+                            <li>배달</li>
+                            <li>메뉴</li>
+                            <li>공구방</li>
+                        </ul>
+                    </div>
+                    <div className={styles["search_keyword"]}>배달</div>
+                    <hr/>
                     <div className={styles["search_box"]}>
 
                     </div>
-                    <hr/>
-                    <h1>공구방</h1>
+                    <div className={styles["search_keyword"]}>공구방</div>
                     <hr/>
                 </div>
             </div>

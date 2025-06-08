@@ -8,8 +8,26 @@
     width: 1280px;
     padding: 80px 20px;
     box-sizing: border-box;
-    
 }
+.search_keyword{
+    font-size: 28px;
+    font-weight: 700;
+}
+.search_category{
+    list-style: none;
+    padding-inline-start: 0;
+    font-size: 20px;
+    display: flex;
+    gap: 50px;
+    font-size: 28px;
+    justify-content: center;
+}
+.search_category li{
+    white-space: nowrap;
+    border: 1px solid black;
+    padding: 10px;
+}
+
 .search_hitory_box{
     border-radius: 10px;
     background-color: white;
@@ -26,4 +44,8 @@
 .search_box{
     width: 100%;
     box-sizing: border-box;
+    width: 100%;
+    height: 300px;
+    border-radius: 10px;
+    background-color: #f7f7f7;
 }
