@@ -3,8 +3,10 @@ import supabase from "../config/supabaseClient";
 import styles from "./CloseRoom.module.css";
 import { getCoordinates } from "../functions/maps/Coord";
 import { getDistance } from "../functions/maps/Distance";
+import { useNavigate } from "react-router-dom";
 
 export default function CloseRoom({ userId, roomList }) {
+    const navigate = useNavigate();
     const [userAddress, setUserAddress] = useState("");
     //const [roomList, setRoomList] = useState([]); // 전체 room 객체 리스트
     const [rooms, setRooms] = useState([]);
@@ -98,9 +100,9 @@ export default function CloseRoom({ userId, roomList }) {
                         const infowindow = new window.kakao.maps.InfoWindow({
                             content: `<div style="position: relative; padding:5px; font-size:14px;">`
                                 + `<div>`
-                                + `<img class="${roomImg}" alt="undefined 이미지" src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/store/store_${room.store_id}.jpg"></div>`
-                                + `<strong>${room.room_name}<button id="closeButton-${room.id}" class="${buttonCss}">x</button></strong><br/>`
-                                + `${room.room_address}</div>`,
+                                + `<a id="roomImage-${room.id}"><img class="${roomImg}" alt="undefined 이미지" src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/store/store_${room.store_id}.jpg"></a></div>`
+                                + `<strong id="roomName-${room.id}">${room.room_name}</strong><button id="closeButton-${room.id}" class="${buttonCss}">x</button><br/>`
+                                + `<div id="roomAddress-${room.id}">${room.room_address}</div></div>`,
                         });
 
                         window.kakao.maps.event.addListener(marker, "click", () => {
@@ -110,6 +112,22 @@ export default function CloseRoom({ userId, roomList }) {
                                 const closeButton = document.getElementById(`closeButton-${room.id}`);
                                 if (closeButton) {
                                     closeButton.onclick = () => infowindow.close();
+                                }
+                                const clickRoom = () => {
+                                    if(!window.confirm(`"${room.room_name}" 공구방으로 이동 하시겠습니까?`)) return;
+                                    navigate(`/room/${room.id}`);
+                                };
+                                const roomImage = document.getElementById(`roomImage-${room.id}`);
+                                if (roomImage) {
+                                    roomImage.onclick = clickRoom;
+                                }
+                                const roomName = document.getElementById(`roomName-${room.id}`);
+                                if (roomName) {
+                                    roomName.onclick = clickRoom;
+                                }
+                                const roomAddress = document.getElementById(`roomAddress-${room.id}`);
+                                if (roomAddress) {
+                                    roomAddress.onclick = clickRoom;
                                 }
                             });
                         });
