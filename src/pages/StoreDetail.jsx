@@ -1,10 +1,11 @@
 import styles from "./StoreDetail.module.css";
 import { useState, useEffect, useRef } from "react";
 import supabase from "../config/supabaseClient";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useParams } from 'react-router-dom';
 
 export default function StoreDetail(){
+    const navigate = useNavigate();
     const { store_id } = useParams();
     const[store, setStore] = useState(null);
     const mapRef = useRef(null);
@@ -132,7 +133,9 @@ export default function StoreDetail(){
                         </>
                     ))}
                     <div className={styles["menu_btn"]}>
-                        <button className={styles["menu_make_btn"]}>방 만들기</button>
+                        <button onClick={() => {
+                            navigate(`/room/create/${store_id}`) 
+                         }} className={styles["menu_make_btn"]}>방 만들기</button>
                         <button className={styles["menu_confirm_btn"]}>개설된 방 확인</button>
                     </div>
                 </div>

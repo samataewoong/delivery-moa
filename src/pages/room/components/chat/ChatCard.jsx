@@ -19,7 +19,23 @@ export default function ChatCard({
 				console.error('Error fetching user:', error);
             }
 		};
+		const userSubscribe = supabase
+		    .realtime
+			.channel(`realtime:chat_watch_on_room_chat_card_in_chat_${id}`)
+			.on(
+                "postgres_changes",
+                { event: '*', schema: 'public', table: 'user' },
+                (payload) => {
+					if (payload.new.id === user_id) {
+                        fetchUser();
+                    }
+				}
+			)
+			.subscribe();
 		fetchUser();
+		return () => {
+			userSubscribe.unsubscribe();
+        };
 	}, [user_id]);
 	const date = new Date(Date.parse(created_at) + 32400000);
 	let hours = `${date.getHours()}`;
