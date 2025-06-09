@@ -194,7 +194,7 @@ export default function RoomOrderUserCard({
                     {user && <div className={style.user_profile_nickname}>
                         {user?.nickname}
                     </div>}
-                    {room && isLeader && isSelf && <div className={style.leader_mark}>
+                    {room && isLeader && <div className={style.leader_mark}>
                         방장
                     </div>}
                     {room && isLeader && isSelf && room.status == '모집중' && <div onClick={handleEndRecruit} className={style.end_recruit_button}>
