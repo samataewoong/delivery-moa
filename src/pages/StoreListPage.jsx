@@ -104,6 +104,7 @@ export default function StoreListPage() {
                                         <h4> 가게위치 {item.store_address} </h4>
                                         <h5> 배달비 : <span className={styles["deliveryfree"]}> 무료배달 </span></h5>
                                         <h5> 최소주문 {item.min_price}원 </h5>
+
                                     </div>
                                 </div>
 
