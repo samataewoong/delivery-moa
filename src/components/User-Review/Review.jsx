@@ -3,7 +3,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import supabase from "../../config/supabaseClient";
 import styles from "./ReviewModel.module.css";
 import { FaStar } from "react-icons/fa";
-import Header from "../../components/Header";
 import selectRoom from "../../functions/room/SelectRoom";
 import selectUser from "../../functions/user/SelectUser";
 
@@ -118,7 +117,6 @@ const Review = () => {
   };
 
   return (
-    <>
       <div className={styles.container}>
         <h2 className={styles.title}>
           {roomInfo
@@ -152,7 +150,6 @@ const Review = () => {
           제출하기
         </button>
       </div>
-    </>
   );
 };
 

@@ -32,6 +32,12 @@
     margin-right: 15px;
     font-weight: 600px;
 }
+.roomDistance {
+    text-align: end;
+    margin-right: 15px;
+    font-size: medium;
+    font-weight: 600px;
+}
 
 .AllRoomBody {
     display: flex;

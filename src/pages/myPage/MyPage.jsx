@@ -80,8 +80,7 @@ export default function MyPage() {
   ];
 
   return (
-    <>
-      
+    <main className={styles.myPage_main}>
       <div className={styles.myPage}>
         <div className={styles.myPageLeft}>
           <div className={styles.profile}>
@@ -125,6 +124,6 @@ export default function MyPage() {
           <Outlet context={{ userSession: session, userId: myUserId }} />
         </div>
       </div>
-    </>
+    </main>
   );
 }

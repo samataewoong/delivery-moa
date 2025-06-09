@@ -1,8 +1,12 @@
 import { useRef, useState, useEffect } from "react";
 import supabase from "../config/supabaseClient";
 import styles from "./CloseRoom.module.css";
+import { getCoordinates } from "../functions/maps/Coord";
+import { getDistance } from "../functions/maps/Distance";
+import { useNavigate } from "react-router-dom";
 
 export default function CloseRoom({ userId, roomList }) {
+  const navigate = useNavigate();
   const [userAddress, setUserAddress] = useState("");
   const mapRef = useRef(null);
   const mapInstance = useRef(null);
@@ -68,6 +72,11 @@ export default function CloseRoom({ userId, roomList }) {
           }
 
           const roomCoords = new window.kakao.maps.LatLng(roomResult[0].y, roomResult[0].x);
+          const distanceInKm = getDistance(
+            { lat: userResult[0].y, lng: userResult[0].x },
+            { lat: roomResult[0].y, lng: roomResult[0].x }
+          );
+          if(distanceInKm > 1) return;
           const marker = new window.kakao.maps.Marker({
             map: mapInstance.current,
             position: roomCoords,
@@ -134,7 +143,6 @@ export default function CloseRoom({ userId, roomList }) {
       });
     });
   }, [userAddress, roomList]);
-
   return userId ? (
     <div className={styles.mapContainer}>
       <div
