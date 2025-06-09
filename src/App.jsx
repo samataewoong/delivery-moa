@@ -26,6 +26,7 @@ import supabase from "./config/supabaseClient";
 import { useLocation } from "react-router-dom";
 import Search from "./pages/SearchPage";
 import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
@@ -99,6 +100,7 @@ function App() {
           <Route path="/storelist" element={<StoreListPage />} />
           <Route path="/search" element={<Search />} />
           <Route path="/forgotpw" element={<ForgotPassword/>}/>
+          <Route path="/resetpw" element={<ResetPassword/>}/>
           {/* 마이페이지 및 하위 라우트 */}
           <Route path="/mypage" element={<MyPage />}>
             <Route index element={<UserInfo />} />
