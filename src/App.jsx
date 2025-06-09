@@ -70,8 +70,12 @@ function App() {
     }
   };
   const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+  setIsOpen((prev) => {
+    console.log("toggleMenu: isOpen before:", prev);
+    console.log("toggleMenu: isOpen after:", !prev);
+    return !prev;
+  });
+};
   const location = useLocation();
   const isMainPage = location.pathname === "/mainpage";
 
@@ -117,8 +121,6 @@ function App() {
             session={session}
             nickname={nickname}
             handleLogout={handleLogout}
-            onClose={() => setIsOpen(false)}
-
           />
         )}
         <Footer excludes={[

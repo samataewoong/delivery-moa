@@ -87,10 +87,6 @@ export default function Header({ excludes, toggleMenu }) {
         return () => subscription.unsubscribe();
     }, []);
 
-    useEffect(() => {
-
-    })
-
     const onKeyDown = (e) => {
         if (e.key === "Enter") {
             search();
@@ -153,7 +149,7 @@ export default function Header({ excludes, toggleMenu }) {
                         </div>
                     </div>
                     <div className={styles["hamburger"]}>
-                        <button onClick={toggleMenu} className={styles["hamburger_btn"]}>
+                        <button onClick={toggleMenu} className={styles["hamburger_btn"]} >
                             <img
                                 src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/hamburger-md.png"
                                 alt="햄버거 메뉴"
