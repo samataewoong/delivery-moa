@@ -6,7 +6,7 @@ import styles from './AllRoom.module.css';
 import { useState, useEffect } from "react";
 import supabase from "../../config/supabaseClient";
 import MustBeLoggedIn from "../../components/login_check/MustBeLoggedIn";
-import selectUser from "../../functions/user/selectUser";
+import selectUser from "../../functions/user/SelectUser";
 import { getCoordinates } from "../../functions/maps/Coord";
 import { getDistance } from "../../functions/maps/Distance";
 
