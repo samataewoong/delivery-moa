@@ -310,6 +310,8 @@ input[readOnly] {
     width: 70px;
     height: 30px;
     font-weight: 400;
+    border: solid #000 2px;
+    background-color: transparent;
 }
 
 .editReview {
@@ -319,6 +321,8 @@ input[readOnly] {
     width: 70px;
     height: 30px;
     font-weight: 400;
+    border: solid #000 2px;
+    background-color: transparent;
 }
 
 .editReview:hover {
