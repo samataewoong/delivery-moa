@@ -24,8 +24,8 @@ export default function ForgotPassword() {
 
     return (
         <>
-            <div className={style["forgot-password-container"]}>
-                <form onSubmit={handleSubmit} className={style["forgot-password-form"]}>
+            <div className={style[""]}>
+                <form onSubmit={handleSubmit} className={style[""]}>
                     <h2>비밀번호 재설정</h2>
                     <p>가입한 이메일 주소를 입력하면 비밀번호 재설정 링크를 보내드려요.</p>
                     <input
@@ -38,7 +38,7 @@ export default function ForgotPassword() {
                     <button type="submit">
                         비밀번호 재설정 메일 보내기
                     </button>
-                    {message && <p className={style["message"]}>{message}</p>}
+                    {message && <p className={style[""]}>{message}</p>}
                 </form>
             </div>
         </>
