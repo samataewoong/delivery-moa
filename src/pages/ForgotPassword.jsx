@@ -11,7 +11,7 @@ export default function ForgotPassword() {
         setMessage('');
 
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
-            redirectTo: 'http://localhost:5173/delivery-moa/src/ResetPassword',
+            redirectTo: 'http://localhost:5173/delivery-moa/resetpw',
         });
 
         if (error) {
