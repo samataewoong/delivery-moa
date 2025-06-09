@@ -7,12 +7,14 @@ import getAuthUser from "../../../../functions/auth/GetAuthUser";
 import { useEffect, useState } from "react";
 import supabase from "../../../../config/supabaseClient";
 import style from "./RoomOrderUserCard.module.css";
+import { useNavigate } from "react-router-dom";
 
 export default function RoomOrderUserCard({
     position,
     room_id,
     user_id,
 }) {
+    const navigate = useNavigate();
     const [user, setUser] = useState(null);
     const [room, setRoom] = useState(null);
     const [roomJoin, setRoomJoin] = useState(null);
@@ -149,6 +151,7 @@ export default function RoomOrderUserCard({
                 user_id,
                 status: "픽업 완료",
             });
+            navigate(`/gongucomplete/${room_id}`);
         } catch (error) {
             console.error("Error picking up:", error);
         }
