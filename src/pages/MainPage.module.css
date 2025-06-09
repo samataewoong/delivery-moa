@@ -82,51 +82,6 @@ html, main {
 
 }
 
-.location {
-    display: flex;
-    margin: 48px 20px;
-}
-
-.location_btn,
-.location_gps {
-    display: flex;
-    box-sizing: border-box;
-    font-size: 16px;
-    width: 150px;
-    height: 20px;
-}
-.location_icon{
-    width: 13px;
-    height: auto;
-}
-
-.location_btn {
-    all: unset;
-    margin-top: 3px;
-    margin-right: 8px;
-    cursor: pointer;
-}
-
-.location_gps {
-    margin-top: -2px;
-    cursor: pointer;
-}
-.location_login{
-    font-size: 18px;
-    margin-right: 15px;
-}
-
-.main_hamburger {
-    position: absolute;
-    padding: 27.5px 20px;
-    right: 0;
-}
-
-.main_hamburger_btn {
-    all: unset;
-    cursor: pointer;
-}
-
 .body_box {
     width: 100%;
     display: flex;
@@ -161,8 +116,9 @@ html, main {
     display: flex;
     padding: 20px 30px;
     gap: 30px 80px;
-    width: 1280px;
+    width: 1240px;
     flex-wrap: wrap;
+    box-sizing: border-box;
 }
 
 .circle_with_text {
@@ -215,8 +171,22 @@ html, main {
     display: flex;
     padding: 20px 0 100px 0;
     gap: 60px;
-    width: 1280px;
+    width: 1240px;
     flex-wrap: wrap;
+    box-sizing: border-box;
+}
+
+.no_room_message{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    border-radius: 10px;
+    height: 295px;
+    background-color: rgba(0, 0, 0, 0.2);
+    color: white;
+    font-size: 24px;
+    font-weight: 500;
 }
 
 .gongu_with_text {
@@ -313,7 +283,7 @@ html, main {
 .body_bottom{
     background-color: #F0F6FF;
     height: 360px;
-    margin-bottom: 100px;
+    margin-bottom: 80px;
 }
 .body_bottom_container{
     width: 1280px;

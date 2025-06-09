@@ -2,11 +2,12 @@
     width: 1280px;
     margin: 0 auto;
     padding: 0 20px;
+    box-sizing: border-box;
 }
 
 .circle_category_wrap {
     display: flex;
-    gap: 30px;
+    gap: 40px;
     background-color: #FFFFFF;
     padding-left: 20px;
     border-radius: 10px;
@@ -97,7 +98,7 @@
 }
 
 .storeexplain {
-    width: 800px;
+    width: 720px;
     height: auto;
     background-color: #F9F9F9;
     border-radius: 10px;

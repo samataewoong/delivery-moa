@@ -2,8 +2,8 @@ import styles from "./MainPage.module.css";
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import supabase from "../config/supabaseClient";
-import Hamburger from "../components/Hamburger";
 import CloseRoom from "../components/CloseRoom";
+import { useNavigate } from "react-router-dom";
 
 export default function MainPage({ toggleMenu }) {
     const [nickname, setNickname] = useState("");
@@ -13,6 +13,7 @@ export default function MainPage({ toggleMenu }) {
     const [categories, setCategories] = useState([]);
     const [rooms, setRooms] = useState([]);
     const [menu, setMenu] = useState([]);
+    const navigate = useNavigate();
 
     const onKeyDown = (e) => {
         if (e.key === "Enter") {
@@ -22,8 +23,7 @@ export default function MainPage({ toggleMenu }) {
     //로그인 정보
     useEffect(() => {
         const getSession = async () => {
-            const {
-                data: { session },
+            const { data: { session },
             } = await supabase.auth.getSession();
             setSession(session);
             if (session?.user) fetchNickname(session.user.id);
@@ -53,7 +53,7 @@ export default function MainPage({ toggleMenu }) {
             alert("검색어를 입력하세요.");
             return;
         }
-        alert(`검색어: ${keyword}`);
+        navigate(`/search?keyword=${encodeURIComponent(keyword)}`);
     };
     //공구방 데이터
     useEffect(() => {
@@ -75,7 +75,7 @@ export default function MainPage({ toggleMenu }) {
                         ...room,
                         join_count: joinCount
                     };
-                }).filter(room  => room.join_count < room.max_people);
+                }).filter(room => room.join_count < room.max_people);
 
                 console.log("formattedRooms:", formattedRooms);
                 setRooms(formattedRooms);
@@ -187,28 +187,32 @@ export default function MainPage({ toggleMenu }) {
                             >전체보기→</Link></div>
                         </div>
                         <div className={styles["gongu_list_wrap"]}>
-                            {rooms.slice(0, 6).map((items) => (
-                                <Link key={items.id} to={`/room/${items.id}`} onClick={(e) => roomClick(e, items.id)} style={{ cursor: "pointer" }}>
-                                    <div className={styles["gongu_with_text"]}>
-                                        <img className={styles["square_img"]}
-                                            src={`${storeUrl}${items.store_id}.jpg`}
-                                            alt={`${items.category} 이미지`} />
-                                        <div className={styles["square"]}>
-                                            <div className={styles["gongu_title"]}>{items.room_name}</div>
-                                            <div className={styles["gongu_date"]}>{items.room_address}
-                                            </div>
-                                            <progress className={styles["gongu_progress"]} value={items.join_count} max={items.max_people}></progress>
-                                            <div className={styles["gongu_bottom"]}>
-                                                <div style={{ display: "flex", alignItems: "center" }}>
-                                                    <img src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/octicon_people-24.png" />
-                                                    <div className={styles["gongu_people"]}>{items.join_count}/{items.max_people} 참여중</div>
+                            {rooms.length === 0 ? (
+                                <div className={styles["no_room_message"]}>참여 가능한 공구가 없습니다.</div>
+                            ) : (
+                                rooms.slice(0, 6).map((items) => (
+                                    <Link key={items.id} to={`/room/${items.id}`} onClick={(e) => roomClick(e, items.id)} style={{ cursor: "pointer" }}>
+                                        <div className={styles["gongu_with_text"]}>
+                                            <img className={styles["square_img"]}
+                                                src={`${storeUrl}${items.store_id}.jpg`}
+                                                alt={`${items.category} 이미지`} />
+                                            <div className={styles["square"]}>
+                                                <div className={styles["gongu_title"]}>{items.room_name}</div>
+                                                <div className={styles["gongu_date"]}>{items.room_address}
                                                 </div>
-                                                <div className={styles["gongu_delivery"]}>배달비 무료</div>
+                                                <progress className={styles["gongu_progress"]} value={items.join_count} max={items.max_people}></progress>
+                                                <div className={styles["gongu_bottom"]}>
+                                                    <div style={{ display: "flex", alignItems: "center" }}>
+                                                        <img src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/octicon_people-24.png" />
+                                                        <div className={styles["gongu_people"]}>{items.join_count}/{items.max_people} 참여중</div>
+                                                    </div>
+                                                    <div className={styles["gongu_delivery"]}>배달비 무료</div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </Link>
-                            ))}
+                                    </Link>
+                                ))
+                            )}
                         </div>
                     </div>
                 </div>

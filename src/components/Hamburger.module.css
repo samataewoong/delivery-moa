@@ -6,12 +6,13 @@
 .hamburger_nav {
     position: absolute;
     top: 115px;
-    right: 0;
+    right: calc((100vw - 1280px) / 2 );
     width: 434px;
     background-color: white;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     padding: 30px 45px;
     z-index: 1000;
+    overflow-y: auto;
 }
 
 .mypage_icon {
@@ -50,29 +51,31 @@
     text-align: left;
     margin-top: 40px;
 }
-
+.user_box{
+    display: flex;
+}
 .user_coin {
     display: flex;
-    margin-top: 40px;
+    margin: 40px 0 30px 0;
     justify-content: space-between;
 }
-
+.coin_box{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
 .coin_imo {
     width: auto;
-    height: 31.67px;
-    margin-top: 4px;
+    height: 38px;
     margin-left: auto;
 }
 
 .coin_confirm {
-    font-size: 18px;
-    margin-top: 5px;
-    margin-left: 12px;
-
+    font-size: 20px;
 }
 
 .event_banner1 {
-    margin-top: 50px;
+    margin-top: 40px;
 }
 
 .event_banner2 {
@@ -86,7 +89,7 @@
     -webkit-appearance: none;
     overflow: hidden;
     border: none;
-    margin: 40px 0 20px 0;
+    margin-bottom: 20px;
 }
 
 .gongu_progress::-webkit-progress-bar {
@@ -164,4 +167,22 @@
 .chat_time {
     font-size: 16px;
     color: #7B7A7A;
+}
+.score_box{
+    display: flex;
+    gap: 10px;
+    margin-bottom: 5px;
+    align-items: center;
+}
+.score_text{
+    font-size: 16px;
+    background-color: #6a7eff;
+    color: white;
+    border-radius: 10px;
+    padding: 3px 6px;
+    margin-left: auto;
+}
+.score_img{
+    width: 30px;
+    height: auto;
 }

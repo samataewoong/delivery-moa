@@ -24,6 +24,7 @@ import MainHeader from "./components/MainHeader";
 import React, { useState, useEffect } from "react";
 import supabase from "./config/supabaseClient";
 import { useLocation } from "react-router-dom";
+import Search from "./pages/SearchPage";
 
 
 function App() {
@@ -96,6 +97,7 @@ function App() {
           <Route path="/gongucomplete/:order_id" element={<GonguComplete />} />
           <Route path="/review/:room_id" element={<Review />} />
           <Route path="/storelist" element={<StoreListPage />} />
+          <Route path="/search" element={<Search />} />
           {/* 마이페이지 및 하위 라우트 */}
           <Route path="/mypage" element={<MyPage />}>
             <Route index element={<UserInfo />} />

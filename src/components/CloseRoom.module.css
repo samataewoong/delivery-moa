@@ -1,27 +1,32 @@
-/* .overlay {
-    position: fixed;
-    top: 50px;
-    left: 500px;
-    width: 800px;
-    height: 600px;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
+.mapContainer {
+  margin: 5px 10px 5px 10px;
 }
 
-.modal {
-  background: white;
-  padding: 24px;
-  border-radius: 10px;
-  width: 900px;
-  height: 400px;
-  max-width: 90%;
-  max-height: 80vh;
-  overflow-y: auto;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-} */
-/* 모달 전용 css*/
+.closeMap {
+  border: solid 4px #ccc;
+  border-radius: 7px;
+  display: flex;
+  justify-content: center;
+  /* 가로 정렬 */
+  align-items: center;
+  /* 세로 정렬 */
+}
 
+.infowindowClose {
+  position: absolute;
+  right: 4px;
+  border: none;
+  bottom: 5px;
+  font-weight: bold;
+  cursor: pointer;
+}
 
+.infowindowImg {
+  width: 371px;
+  height: 150px;
+  border-radius: 10px 10px 0 0;
+  object-fit: cover;
+  object-position: center 80%;
+  display: block;
+  margin-bottom: 5px;
+}

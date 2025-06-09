@@ -78,7 +78,6 @@ function Login() {
 
   return (
     <>
-      <Header />
       <div className={style["login-container"]}>
         {user && nickname ? (
           <div id="user_login">
