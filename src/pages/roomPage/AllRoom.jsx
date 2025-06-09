@@ -59,6 +59,7 @@ export default function AllRoom() {
                                 src={`https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/store/store_${room.store_id}.jpg`}
                             />
                             <div className={styles.roomTitle}>{room.room_name}</div>
+                            <div className={styles.roomDistance}>{Math.floor(room.distance * 10) / 10}km</div>
                             <div className={styles.roomAddress}>{room.room_address}</div>
                             </div>
                         </div>

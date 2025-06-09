@@ -33,7 +33,8 @@
     font-weight: 600px;
 }
 .roomDistance {
-    text-align: end;
+    float: left;
+    margin-left: 15px;
     margin-right: 15px;
     font-size: medium;
     font-weight: 600px;
