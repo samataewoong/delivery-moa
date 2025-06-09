@@ -46,7 +46,10 @@ export default function ChatList({ room_id }) {
     useEffect(() => {
         const chatList = document.querySelector(`.${style.chat_list}`);
         if (chatList) {
-            chatList.scrollTop = chatList.scrollTopMax;
+            chatList.scrollTop = (
+                chatList.scrollWidth // For Chrome
+                 ?? chatList.scrollTopMax // For Firefox
+            );
         }
     }, [chats]);
 
