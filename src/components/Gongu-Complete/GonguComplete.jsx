@@ -114,24 +114,31 @@ const GonguComplete = () => {
     <div className={styles.container}>
       <div className={styles.header}>
         <i className={`fas fa-check-circle ${styles.checkmark}`}></i>
-        <h1 className={styles.title}>공구 주문이 완료되었습니다!</h1>
+        <h1 className={styles.title}>공구가 완료되었습니다!</h1>
       </div>
       
       <p className={styles.description}>주문해주셔서 감사합니다. 배달이 완료되었습니다.</p>
-      
+
       <div className={styles.orderInfo}>
-        <h2>주문 정보</h2>
+        <h2>주문 번호 및 공구 정보</h2>
         <div className={styles.infoRow}>
           <div className={styles.infoLabel}>주문번호</div>
           <div className={styles.infoValue}>{orderDetails?.order_id || 'N/A'}</div>
         </div>
         <div className={styles.infoRow}>
-          <div className={styles.infoLabel}>공구명</div>
-          <div className={styles.infoValue}>{roomInfo?.room_name || '공구방 이름 없음'}</div>
+                <span className={styles.infoLabel}>주문 일자 </span>
+                <span className={styles.infoValue}>
+                  {new Date(orderDetails.created_at).toLocaleString()}
+                </span>
+              </div>
+        <div className={styles.infoRow}>
+          <div className={styles.infoLabel}>공구방 이름</div>
+          <div className={styles.infoValue}>{roomInfo?.room_name || '공구방 이름 없음'}</div>         
         </div>
-        
+  
+        <h2>주문한 상품</h2>
         {orderItems.map((item, index) => (
-          <React.Fragment key={index}>
+          <div className={styles.itemCard} key={index}>
             <div className={styles.infoRow}>
               <div className={styles.infoLabel}>주문상품</div>
               <div className={styles.infoValue}>{item.menu_name || `메뉴 ${index + 1}`}</div>
@@ -144,9 +151,10 @@ const GonguComplete = () => {
               <div className={styles.infoLabel}>상품금액</div>
               <div className={styles.infoValue}>{thousands(item.menu_price || 0)}원</div>
             </div>
-          </React.Fragment>
+          </div>
         ))}
-        
+
+        <h2>최종 정보</h2>
         <div className={styles.infoRow}>
           <div className={styles.infoLabel}>총 금액</div>
           <div className={styles.infoValue}>{thousands(orderDetails?.total_price || 0)}원</div>
@@ -160,7 +168,11 @@ const GonguComplete = () => {
           </div>
         </div>
       </div>
-      
+        <div className={styles.notice}>
+        <p>
+          <i className="fas fa-info-circle"></i> 주문이 만족스러웠다면 리뷰 또는 평가를 남겨주세요.
+        </p>
+      </div>             
       <button 
         className={styles.button} 
         onClick={goToReview}
