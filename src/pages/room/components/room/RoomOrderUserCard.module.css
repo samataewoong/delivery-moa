@@ -21,6 +21,19 @@
     border-radius: 9999px;
     color: #FF6B6B;
 }
+.end_recruit_button:hover,.order_button:hover,.leader_mark:hover,.pick_up_button:hover,.room_end_button:hover {
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    margin-left: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    box-sizing: border-box;
+    border-radius: 9999px;
+    background-color: #FF6B6B;
+    color: white;
+}
 .leader_mark {
     border: #000 solid 1px;
     color: #000;
