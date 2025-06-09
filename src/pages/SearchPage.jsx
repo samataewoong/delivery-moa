@@ -65,6 +65,7 @@ export default function SearchPage() {
                             <hr />
                             {storeData.length > 0 ? (
                                 (category === "전체" ? storeData.slice(0, 4) : storeData).map((item) => (
+                                    <Link key={item.id} to={`/store/${item.id}`}>
                                     <div className={styles["search_result"]}>
                                         <img className={styles["search_store_img"]} src={`${storeImgUrl}${item.id}.jpg`} alt={`${item.store_name}`}></img>
                                         <div className={styles["search_store_detail"]}>
@@ -82,6 +83,7 @@ export default function SearchPage() {
                                             </div>
                                         </div>
                                     </div>
+                                    </Link>
                                 ))
                             ) : (
                                 <div className={styles["search_noResult"]}>검색 결과가 없습니다.</div>
@@ -94,6 +96,7 @@ export default function SearchPage() {
                             <hr />
                             {menuData.length > 0 ? (
                                 (category === "전체" ? menuData.slice(0, 4) : menuData).map((item) => (
+                                    <Link key={item.id} to={`/store/${item.store_id?.id}`}>
                                     <div className={styles["search_result"]}>
                                         <img className={styles["search_store_img"]} src={`${menuImgUrl}${item.img_id?.folder}/${item.img_id?.filename}`} alt={`${item.menu_name}`}></img>
                                         <div className={styles["search_store_detail"]}>
@@ -104,6 +107,7 @@ export default function SearchPage() {
                                             </div>
                                         </div>
                                     </div>
+                                    </Link>
                                 ))
                             ) : (
                                 <div className={styles["search_noResult"]}>검색 결과가 없습니다.</div>
@@ -117,6 +121,7 @@ export default function SearchPage() {
                             <hr />
                             {roomData.length > 0 ? (
                                 (category === "전체" ? roomData.slice(0, 4) : roomData).map((item) => (
+                                    <Link key={item.id} to={`/room/${item.id}`}>
                                     <div className={styles["search_result"]}>
                                         <img className={styles["search_store_img"]}
                                             src={`${storeImgUrl}${item.store_id}.jpg`} alt={`${item.store_id}`}></img>
@@ -128,6 +133,7 @@ export default function SearchPage() {
                                             </div>
                                         </div>
                                     </div>
+                                    </Link>
                                 ))
                             ) : (
                                 <div className={styles["search_noResult"]}>검색 결과가 없습니다.</div>
