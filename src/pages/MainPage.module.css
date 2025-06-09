@@ -264,6 +264,10 @@ html, main {
     background-color: #FFB1B1;
     border-radius: 10px;
 }
+.gongu_progress::-moz-progress-bar {
+    background-color: #FFB1B1;
+    border-radius: 10px;
+}
 .gongu_bottom{
     margin-top: 5px;
     display: flex;
