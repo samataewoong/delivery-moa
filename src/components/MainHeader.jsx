@@ -148,6 +148,11 @@ export default function MainHeader({ toggleMenu }) {
         fetchAddress();
     }, [session]);
 
+    const handleHamburgerClick = (e) => {
+    e.stopPropagation(); // 이벤트 버블링 방지
+    toggleMenu(e);
+}
+
     const userId = session?.user?.id;
     return (
         <header className={styles["main_header"]}>
@@ -205,7 +210,7 @@ export default function MainHeader({ toggleMenu }) {
                     </div>
                 </div>
                 <div className={styles["main_hamburger"]}>
-                    <button onClick={toggleMenu} className={styles["main_hamburger_btn"]}>
+                    <button onClick={handleHamburgerClick} className={styles["main_hamburger_btn"]}>
                         <img
                             src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/main_hamburger-md.png"
                             alt="햄버거 메뉴"

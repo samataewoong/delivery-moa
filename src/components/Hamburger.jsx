@@ -56,7 +56,7 @@ export default function HamburgerMenu({ isOpen, session, nickname, handleLogout,
                 .in("id", roomIds);
             if (roomError || !roomData) return;
 
-            const { data: countpeople} = await supabase
+            const { data: countpeople } = await supabase
                 .from("room_join")
                 .select("room_id, user_id", { count: "exact" });
 
@@ -120,20 +120,36 @@ export default function HamburgerMenu({ isOpen, session, nickname, handleLogout,
 
     useEffect(() => {
         const handleClickOutside = (e) => {
+            // 햄버거 버튼 클릭은 제외
+            const isHamburgerButton = e.target.closest('[class*="hamburger_btn"]') ||
+                e.target.closest('[class*="main_hamburger_btn"]');
+
+            if (isHamburgerButton) {
+                return;
+            }
+
             if (menuRef.current && !menuRef.current.contains(e.target)) {
                 onClose();
             }
         };
 
         if (isOpen) {
-            document.addEventListener("mousedown", handleClickOutside);
+            // 약간의 지연을 주어 초기 클릭과 분리
+            const timer = setTimeout(() => {
+                document.addEventListener("mousedown", handleClickOutside);
+            }, 50);
+
+            return () => {
+                clearTimeout(timer);
+                document.removeEventListener("mousedown", handleClickOutside);
+            };
         }
 
         return () => {
             document.removeEventListener("mousedown", handleClickOutside);
         };
     }, [isOpen, onClose]);
-    
+
 
     if (!isOpen) return null;
 
