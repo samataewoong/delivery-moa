@@ -102,7 +102,9 @@ export default function CloseRoom({ userId, roomList }) {
                                 + `<div>`
                                 + `<a id="roomImage-${room.id}"><img class="${roomImg}" alt="undefined 이미지" src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/store/store_${room.store_id}.jpg"></a></div>`
                                 + `<strong id="roomName-${room.id}">${room.room_name}</strong><button id="closeButton-${room.id}" class="${buttonCss}">x</button><br/>`
-                                + `<div id="roomAddress-${room.id}">${room.room_address}</div></div>`,
+                                + `<div id="roomAddress-${room.id}">${room.room_address}</div>`
+                                + `<div id="roomRoute-${room.id}" style="background-color: #ddd; padding: 2px; border-radius: 5px; width: fit-content;">길찾기</div></div>`
+
                         });
 
                         window.kakao.maps.event.addListener(marker, "click", () => {
@@ -117,6 +119,9 @@ export default function CloseRoom({ userId, roomList }) {
                                     if(!window.confirm(`"${room.room_name}" 공구방으로 이동 하시겠습니까?`)) return;
                                     navigate(`/room/${room.id}`);
                                 };
+                                const clickRoute = () => {
+                                    window.open(`https://map.kakao.com/link/to/${encodeURIComponent(room.room_name)},${roomCoords.lat},${roomCoords.lng}`, "_blank");
+                                };
                                 const roomImage = document.getElementById(`roomImage-${room.id}`);
                                 if (roomImage) {
                                     roomImage.onclick = clickRoom;
@@ -127,7 +132,11 @@ export default function CloseRoom({ userId, roomList }) {
                                 }
                                 const roomAddress = document.getElementById(`roomAddress-${room.id}`);
                                 if (roomAddress) {
-                                    roomAddress.onclick = clickRoom;
+                                    roomAddress.onclick = clickRoute;
+                                }
+                                const roomRoute = document.getElementById(`roomRoute-${room.id}`);
+                                if (roomRoute) {
+                                    roomRoute.onclick = clickRoute;
                                 }
                             });
                         });

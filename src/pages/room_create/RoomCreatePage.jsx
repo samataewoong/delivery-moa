@@ -76,7 +76,7 @@ export default function RoomCreatePage() {
                 store_id: store_id,
             });
             if (roomData.length > 0) {
-                alert('공구��을 성공적으로 만들었습니다.');
+                alert('공구방을 성공적으로 만들었습니다.');
                 navigate(`/room/${roomData[0].id}`);
             } else {
                 alert('공구방을 만드는데 실패하였습니다. 나중에 다시 시도 해 주세요.')
