@@ -106,13 +106,6 @@ const OrderComplete = () => {
     navigate('/mainpage');
   };
 
-  const goToReview = () => {
-  if (orderDetails?.room_id) {
-    navigate(`/review/${orderDetails.room_id}`);
-  } else {
-    alert("room_id가 존재하지 않아 리뷰 페이지로 이동할 수 없습니다.");
-  }
-};
 
   if (loading) return <div className={style.loading}>주문 정보를 불러오는 중...</div>;
   if (error) return <div className={style.error}>오류 발생: {error}</div>;
@@ -171,12 +164,6 @@ const OrderComplete = () => {
           </div>
         </div>
 
-        <div className={style.notice}>
-          <p>
-            <i className="fas fa-info-circle"></i> 주문이 만족스러웠다면 리뷰 또는 평가를 남겨주세요.
-          </p>
-        </div>
-
         <div className={style.buttons}>
           <button 
             className={`${style.btn} ${style["btn-primary"]}`} 
@@ -189,12 +176,6 @@ const OrderComplete = () => {
             onClick={goToHome}
           >
             홈으로
-          </button>
-          <button 
-            className={`${style.btn} ${style["btn-review"]}`} 
-            onClick={goToReview}
-          >
-            리뷰작성
           </button>
         </div>
       </div>
