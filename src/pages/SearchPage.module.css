@@ -19,15 +19,22 @@
     padding-inline-start: 0;
     font-size: 20px;
     display: flex;
-    gap: 50px;
     font-size: 28px;
     justify-content: center;
+    
 }
 .search_category li{
     white-space: nowrap;
-    border: 1px solid black;
+    border-bottom: 1px solid black;
+    transition: box-shadow 0.2s ease;
     padding: 10px;
     cursor: pointer;
+}
+.search_category li:hover{
+    box-shadow: inset 0 -4px 0 black;
+}
+.active_tab{
+    box-shadow: inset 0 -4px 0 black;
 }
 
 .search_hitory_box{
@@ -74,6 +81,7 @@
     height: 200px;
     border-radius: 10px;
     box-sizing: border-box;
+    object-fit: cover;
 }
 .search_store_detail{
     width:840px;
@@ -120,4 +128,19 @@
 }
 .search_menu_price{
     font-size: 18px;
+}
+.search_status{
+    font-size: 18px;
+    color: red;
+}
+.more{
+    display: flex;
+    justify-content: center;
+}
+.more button{
+    width: 200px;
+    height: 30px;
+    border-radius: 15px;
+    background-color: white;
+    font-size: 16px;
 }
