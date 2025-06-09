@@ -253,6 +253,7 @@ html, main {
     -webkit-appearance: none;
     overflow: hidden;
     border: none;
+    border-radius: 10px;
 }
 
 .gongu_progress::-webkit-progress-bar {
