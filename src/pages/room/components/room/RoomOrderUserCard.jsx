@@ -94,11 +94,9 @@ export default function RoomOrderUserCard({
 
             const roomJoinData = await selectRoomJoin({ room_id });
             setRoomJoinList(roomJoinData.sort((a, b) => Date.parse(a.joined_at) - Date.parse(b.joined_at)));
-            const roomJoinRow = await selectRoomJoin({ room_id, user_id });
-            setRoomJoin(roomJoinRow[0]);
-            console.log("Updated roomJoinList:", roomJoinData); // Debugging line
-            console.log("Updated roomJoin:", roomJoinRow[0]); // Debugging line
-
+            if(roomJoinData.filter((join) => (join.user_id === user_id)).length > 0){
+                setRoomJoin(roomJoinData.filter((join) => join.user_id === user_id)[0]);
+            }
         }
         const roomJoinListSubscribe = supabase
             .realtime
@@ -136,7 +134,7 @@ export default function RoomOrderUserCard({
         }
         const orderSubscribe = supabase
             .realtime
-            .channel(`realtime:order_status_watch_on_room_order_user_card_in_room_${room_id}`)
+            .channel(`realtime:order_status_watch_on_room_order_user_card_in_room_${room_id}_user_${user_id}`)
             .on(
                 "postgres_changes",
                 { event: '*', schema: 'public', table: 'order' },
