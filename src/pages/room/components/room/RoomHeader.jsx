@@ -6,6 +6,7 @@ import deleteRoomJoin from "../../../../functions/room_join/DeleteRoomJoin";
 import style from "./RoomHeader.module.css";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getCoordinates } from "../../../../functions/maps/Coord";
 
 export default function RoomHeader({ room_id }) {
     const navigate = useNavigate();
@@ -144,7 +145,10 @@ export default function RoomHeader({ room_id }) {
                 {room && <div className={style.room_status}>{room.status}</div>}
             </div>
             <div className={style.room_header_right}>
-                <div className={style.location_box}>
+                <div onClick={async () => {
+                    const roomCoords = await getCoordinates(room.room_address);
+                    window.open(`https://map.kakao.com/link/to/${encodeURIComponent(room.room_name)},${roomCoords.lat},${roomCoords.lng}`, "_blank");
+                }} className={style.location_box}>
                     {room && <img src={locationIcon} alt="Location Icon" className={style.location_icon} />}
                     {room && <div className={style.location_address}>{room.room_address}</div>}
                 </div>
