@@ -1,5 +1,4 @@
 import styles from "./StoreDetail.module.css";
-import Header from "../components/Header";
 import { useState, useEffect, useRef } from "react";
 import supabase from "../config/supabaseClient";
 import { Link } from "react-router-dom";
@@ -127,7 +126,7 @@ export default function StoreDetail(){
                                 <div>{item.menu_price}원</div>
                             </div>
                             <img className={styles["menu_img"]} 
-                            src={`${baseUrl}/${item.img_id.bucket}/${item.img_id.folder}/${item.img_id.filename}.jpg`} alt={item.menu_name}/>
+                            src={`${baseUrl}/${item.img_id.bucket}/${item.img_id.folder}/${item.img_id.filename}`} alt={item.menu_name}/>
                             </div>
                             <hr className={styles["menu_hr"]} ></hr>
                         </>
