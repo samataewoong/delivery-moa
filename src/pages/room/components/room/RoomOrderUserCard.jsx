@@ -94,11 +94,9 @@ export default function RoomOrderUserCard({
 
             const roomJoinData = await selectRoomJoin({ room_id });
             setRoomJoinList(roomJoinData.sort((a, b) => Date.parse(a.joined_at) - Date.parse(b.joined_at)));
-            const roomJoinRow = await selectRoomJoin({ room_id, user_id });
-            setRoomJoin(roomJoinRow[0]);
-            console.log("Updated roomJoinList:", roomJoinData); // Debugging line
-            console.log("Updated roomJoin:", roomJoinRow[0]); // Debugging line
-
+            if(roomJoinData.filter((join) => (join.user_id === user_id)).length > 0){
+                setRoomJoin(roomJoinData.filter((join) => join.user_id === user_id)[0]);
+            }
         }
         const roomJoinListSubscribe = supabase
             .realtime
@@ -108,9 +106,8 @@ export default function RoomOrderUserCard({
                 { event: '*', schema: 'public', table: 'room_join' },
                 (payload) => {
                     if (payload.new.room_id === Number(room_id) || payload.eventType == "DELETE") {
-                        // let tmp = null;
-                        // setRoomJoinList((prevRoomJoin) => (tmp = [...prevRoomJoin.filter((row) => (!(row.user_id === payload.new.user_id || row.user_id === payload.old.user_id) && (row.room_id == Number(payload.new.room_id) || row.room_id === Number(payload.old.room_id)))), payload.new].filter((row) => (row)).sort((a, b) => Date.parse(a.joined_at) - Date.parse(b.joined_at)), setRoomJoin(tmp.filter((row) => row.user_id === user_id)[0])), tmp);
-                        fetchRoomJoinList();
+                        let tmp = null;
+                        setRoomJoinList((prevRoomJoin) => (tmp = [...prevRoomJoin.filter((row) => (!(row.user_id === payload.new?.user_id || row.user_id === payload.old?.user_id) && (row.room_id == Number(payload.new?.room_id) || row.room_id === Number(payload.old?.room_id)))), payload.new].filter((row) => (row)).sort((a, b) => Date.parse(a.joined_at) - Date.parse(b.joined_at)), setRoomJoin(tmp.filter((row) => row.user_id === user_id)[0])), tmp);
                     }
                 }
             )
@@ -128,7 +125,8 @@ export default function RoomOrderUserCard({
                 .eq('room_id', room_id)
                 .eq('user_id', user_id)
                 .order('order_id', { ascending: false })
-                .limit(1);
+                .limit(1)
+                .single();
             if (orderError) {
                 throw orderError;
             }
@@ -136,7 +134,7 @@ export default function RoomOrderUserCard({
         }
         const orderSubscribe = supabase
             .realtime
-            .channel(`realtime:order_status_watch_on_room_order_user_card_in_room_${room_id}`)
+            .channel(`realtime:order_status_watch_on_room_order_user_card_in_room_${room_id}_user_${user_id}`)
             .on(
                 "postgres_changes",
                 { event: '*', schema: 'public', table: 'order' },
