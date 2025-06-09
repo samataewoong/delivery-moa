@@ -106,7 +106,7 @@ function Login() {
                 onChange={(e) => setPassword(e.target.value)}
               />
               <div className={style["login-options"]}>
-                <Link to="/">비밀번호 찾기</Link>
+                <Link to="/forgotpw">비밀번호 찾기</Link>
                 <Link to="/register">회원가입</Link>
               </div>
               <button className={style["login-button"]} onClick={handleLogin}>
