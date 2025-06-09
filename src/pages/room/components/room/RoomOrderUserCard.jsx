@@ -108,9 +108,8 @@ export default function RoomOrderUserCard({
                 { event: '*', schema: 'public', table: 'room_join' },
                 (payload) => {
                     if (payload.new.room_id === Number(room_id) || payload.eventType == "DELETE") {
-                        // let tmp = null;
-                        // setRoomJoinList((prevRoomJoin) => (tmp = [...prevRoomJoin.filter((row) => (!(row.user_id === payload.new.user_id || row.user_id === payload.old.user_id) && (row.room_id == Number(payload.new.room_id) || row.room_id === Number(payload.old.room_id)))), payload.new].filter((row) => (row)).sort((a, b) => Date.parse(a.joined_at) - Date.parse(b.joined_at)), setRoomJoin(tmp.filter((row) => row.user_id === user_id)[0])), tmp);
-                        fetchRoomJoinList();
+                        let tmp = null;
+                        setRoomJoinList((prevRoomJoin) => (tmp = [...prevRoomJoin.filter((row) => (!(row.user_id === payload.new?.user_id || row.user_id === payload.old?.user_id) && (row.room_id == Number(payload.new?.room_id) || row.room_id === Number(payload.old?.room_id)))), payload.new].filter((row) => (row)).sort((a, b) => Date.parse(a.joined_at) - Date.parse(b.joined_at)), setRoomJoin(tmp.filter((row) => row.user_id === user_id)[0])), tmp);
                     }
                 }
             )
@@ -128,7 +127,8 @@ export default function RoomOrderUserCard({
                 .eq('room_id', room_id)
                 .eq('user_id', user_id)
                 .order('order_id', { ascending: false })
-                .limit(1);
+                .limit(1)
+                .single();
             if (orderError) {
                 throw orderError;
             }
