@@ -90,7 +90,6 @@ export default function CloseRoom({ userId, roomList }) {
 					const buttonCss = styles.infowindowClose;
 					const roomImg = styles.infowindowImg;
 					const markerPosition = marker.getPosition();
-
 					const overlayContent = `
             <div style="
               position: relative;
@@ -99,10 +98,10 @@ export default function CloseRoom({ userId, roomList }) {
               border-radius: 7px;
               border: solid 3px #2f82e9; 
               box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-              max-width: 220px;
+              width: 260px;
             ">
               <div id="roomImage-${room.id}">
-                <img class="${roomImg}" alt="undefined 이미지"
+                <   lt="undefined 이미지"
                   src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/store/store_${room.store_id}.jpg"
                   style="width: 100%; border-radius: 5px 5px 0 0;"
                 />
