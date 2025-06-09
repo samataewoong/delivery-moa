@@ -101,6 +101,7 @@
     border-radius: 10px;
     width: 240px;
     height: 164px;
+    object-fit: cover;
 }
 .menu_hr{
     border: 0.2px solid #dddcdc;

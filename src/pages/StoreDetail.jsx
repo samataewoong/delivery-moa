@@ -120,8 +120,8 @@ export default function StoreDetail(){
                 </div>
                 <div className={styles["menu_box"]}>
                     {menu.map((item) => (
-                        <>
-                            <div key={item.id} className={styles["menu_detail_box"]}>
+                        <div key={item.id}>
+                            <div className={styles["menu_detail_box"]}>
                             <div className={styles["menu_text"]}>
                                 <div className={styles["menu_title"]}>{item.menu_name}</div>
                                 <div>{item.menu_price}원</div>
@@ -130,12 +130,12 @@ export default function StoreDetail(){
                             src={`${baseUrl}/${item.img_id.bucket}/${item.img_id.folder}/${item.img_id.filename}`} alt={item.menu_name}/>
                             </div>
                             <hr className={styles["menu_hr"]} ></hr>
-                        </>
+                        </div>
                     ))}
                     <div className={styles["menu_btn"]}>
                         <button onClick={() => {
                             navigate(`/room/create/${store_id}`) 
-                         }} className={styles["menu_make_btn"]}>방 만들기</button>
+                        }} className={styles["menu_make_btn"]}>방 만들기</button>
                         <button className={styles["menu_confirm_btn"]}>개설된 방 확인</button>
                     </div>
                 </div>
