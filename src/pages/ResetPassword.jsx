@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import supabase from "../config/supabaseClient";
+import style from "./ResetPassword.module.css";
 
 export default function ResetPassword() {
     const [password, setPassword] = useState('');
@@ -27,7 +28,7 @@ export default function ResetPassword() {
         if (error) {
             setMessage('❌ 비밀번호 변경 실패: ' + error.message);
         } else {
-            setMessage('✅ 비밀번호가 변경되었어요! 로그인 페이지로 이동 중...');
+            setMessage('✅ 비밀번호가 변경되었어요! 로그인 페이지로 이동');
             setTimeout(() => navigate('/login'), 2000);
         }
     };
@@ -37,20 +38,23 @@ export default function ResetPassword() {
     }
 
     return (
-        <div>
-            <form onSubmit={handleSubmit} >
-                <h2>🔒 새 비밀번호 설정</h2>
-                <input
-                    type="password"
-                    placeholder="새 비밀번호 입력"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                />
+        <div className={style["outer_wrapper"]}>
+            <div className={style["resetpw_body_container"]}>
+                <form onSubmit={handleSubmit} className={style["form_container"]}>
+                    <h2> 새 비밀번호 설정</h2>
+                    <input
+                        type="password"
+                        placeholder="새 비밀번호 입력"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                    <br />
+                    <button type="submit">비밀번호 변경하기</button>
+                    {message && <p>{message}</p>}
+                </form>
+            </div>
 
-                <button type="submit">비밀번호 변경하기</button>
-                {message && <p>{message}</p>}
-            </form>
 
         </div>
 
