@@ -89,7 +89,7 @@ function App() {
           <Route path="/" element={<RootPage />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/mainpage" element={<MainPage toggleMenu={toggleMenu} />} />
+          <Route path="/mainpage" element={<MainPage />} />
           <Route path="/roomPage/AllRoom" element={<AllRoom />} />
           <Route path="/room/create/:store_id" element={<RoomCreatePage />} />
           <Route path="/room/:room_id" element={<RoomPage />} />
