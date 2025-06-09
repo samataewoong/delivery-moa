@@ -20,8 +20,8 @@ export default function RoomOrderUserCard({
     const [roomJoin, setRoomJoin] = useState(null);
     const [roomJoinList, setRoomJoinList] = useState([]);
     const [isLeader, setIsLeader] = useState(false);
-    const [canEnd, setCanEnd] = useState(false);
     const [isSelf, setIsSelf] = useState(false);
+    const [orderId, setOrderId] = useState(null);
     useEffect(() => {
         async function fetchRoom() {
             const roomData = await selectRoom({
@@ -33,7 +33,7 @@ export default function RoomOrderUserCard({
         }
         const roomSubscribe = supabase
             .realtime
-            .channel(`realtime:room_status_watch_on_room_order_user_card_in_room_${room_id}`)
+            .channel(`realtime:room_status_watch_on_room_order_user_card_in_room_${room_id}_user_${user_id}`)
             .on(
                 "postgres_changes",
                 { event: '*', schema: 'public', table: 'room' },
@@ -48,7 +48,7 @@ export default function RoomOrderUserCard({
                                 });
                             }, 60000);
                         }
-                        if(payload.new.status === '배송중') {
+                        if (payload.new.status === '배송중') {
                             setTimeout(async () => {
                                 await updateRoom({
                                     room_id,
@@ -65,35 +65,51 @@ export default function RoomOrderUserCard({
         }
     }, [room_id]);
     useEffect(() => {
-        const process = async () => {
-            try {
-                let userData = await selectUser({ user_id });
-                if (userData.length > 0) {
-                    setUser(userData[0]);
-                    if (roomJoinList.filter((user) => (user.user_id === user_id)).length > 0) {
-                        setRoomJoin(roomJoinList.filter((join) => (join.user_id === user_id))[0]);
+        async function fetchUser() {
+            const userData = await selectUser({
+                user_id,
+            });
+            setUser(userData[0]);
+        }
+        const userSubscribe = supabase
+            .realtime
+            .channel(`realtime:user_watch_on_room_order_user_card_in_room_${room_id}_user_${user_id}`)
+            .on(
+                "postgres_changes",
+                { event: '*', schema: 'public', table: 'user' },
+                (payload) => {
+                    if (payload.new.id === user_id) {
+                        fetchUser();
                     }
                 }
-            } catch (error) {
-                console.error("Error fetching user or room join:", error);
-            }
+            )
+            .subscribe();
+        fetchUser();
+        return () => {
+            userSubscribe.unsubscribe();
         };
-        process();
-    }, [user_id, roomJoinList]);
+    }, [user_id]);
     useEffect(() => {
         async function fetchRoomJoinList() {
+
             const roomJoinData = await selectRoomJoin({ room_id });
-            setRoomJoinList(roomJoinData);
+            setRoomJoinList(roomJoinData.sort((a, b) => Date.parse(a.joined_at) - Date.parse(b.joined_at)));
+            const roomJoinRow = await selectRoomJoin({ room_id, user_id });
+            setRoomJoin(roomJoinRow[0]);
+            console.log("Updated roomJoinList:", roomJoinData); // Debugging line
+            console.log("Updated roomJoin:", roomJoinRow[0]); // Debugging line
+
         }
         const roomJoinListSubscribe = supabase
             .realtime
-            .channel(`realtime:room_join_status_update_watch_on_room_order_user_card_in_room_${room_id}`)
+            .channel(`realtime:room_join_status_update_watch_on_room_order_user_card_in_room_${room_id}_user_${user_id}`)
             .on(
                 "postgres_changes",
                 { event: '*', schema: 'public', table: 'room_join' },
                 (payload) => {
-                    console.log("Received payload:", payload);
                     if (payload.new.room_id === Number(room_id) || payload.eventType == "DELETE") {
+                        // let tmp = null;
+                        // setRoomJoinList((prevRoomJoin) => (tmp = [...prevRoomJoin.filter((row) => (!(row.user_id === payload.new.user_id || row.user_id === payload.old.user_id) && (row.room_id == Number(payload.new.room_id) || row.room_id === Number(payload.old.room_id)))), payload.new].filter((row) => (row)).sort((a, b) => Date.parse(a.joined_at) - Date.parse(b.joined_at)), setRoomJoin(tmp.filter((row) => row.user_id === user_id)[0])), tmp);
                         fetchRoomJoinList();
                     }
                 }
@@ -102,6 +118,38 @@ export default function RoomOrderUserCard({
         fetchRoomJoinList();
         return () => {
             roomJoinListSubscribe.unsubscribe();
+        };
+    }, [room_id]);
+    useEffect(() => {
+        async function fetchOrder() {
+            const { data: orderData, error: orderError } = await supabase
+                .from('order')
+                .select('*')
+                .eq('room_id', room_id)
+                .eq('user_id', user_id)
+                .order('order_id', { ascending: false })
+                .limit(1);
+            if (orderError) {
+                throw orderError;
+            }
+            setOrderId(orderData?.order_id);
+        }
+        const orderSubscribe = supabase
+            .realtime
+            .channel(`realtime:order_status_watch_on_room_order_user_card_in_room_${room_id}`)
+            .on(
+                "postgres_changes",
+                { event: '*', schema: 'public', table: 'order' },
+                (payload) => {
+                    if (payload.new.room_id === Number(room_id) && payload.new.user_id === user_id) {
+                        fetchOrder();
+                    }
+                }
+            )
+            .subscribe();
+        fetchOrder();
+        return () => {
+            orderSubscribe.unsubscribe();
         };
     }, [room_id]);
     useEffect(() => {
@@ -125,13 +173,6 @@ export default function RoomOrderUserCard({
         }
         fetchIsSelf();
     }, [user_id]);
-    useEffect(() => {
-        if (roomJoinList.length > 0) {
-            if(roomJoinList.filter((join) => (join.status === '픽업 완료')).length == roomJoinList.length) {
-                setCanEnd(true);
-            }
-        }
-    },[roomJoinList]);
     async function handleEndRecruit() {
         try {
             if (!confirm('모집을 마감하시겠습니까?')) return;
@@ -151,7 +192,7 @@ export default function RoomOrderUserCard({
                 user_id,
                 status: "픽업 완료",
             });
-            navigate(`/gongucomplete/${room_id}`);
+            navigate(`/gongucomplete/${orderId}`);
         } catch (error) {
             console.error("Error picking up:", error);
         }
@@ -169,7 +210,7 @@ export default function RoomOrderUserCard({
     }
     async function handleRoomEnd() {
         try {
-            if(!confirm("공구방을 종료하시겠습니까?")) return;
+            if (!confirm("공구방을 종료하시겠습니까?")) return;
             await updateRoom({
                 room_id,
                 status: "종료"
@@ -186,6 +227,18 @@ export default function RoomOrderUserCard({
             default: return style.user_profile_box;
         }
     })();
+    const statusClassName = (() => {
+        if (roomJoin) {
+
+            switch (roomJoin.status) {
+                case "준비 완료": return style.user_profile_status_ready;
+                case "준비중": return style.user_profile_status_pending;
+                case "픽업 완료": return style.user_profile_status_received;
+
+            }
+        }
+    })();
+    console.log("roomJoin:", roomJoin); // Debugging line
     return (
         <div className={boxClassName}>
             <div className={style.user_profile_image} />
@@ -211,13 +264,7 @@ export default function RoomOrderUserCard({
                     </div>}
 
                 </div>
-                {roomJoin && <div className={(() => {
-                    switch (roomJoin.status) {
-                        case "준비 완료": return style.user_profile_status_ready;
-                        case "준비중": return style.user_profile_status_pending;
-                        case "픽업 완료": return style.user_profile_status_received;
-                    }
-                })()}>
+                {roomJoin && <div className={statusClassName}>
                     {roomJoin.status}
                 </div>}
             </div>

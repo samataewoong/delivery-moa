@@ -11,7 +11,7 @@ export default function RoomOrderStatus({ room_id }) {
         async function fetchRoomJoin() {
             try {
                 const roomJoinData = await selectRoomJoin({ room_id });
-                setRoomJoin(roomJoinData);
+                setRoomJoin(roomJoinData.sort((a, b) => Date.parse(a.joined_at) - Date.parse(b.joined_at)));
             } catch(error) {
                 console.error("Error fetching room join:", error);
             }
@@ -25,8 +25,8 @@ export default function RoomOrderStatus({ room_id }) {
                 (payload) => {
                     console.log("Received payload:", payload);
                     if (payload.new.room_id === Number(room_id) || payload.eventType == "DELETE") {
+                        setRoomJoin((prevRoomJoin) => [...prevRoomJoin.filter((row) => (!(row.user_id === payload.new.user_id || row.user_id === payload.old.user_id) && (row.room_id == Number(payload.new.room_id) || row.room_id === Number(payload.old.room_id)))), payload.new].filter((row) => (row)).sort((a, b) => Date.parse(a.joined_at) - Date.parse(b.joined_at)));
                         console.log("Room ID matches, fetching room join data...");
-                        fetchRoomJoin();
                     }
                 }
             )
