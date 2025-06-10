@@ -67,6 +67,12 @@ function Login() {
     }
   };
 
+  const onKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleLogin();
+    }
+  }
+
   // 로그아웃
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
@@ -104,6 +110,7 @@ function Login() {
                 placeholder="비밀번호"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                onKeyDown={onKeyDown}
               />
               <div className={style["login-options"]}>
                 <Link to="/forgotpw">비밀번호 찾기</Link>
