@@ -18,6 +18,7 @@ export default function RoomCreatePage() {
     const [user, setUser] = useState(null);
     const [store, setStore] = useState(null);
     const [roomAddress, setRoomAddress] = useState('');
+    const [roomDetailAddress, setRoomDetailAddress] = useState('');
     const [maxPeople, setMaxPeople] = useState(6);
     useEffect(() => {
         async function fetchUser() {
@@ -63,14 +64,14 @@ export default function RoomCreatePage() {
         try {
             await insertRoom({
                 room_name: roomName,
-                room_address: roomAddress,
+                room_address: `${roomAddress} ${roomDetailAddress}`,
                 max_people: maxPeople,
                 leader_id: authUser.id,
                 store_id: store_id
             });
             const roomData = await selectRoom({
                 room_name: roomName,
-                room_address: roomAddress,
+                room_address: `${roomAddress} ${roomDetailAddress}`,
                 max_people: maxPeople,
                 leader_id: authUser.id,
                 store_id: store_id,
@@ -102,8 +103,12 @@ export default function RoomCreatePage() {
                     </div>
                     <div className={style.input_label_box}>
                         <div className={style.label_box}>공구방 주소</div>
-                        <input className={style.input_box} type="text" placeholder="공구방 주소" value={roomAddress} onChange={(e) => {
-                            setRoomAddress(e.target.value);
+                        <input className={style.input_box} type="text" placeholder="공구방 주소" value={roomAddress} />
+                    </div>
+                    <div className={style.input_label_box}>
+                        <div className={style.label_box}>공구방 상세 주소</div>
+                        <input className={style.input_box} type="text" placeholder="공구방 상세 주소" value={roomDetailAddress} onChange={(e) => {
+                            setRoomDetailAddress(e.target.value);
                         }} />
                     </div>
                     <div className={style.input_label_box}>
