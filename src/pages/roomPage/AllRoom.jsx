@@ -85,12 +85,12 @@ export default function AllRoom() {
         if (data.length > 0) {
             const move = window.confirm("이미 참여중인 방입니다. 이동하시겠습니까?");
             if (move) {
-                navigate(`/delivery-moa/room/${roomId}`);
+                navigate(`/room/${roomId}`);
             }
         } else {
             const confirmJoin = window.confirm("이 공구방에 참여하시겠습니까?");
             if (confirmJoin) {
-                window.location.href = `/delivery-moa/room/${roomId}`;
+                navigate(`/room/${roomId}`);
             }
         }
     }
