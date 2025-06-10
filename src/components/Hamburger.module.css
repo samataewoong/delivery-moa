@@ -90,6 +90,7 @@
     overflow: hidden;
     border: none;
     margin-bottom: 20px;
+    background-color: #eee;
 }
 
 .gongu_progress::-webkit-progress-bar {
@@ -97,6 +98,9 @@
 }
 
 .gongu_progress::-webkit-progress-value {
+    background-color: #FF6B6B;
+}
+.gongu_progress::-moz-progress-bar {
     background-color: #FF6B6B;
 }
 
