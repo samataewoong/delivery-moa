@@ -1,15 +1,10 @@
-.mapContainer {
-  margin: 5px 10px 5px 10px;
-}
-
 .closeMap {
   border: solid 4px #ccc;
-  border-radius: 7px;
-  display: flex;
-  justify-content: center;
-  /* 가로 정렬 */
-  align-items: center;
-  /* 세로 정렬 */
+  border-radius: 10px;
+  box-sizing: border-box;
+  width: 800px;
+  height: 600px;
+
 }
 
 .infowindowClose {
@@ -30,3 +25,5 @@
   display: block;
   margin-bottom: 5px;
 }
+
+
