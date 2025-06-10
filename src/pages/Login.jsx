@@ -64,6 +64,8 @@ function Login() {
       setUser(data.user);
       fetchNickname(data.user.id);
       navigate("/mainpage");
+    } else{
+      alert("이메일 또는 비밀번호가 틀렸습니다");
     }
   };
 
