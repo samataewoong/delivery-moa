@@ -150,7 +150,7 @@ export default function RoomHeader({ room_id }) {
                     window.open(`https://map.kakao.com/link/to/${encodeURIComponent(room.room_name)},${roomCoords.lat},${roomCoords.lng}`, "_blank");
                 }} className={style.location_box}>
                     {room && <img src={locationIcon} alt="Location Icon" className={style.location_icon} />}
-                    {room && <div className={style.location_address}>{room.room_address}</div>}
+                    {room && <div className={style.location_address}>{room.room_address} {room.room_address_detail || ''}</div>}
                 </div>
                 {(room && roomJoin && canLeave) ? (
                     <img onClick={handleLeaveRoom} src={leaveBtnLogo} alt="Leave Button" className={style.leave_button} />

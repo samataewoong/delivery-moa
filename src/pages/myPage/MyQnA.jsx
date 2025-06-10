@@ -8,6 +8,7 @@ import Modal from "../../components/Modal";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import QnaWriteModal from "./QnaWriteModal";
 
+
 export default function MyQnA() {
   const { userSession, userId } = useOutletContext();
 
@@ -105,9 +106,14 @@ export default function MyQnA() {
 
   return (
     <>
-      <button className={styles.qnaWriteBtn} onClick={() => setModalOpen(true)}>
-        문의 남기기
-      </button>
+      <div className={styles.qnaButtonWrapper}>
+        <button
+          className={styles.qnaWriteBtn}
+          onClick={() => setModalOpen(true)}
+        >
+          문의 남기기
+        </button>
+      </div>
 
       {/* 문의 작성 모달 */}
       <QnaWriteModal
