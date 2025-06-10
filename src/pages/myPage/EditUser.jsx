@@ -2,17 +2,21 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./MyPage.module.css";
 import supabase from "../../config/supabaseClient";
+import FormattedDate from "../../components/FormattedDate";
 import DateToString from "../../utils/DateToString";
 
 export default function EditUser() {
+    // db update 구현해야함
     const navigate = useNavigate();
 
     const [nickname, setNickname] = useState("");
+    const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [createdAt, setCreatedAt] = useState("");
     const [session, setSession] = useState(null);
 
-    // 현재 로그인된 유저 정보 불러오기
+
+    // 현재 로그인된 유저 정보 갖고오기
     useEffect(() => {
         const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
             setSession(session);
@@ -20,11 +24,11 @@ export default function EditUser() {
             if (session?.user) {
                 const user = session.user;
 
-                // 이메일과 가입일 저장
+                // 이메일, 가입일 설정
                 setEmail(user.email ?? "");
                 setCreatedAt(user.created_at ?? "");
 
-                // 닉네임 가져오기 (user 테이블)
+                // 추가 유저 정보 가져오기 (user 테이블)
                 const { data, error } = await supabase
                     .from("user")
                     .select("*")
@@ -35,10 +39,12 @@ export default function EditUser() {
                     console.error("추가 유저 정보 불러오기 실패:", error);
                 } else {
                     setNickname(data?.nickname ?? "");
+                    setPassword(data?.password ?? "");
                 }
             } else {
                 setEmail("");
                 setNickname("");
+                setPassword("");
                 setCreatedAt("");
             }
         });
@@ -46,31 +52,20 @@ export default function EditUser() {
         return () => subscription.unsubscribe(); // 언마운트 시 정리
     }, []);
 
+
     const nickNameChange = (e) => {
         setNickname(e.target.value ?? "");
-    };
+    }
+    const passWordChange = (e) => {
+        setPassword(e.target.value ?? "");
+    }
+    const [showPassword, setShowPassword] = useState(false);
 
-    // 비밀번호 재설정 링크 이메일 전송
-    const sendResetEmail = async () => {
-        const email = session?.user?.email;
-        if (!email) {
-            alert("이메일 정보가 없습니다.");
-            return;
-        }
+    const eyeClick = () => setShowPassword(prev => !prev);
 
-        const { error } = await supabase.auth.resetPasswordForEmail(email, {
-            redirectTo: "http://localhost:5173/resetpw", // 배포 시 도메인으로 바꿔줘야 함
-        });
-
-        if (error) {
-            alert("이메일 전송 실패: " + error.message);
-        } else {
-            alert("📧 비밀번호 재설정 링크가 이메일로 전송되었습니다.");
-        }
-    };
-
-    // 닉네임 수정 저장
+    // 수정
     const editComplete = async () => {
+
         if (!session || !session.user) {
             alert("로그인 정보가 없습니다");
             return;
@@ -78,10 +73,11 @@ export default function EditUser() {
 
         const userId = session.user.id;
 
+        // 닉네임 업데이트
         const { error: nicknameError } = await supabase
             .from("user")
             .update({
-                nickname: nickname,
+                nickname: nickname
             })
             .eq("id", userId);
 
@@ -90,10 +86,19 @@ export default function EditUser() {
             return;
         }
 
+        // 비밀번호 업데이트
+        if (password !== "") {
+            const { error: passwordError } = await supabase.auth.updateUser({
+                password: password
+            });
+
+            if (passwordError) {
+                console.log('비밀번호 변경 실패:', passwordError.message);
+            }
+        }
         alert("수정이 완료되었습니다!");
         navigate("../userinfo");
-    };
-
+    }
     return (
         <div className={styles.userInfo}>
             <div className={styles.infoRow}>
@@ -106,7 +111,6 @@ export default function EditUser() {
                     value={nickname}
                 />
             </div>
-
             <div className={styles.infoRow}>
                 <div className={styles.label}>이메일:</div>
                 <input
@@ -116,7 +120,6 @@ export default function EditUser() {
                     readOnly
                 />
             </div>
-
             <div className={styles.infoRow}>
                 <div className={styles.label}>비밀번호:</div>
                 <div className={styles.passwordEye}>
@@ -135,7 +138,6 @@ export default function EditUser() {
                     ></ion-icon>
                 </div>
             </div>
-
             <div className={styles.infoRow}>
                 <div className={styles.label}>가입일:</div>
                 <input
@@ -145,10 +147,7 @@ export default function EditUser() {
                     value={DateToString(createdAt)}
                 />
             </div>
-
-            <button className={styles.editButton} onClick={editComplete}>
-                수정완료
-            </button>
+            <button className={styles.editButton} onClick={editComplete}>수정완료</button>
         </div>
-    );
+    )
 }
