@@ -1,5 +1,3 @@
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import Header from "../../components/Header";
 import CloseRoom from "../../components/CloseRoom";
 import { useLocation } from "react-router-dom";
 import styles from './AllRoom.module.css';
@@ -9,8 +7,10 @@ import MustBeLoggedIn from "../../components/login_check/MustBeLoggedIn";
 import selectUser from "../../functions/user/SelectUser";
 import { getCoordinates } from "../../functions/maps/Coord";
 import { getDistance } from "../../functions/maps/Distance";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function AllRoom() {
+    const navigate = useNavigate();
     const location = useLocation();
     const userId = location.state?.userId;
     console.log("userId:", userId)
@@ -50,22 +50,25 @@ export default function AllRoom() {
             <div className={styles.main_container}>
                 <MustBeLoggedIn />
                 <div className={styles.AllRoomhead}>
-                    진행중인 공구방
+                    <img onClick={() => { navigate(-1); }} className={styles["back_btn"]} src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/backbtn.png"></img>
+                    <div>진행중인 공구방</div>
                 </div>
                 <div className={styles.AllRoomBody}>
                     <div className={styles.rooms}>
-                        {roomList.length >0 ? (
+                        {roomList.length > 0 ? (
                             roomList.map((room, index) => (
-                            <div key={room.id} className={styles.roomList}>
-                                <div className={styles.roomWithText} style={{backgroundImage: `url("https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/store/store_${room.store_id}.jpg")`, backgroundSize: "cover", backgroundPosition: "center 80%"}}>
-                                    <div className={styles.roomDetail}>
-                                        <div className={styles.roomTitle}>{room.room_name}</div>
-                                        <div className={styles.roomDistance}>{Math.floor(room.distance * 10) / 10}km</div>
-                                        <div className={styles.roomAddress}>{room.room_address}</div>
+                                <Link key={room.id} to={`/room/${room.id}`}>
+                                    <div key={room.id} className={styles.roomList}>
+                                        <div className={styles.roomWithText} style={{ backgroundImage: `url("https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/store/store_${room.store_id}.jpg")`, backgroundSize: "cover", backgroundPosition: "center 80%" }}>
+                                            <div className={styles.roomDetail}>
+                                                <div className={styles.roomTitle}>{room.room_name}</div>
+                                                <div className={styles.roomDistance}>{Math.floor(room.distance * 10) / 10}km</div>
+                                                <div className={styles.roomAddress}>{room.room_address}</div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        ))
+                                </Link>
+                            ))
                         ) : (
                             <div className={styles.room_no_result}>
                                 진행중인 공구방이 없습니다.

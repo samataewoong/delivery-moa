@@ -80,6 +80,7 @@
 }
 .back_btn{
     padding: 24px;
+    cursor: pointer;
 }
 .store_name{
     font-size: 20px;

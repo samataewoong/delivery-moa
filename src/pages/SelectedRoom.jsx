@@ -3,9 +3,9 @@ import { useState, useEffect, useRef } from "react";
 import supabase from "../config/supabaseClient";
 import { Link, useNavigate } from "react-router-dom";
 import { useParams } from 'react-router-dom';
-import thousands from "thousands";
 
 export default function SelectRoom() {
+    const navigate = useNavigate();
     const { store_id } = useParams();
     const [ roomSelect, setRoomSelect ] = useState([]);
     const [ store, setStore ] = useState([]);
@@ -27,9 +27,7 @@ export default function SelectRoom() {
         <main className={styles["main_container"]}>
             <div className={styles["main_contents"]}>
                 <div className={styles["main_head"]}>
-                    <img onClick={() => {
-                    navigate(-1);
-                }} className={styles["back_btn"]} src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/backbtn.png"></img>
+                    <img onClick={() => { navigate(-1); }} className={styles["back_btn"]} src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/backbtn.png"></img>
                     <div>개설된방 : </div>
                     <div className={styles["store_name"]}>&nbsp;{store.store_name}</div>
                 </div>

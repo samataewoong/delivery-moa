@@ -130,6 +130,7 @@
     width: 530px;
     font-size: 34px;
     border-radius: 20px;
+    cursor: pointer;
 }
 .menu_confirm_btn{
     border: 1px solid #FF6B6B;
@@ -139,6 +140,7 @@
     width: 530px;
     font-size: 34px;
     border-radius: 20px;
+    cursor: pointer;
 }
 .menu_make_btn:hover{
     background-color: #FF6B6B;
