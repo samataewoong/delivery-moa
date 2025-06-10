@@ -13,7 +13,7 @@ export default function AllRoom() {
     const navigate = useNavigate();
     const location = useLocation();
     const userId = location.state?.userId;
-    console.log("userId:", userId)
+    console.log("userId:", userId);
     const [roomList, setRoomList] = useState([]);
     useEffect(() => {
         const fetchUserData = async () => {
@@ -43,7 +43,35 @@ export default function AllRoom() {
                 console.log("roomList:", roomList);
             }
         };
+        const userSubscribe = supabase
+            .realtime
+            .channel("realtime:user_address_watch_on_all_room_page")
+            .on(
+                "postgres_changes",
+                { event: '*', schema: 'public', table: 'user' },
+                (payload) => {
+                    if (payload.new.id === userId) {
+                        fetchUserData();
+                    }
+                }
+            )
+            .subscribe();
+        const roomSubscribe = supabase
+            .realtime
+            .channel("realtime:room_watch_on_all_room_page")
+            .on(
+                "postgres_changes",
+                { event: '*', schema: 'public', table: 'room' },
+                (payload) => {
+                    fetchUserData();
+                }
+            )
+            .subscribe();
         fetchUserData();
+        return () => {
+            userSubscribe.unsubscribe();
+            roomSubscribe.unsubscribe();
+        };
     }, [userId]);
 
     const roomClick = async (e, roomId) => {
@@ -54,7 +82,7 @@ export default function AllRoom() {
         if (data.length > 0) {
             const move = window.confirm("이미 참여중인 방입니다. 이동하시겠습니까?");
             if (move) {
-            navigate(`/delivery-moa/room/${roomId}`);
+                navigate(`/delivery-moa/room/${roomId}`);
             }
         } else {
             const confirmJoin = window.confirm("이 공구방에 참여하시겠습니까?");

@@ -27,7 +27,35 @@ export default function CloseRoom({ userId, roomList }) {
 			}
 		};
 
+		const userSubscribe = supabase
+			.realtime
+			.channel(`realtime:close_room_address_watch_on_user_${userId}`)
+			.on(
+				"postgres_changes",
+				{ event: '*', schema: 'public', table: 'user' },
+				(payload) => {
+					if (payload.new.id === userId) {
+						setUserAddress(payload.new.address);
+					}
+				}
+			)
+			.subscribe();
+        const roomSubscribe = supabase
+            .realtime
+            .channel("realtime:room_watch_on_close_room_page")
+            .on(
+                "postgres_changes",
+                { event: '*', schema: 'public', table: 'room' },
+                (payload) => {
+                    fetchUserData();
+                }
+            )
+            .subscribe();
+
 		fetchUserData();
+		return () => {
+			userSubscribe.unsubscribe();
+		};
 	}, [userId]);
 
 	useEffect(() => {
@@ -42,15 +70,11 @@ export default function CloseRoom({ userId, roomList }) {
 			}
 
 			const userCoords = new window.kakao.maps.LatLng(userResult[0].y, userResult[0].x);
-
-			if (!mapInstance.current) {
-				mapInstance.current = new window.kakao.maps.Map(mapRef.current, {
-					center: userCoords,
-					level: 3,
-				});
-			} else {
-				mapInstance.current.setCenter(userCoords);
-			}
+			mapInstance.current = new window.kakao.maps.Map(mapRef.current, {
+				center: userCoords,
+				level: 3,
+			});
+			mapInstance.current.setCenter(userCoords);
 
 			// 유저 마커
 			new window.kakao.maps.Marker({
@@ -125,8 +149,8 @@ export default function CloseRoom({ userId, roomList }) {
 								};
 							}
 							const clickRoom = async () => {
-								const roomJoinData = await selectRoomJoin({ room_id: room.id, user_id: userId  });
-								if(roomJoinData.length > 0){
+								const roomJoinData = await selectRoomJoin({ room_id: room.id, user_id: userId });
+								if (roomJoinData.length > 0) {
 									navigate(`/room/${room.id}`);
 									return;
 								}
