@@ -25,18 +25,19 @@
 .AllRoomBody {
     display: flex;
     width: 1240px;
-    height: auto;
+    height: 640px;
     box-sizing: border-box;
     padding: 20px 20px;
     background-color: white;
     border-radius: 10px;
     box-shadow: 4px 6px 2px rgba(0, 0, 0, 0.2);
-    gap: 10px;
 }
 
 .rooms {
     width: 400px;
     box-sizing: border-box;
+    overflow-y: auto;
+    padding-right: 20px;
 }
 .room_no_result{
     width: 390px;
@@ -54,17 +55,16 @@
 }
 .roomList {
     border-radius: 10px;
-    width: 390px;
+    width: 380px;
     height: 150px;
     overflow: hidden;
     display: flex;
     margin-bottom: 20px;
-    overflow-y: auto;
 }
 .roomWithText{
     position: relative;
     height: 150px;
-    width: 390px;
+    width: 380px;
 }
 .roomTitle {
     text-align: end;
@@ -74,7 +74,7 @@
     opacity: 100%;
 }
 .roomDetail{
-    width: 390px;
+    width: 380px;
     height: 50px;
     background-color: white;
     opacity: 80%;

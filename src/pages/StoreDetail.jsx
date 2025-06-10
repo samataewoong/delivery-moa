@@ -119,6 +119,13 @@ export default function StoreDetail(){
                     </div>
                 </div>
                 <div className={styles["menu_box"]}>
+                    <div className={styles["menu_btn"]}>
+                        <button onClick={() => {
+                            navigate(`/room/create/${store_id}`) 
+                        }} className={styles["menu_make_btn"]}>방 만들기</button>
+                        <button className={styles["menu_confirm_btn"]}>개설된 방 확인</button>
+                        <hr className={styles["menu_hr"]} ></hr>
+                    </div>
                     {menu.map((item) => (
                         <div key={item.id}>
                             <div className={styles["menu_detail_box"]}>
@@ -132,12 +139,6 @@ export default function StoreDetail(){
                             <hr className={styles["menu_hr"]} ></hr>
                         </div>
                     ))}
-                    <div className={styles["menu_btn"]}>
-                        <button onClick={() => {
-                            navigate(`/room/create/${store_id}`) 
-                        }} className={styles["menu_make_btn"]}>방 만들기</button>
-                        <button className={styles["menu_confirm_btn"]}>개설된 방 확인</button>
-                    </div>
                 </div>
             </div>
         </main>
