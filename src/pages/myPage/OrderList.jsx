@@ -101,12 +101,12 @@ export default function OrderList() {
                     </div>
                   </div>
                   <span style={{ fontWeight: "bold", fontSize: "1.1rem" }}>
-                    {total}원
+                    {total.toLocaleString()}원
                   </span>
                   <span
                     style={{
                       marginLeft: 10,
-                      color: "#0056b3",
+                      color: "#ff6b6b",
                       fontSize: "0.95rem",
                     }}
                   >
@@ -131,9 +131,14 @@ export default function OrderList() {
                         (order.room_order || []).map((item, idx) => (
                           <li key={idx} style={{ marginBottom: "4px" }}>
                             <b>{item.menu_name}</b>
-                            &nbsp;({item.menu_price}원 × {item.quantity}개)
-                            &nbsp;=&nbsp;
-                            <b>{item.menu_price * item.quantity}원</b>
+                            &nbsp;({item.menu_price.toLocaleString()}원 ×{" "}
+                            {item.quantity}개) &nbsp;=&nbsp;
+                            <b>
+                              {(
+                                item.menu_price * item.quantity
+                              ).toLocaleString()}
+                              원
+                            </b>
                           </li>
                         ))
                       )}

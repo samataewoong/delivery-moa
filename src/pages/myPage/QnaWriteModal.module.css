@@ -32,6 +32,8 @@
   background: none;
   border: none;
   cursor: pointer;
+  background-color: #ff6b6b;
+  color: white;
 }
 
 .editTitle {
@@ -63,6 +65,9 @@
   margin-right: 10px;
   border-radius: 5px;
   font-weight: 500;
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
 }
 
 .cansleButton {
@@ -70,4 +75,14 @@
   height: 30px;
   border-radius: 5px;
   font-weight: 500;
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+}
+
+.cansleButton:hover {
+  background: #e35a5a;
+}
+.saveButton:hover {
+  background: #e35a5a;
 }

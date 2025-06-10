@@ -50,13 +50,11 @@ export default function MyPage() {
         setMyCash(data.cash);
         setMyUserId(sessionData.user.id);
         setMyRating(data.user_rating ?? 50); // 평점 없으면 50
-
       }
     };
 
     fetchUserData();
-    const userSubscriber = supabase
-      .realtime
+    const userSubscriber = supabase.realtime
       .channel("realtime:user_cash_watch_on_mypage_in_mypage")
       .on(
         "postgres_changes",
@@ -91,45 +89,56 @@ export default function MyPage() {
     }
   });
 
-
   return (
     <main className={styles.myPage_main}>
       <div className={styles.myPage}>
         <div className={styles.myPageLeft}>
-          <div className={styles.profile}>
-            <div className={styles.userName}>{myNickname} 님
-              <div><img className={styles.bearImage} src={`https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/${bear}.png`}></img></div></div>
-            <br />
-            {/* 평점 0~5 → 0~100으로 변환해서 GaugeBar에 전달 */}
-            <GaugeBar value={myRating} />
-            <div className={styles.myCash}>
-              <span style={{ display: "flex" }}>
-                <span className={styles.label}>내 캐시:</span>
-                <span className={styles.amount}>{thousands(myCash)}</span>
-                <span>원</span>
-              </span>
-              <button className={styles.chargeButton} onClick={handleChargeClick}>
-                충전
-              </button>
+          <div className={styles.menuSticky}>
+            <div className={styles.profile}>
+              <div className={styles.userName}>
+                {myNickname} 님
+                <div>
+                  <img
+                    className={styles.bearImage}
+                    src={`https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/${bear}.png`}
+                  ></img>
+                </div>
+              </div>
+              <br />
+              {/* 평점 0~5 → 0~100으로 변환해서 GaugeBar에 전달 */}
+              <GaugeBar value={myRating} />
+              <div className={styles.myCash}>
+                <span style={{ display: "flex" }}>
+                  <span className={styles.label}>내 캐시:</span>
+                  <span className={styles.amount}>{thousands(myCash)}</span>
+                  <span>원</span>
+                </span>
+                <button
+                  className={styles.chargeButton}
+                  onClick={handleChargeClick}
+                >
+                  충전
+                </button>
+              </div>
             </div>
-          </div>
-          <div className={styles.myMenu}>
-            <ul className={styles.myMenuUl}>
-              {menuList.map(({ name, path }) => (
-                <li key={path} className={styles.myMenuLi}>
-                  <Link
-                    to={`/mypage/${path}`}
-                    style={{
-                      textDecoration: "none",
-                      fontWeight: currentMenu === path ? "bold" : "normal",
-                      color: "black",
-                    }}
-                  >
-                    {name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <div className={styles.myMenu}>
+              <ul className={styles.myMenuUl}>
+                {menuList.map(({ name, path }) => (
+                  <li key={path} className={styles.myMenuLi}>
+                    <Link
+                      to={`/mypage/${path}`}
+                      style={{
+                        textDecoration: "none",
+                        fontWeight: currentMenu === path ? "bold" : "normal",
+                        color: "black",
+                      }}
+                    >
+                      {name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
 
