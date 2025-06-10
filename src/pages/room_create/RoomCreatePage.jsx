@@ -64,14 +64,16 @@ export default function RoomCreatePage() {
         try {
             await insertRoom({
                 room_name: roomName,
-                room_address: `${roomAddress} ${roomDetailAddress}`,
+                room_address: roomAddress,
+                room_address_detail: roomDetailAddress,
                 max_people: maxPeople,
                 leader_id: authUser.id,
                 store_id: store_id
             });
             const roomData = await selectRoom({
                 room_name: roomName,
-                room_address: `${roomAddress} ${roomDetailAddress}`,
+                room_address: roomAddress,
+                room_address_detail: roomDetailAddress,
                 max_people: maxPeople,
                 leader_id: authUser.id,
                 store_id: store_id,
