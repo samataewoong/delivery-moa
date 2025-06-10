@@ -101,7 +101,7 @@ export default function CloseRoom({ userId, roomList }) {
               width: 260px;
             ">
               <div id="roomImage-${room.id}">
-                <   lt="undefined 이미지"
+                <img class="${roomImg}" alt="undefined 이미지"
                   src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/store/store_${room.store_id}.jpg"
                   style="width: 100%; border-radius: 5px 5px 0 0;"
                 />

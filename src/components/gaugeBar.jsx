@@ -4,8 +4,8 @@ export default function GaugeBar({ value = 0 }) {
   const safeValue = Math.min(Math.max(value, 0), 100);
 
   let fillColor = "#4caf50";
-  if (safeValue < 40) fillColor = "#f44336"; // 빨강
-  else if (safeValue < 70) fillColor = "#ffeb3b"; // 노랑
+  if (safeValue < 30) fillColor = "#f44336"; // 빨강
+  else if (safeValue < 80) fillColor = "#ffeb3b"; // 노랑
 
   return (
     <div
@@ -21,7 +21,7 @@ export default function GaugeBar({ value = 0 }) {
         className={styles.gaugeFill}
         style={{ width: `${safeValue}%`, backgroundColor: fillColor }}
       ></div>
-      <span className={styles.gaugeText}>{safeValue}p</span>
+      <span className={styles.gaugeText}>{safeValue}%</span>
     </div>
   );
 }
