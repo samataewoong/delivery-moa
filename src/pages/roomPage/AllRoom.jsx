@@ -15,6 +15,7 @@ export default function AllRoom() {
     const userId = location.state?.userId;
     console.log("userId:", userId);
     const [roomList, setRoomList] = useState([]);
+    const [selectedRoomId, setSelectedRoomId] = useState(null);
     useEffect(() => {
         const fetchUserData = async () => {
             const userData = await selectUser({ user_id: userId });
@@ -94,6 +95,11 @@ export default function AllRoom() {
             }
         }
     }
+    // 마커 누르면 방 체크
+	const infowindowClick = (roomId) => {
+		setSelectedRoomId(roomId);
+		console.log("선택된 방 ID:", roomId);
+	}
 
     return (
         <main className={styles.main_body}>
@@ -132,7 +138,7 @@ export default function AllRoom() {
                         )}
                     </div>
                     <div className={styles.roomMap}>
-                        <CloseRoom userId={userId} roomList={roomList} />
+                        <CloseRoom userId={userId} roomList={roomList} onSelectRoomId={infowindowClick}/>
                     </div>
                 </div>
             </div>

@@ -5,7 +5,7 @@ import { getCoordinates } from "../functions/maps/Coord";
 import { getDistance } from "../functions/maps/Distance";
 import { useNavigate } from "react-router-dom";
 
-export default function CloseRoom({ userId, roomList }) {
+export default function CloseRoom({ userId, roomList, onSelectRoomId }) {
 	const navigate = useNavigate();
 	const [userAddress, setUserAddress] = useState("");
 	const mapRef = useRef(null);
@@ -139,7 +139,10 @@ export default function CloseRoom({ userId, roomList }) {
 						// 새 오버레이 열기
 						customOverlay.setMap(mapInstance.current);
 						currentOverlay.current = customOverlay;
-
+						if (typeof onSelectRoomId === "function") {
+							onSelectRoomId(room.id);
+						}
+						
 						setTimeout(() => {
 							const closeBtn = document.getElementById(`closeButton-${room.id}`);
 							if (closeBtn) {
@@ -178,6 +181,7 @@ export default function CloseRoom({ userId, roomList }) {
 			});
 		});
 	}, [userAddress, roomList]);
+
 	return userId ? (
 
 		<div
