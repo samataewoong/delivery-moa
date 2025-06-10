@@ -87,7 +87,7 @@ export default function MyPage() {
     } else {
       setBear("soso");
     }
-  });
+  }, [myRating]);
 
   return (
     <main className={styles.myPage_main}>
