@@ -86,31 +86,19 @@ export default function CloseRoom({ userId, roomList }) {
 							new window.kakao.maps.Size(30, 35)
 						),
 					});
-
-					const buttonCss = styles.infowindowClose;
-					const roomImg = styles.infowindowImg;
 					const markerPosition = marker.getPosition();
 					const overlayContent = `
-            <div style="
-              position: relative;
-              background: white;
-              padding: 5px;
-              border-radius: 7px;
-              border: solid 3px #2f82e9; 
-              box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-              width: 260px;
-            ">
+            <div class="${styles.mapOverlay}">
               <div id="roomImage-${room.id}">
-                <img class="${roomImg}" alt="undefined 이미지"
+                <img class="${styles.infowindowImg}" alt="undefined 이미지" title="공구방으로 이동합니다"
                   src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/store/store_${room.store_id}.jpg"
-                  style="width: 100%; border-radius: 5px 5px 0 0;"
                 />
               </div>
-              <strong id="roomName-${room.id}" style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+              <strong id="roomName-${room.id}" class="${styles.mapRoomName}">
                 ${room.room_name}
               </strong>
-                <button id="closeButton-${room.id}" class="${buttonCss}" style="cursor:pointer; border:none; background:none; font-weight:bold;">×</button>
-              <div id="roomAddress-${room.id}" style="margin-top: 4px;">${room.room_address}</div>
+                <button id="closeButton-${room.id}" class="${styles.infowindowClose}" style="cursor:pointer; border:none; background:none; font-weight:bold;">×</button>
+              <div id="roomAddress-${room.id}" class="${styles.mapAddress}">${room.room_address}</div><div>(${Math.floor(room.distance * 10) / 10}km)</div>
             </div>`;
 
 					const customOverlay = new window.kakao.maps.CustomOverlay({
@@ -150,8 +138,8 @@ export default function CloseRoom({ userId, roomList }) {
 							};
 							const roomImage = document.getElementById(`roomImage-${room.id}`);
 							if (roomImage) {
-                roomImage.onclick = clickRoom;
-              }
+								roomImage.onclick = clickRoom;
+							}
 							const roomName = document.getElementById(`roomName-${room.id}`);
 							if (roomName) {
 								roomName.onclick = clickRoom;
@@ -168,16 +156,16 @@ export default function CloseRoom({ userId, roomList }) {
 	}, [userAddress, roomList]);
 	return userId ? (
 
-			<div
-				className={styles.closeMap}
-				ref={mapRef}
-			></div>
+		<div
+			className={styles.closeMap}
+			ref={mapRef}
+		></div>
 
 	) : (
 
-			<div className={styles.closeMap}>
-				<p>로그인이 필요합니다.</p>
-			</div>
+		<div className={styles.closeMap}>
+			<p>로그인이 필요합니다.</p>
+		</div>
 
 	);
 }
