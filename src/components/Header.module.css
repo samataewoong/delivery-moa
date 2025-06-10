@@ -20,6 +20,7 @@ a {
     width: 1280px;
     display: flex;
     position: relative;
+    align-items: center;
 }
 
 .hLogo_img {
