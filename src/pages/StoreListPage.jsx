@@ -113,7 +113,7 @@ export default function StoreListPage() {
 
                         ) : (
                             <div className={styles.room_no_result}>
-                                주문 가능한 공구방이 없습니다.
+                                주문 가능한 가게가 없습니다.
                             </div>
                         )}
                     </div>
