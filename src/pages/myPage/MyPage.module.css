@@ -159,8 +159,8 @@
 .chargeButton {
   padding: 4px 9px;
   font-size: 15px;
-  background-color: #4caf50;
-  color: white;
+  background-color: none;
+  color: #ff6b6b;
   border: none;
   border-radius: 10px;
   cursor: pointer;
@@ -168,7 +168,8 @@
 }
 
 .chargeButton:hover {
-  background-color: #45a049;
+  background-color: #1fab89;
+  color: white;
 }
 
 .userInfo {

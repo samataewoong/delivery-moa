@@ -49,7 +49,7 @@
   height: 200px;
   border-radius: 5px;
   border: solid 1px #9e9a9a;
-  margin: 2px 0px 10px 3px
+  margin: 2px 0px 10px 3px;
 }
 
 .saveButton {
@@ -59,6 +59,9 @@
   margin-right: 10px;
   border-radius: 5px;
   font-weight: 500;
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
 }
 
 .cansleButton {
@@ -66,4 +69,14 @@
   height: 30px;
   border-radius: 5px;
   font-weight: 500;
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+}
+
+.cansleButton:hover {
+  background: #e35a5a;
+}
+.saveButton:hover {
+  background: #e35a5a;
 }
