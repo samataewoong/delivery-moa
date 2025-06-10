@@ -56,47 +56,44 @@
 .roomList {
     border-radius: 10px;
     width: 380px;
-    height: 150px;
+    height: 200px;
     overflow: hidden;
     display: flex;
     margin-bottom: 20px;
+    box-sizing: border-box;
 }
 .roomWithText{
     position: relative;
-    height: 150px;
+    height: 200px;
     width: 380px;
 }
 .roomTitle {
-    text-align: end;
-    margin-right: 15px;
     font-weight: bold;
     font-size: large;
     opacity: 100%;
 }
 .roomDetail{
     width: 380px;
-    height: 50px;
+    height: 93px;
     background-color: white;
     opacity: 80%;
     bottom: 0;
     position: absolute;
+    padding: 0 15px;
+    box-sizing: border-box;
 }
 .roomAddress {
-    text-align: end;
-    margin-right: 15px;
     font-weight: 600px;
     opacity: 100%;
+    margin-bottom: -5px;
 }
 .roomDistance {
     float: left;
-    margin-left: 15px;
-    margin-right: 15px;
     font-size: medium;
     font-weight: 600px;
     opacity: 100%;
+    margin-bottom: -5px;
 }
-
-
 
 .roomListImg {
     width: 390px;
@@ -110,4 +107,47 @@
 .back_btn{
     padding: 24px;
     cursor: pointer;
+}
+.gongu_progress {
+    width: 100%;
+    height: 9px;
+    appearance: none;
+    -webkit-appearance: none;
+    overflow: hidden;
+    border: none;
+    border-radius: 10px;
+    margin: 0;
+    opacity: 100%;
+}
+
+.gongu_progress::-webkit-progress-bar {
+    background-color: #eee;
+    border-radius: 10px;
+}
+
+.gongu_progress::-webkit-progress-value {
+    background-color: #FFB1B1;
+    border-radius: 10px;
+}
+.gongu_progress::-moz-progress-bar {
+    background-color: #FFB1B1;
+    border-radius: 10px;
+}
+.gongu_bottom{
+    margin-top: 0px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.gongu_people {
+    font-size: 14px;
+}
+.gongu_delivery{
+    font-size: 14px;
+}
+.roomTitle{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 95%;
 }

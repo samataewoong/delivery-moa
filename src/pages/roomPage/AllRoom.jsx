@@ -20,7 +20,7 @@ export default function AllRoom() {
             const userData = await selectUser({ user_id: userId });
             const { data: rooms, error: roomError } = await supabase
                 .from("room")
-                .select("id, store_id,  room_name, room_address")
+                .select("id, store_id,  room_name, room_address, max_people, status, room_join(count)")
                 .eq('status', "모집중");
 
             if (roomError) {
@@ -30,13 +30,16 @@ export default function AllRoom() {
                 const userCoords = await getCoordinates(userAddress);
                 const roomArray = [];
                 for (const room of rooms) {
+                    const joinCount = room.room_join?.[0]?.count || 0;
                     const roomCoords = await getCoordinates(room.room_address);
                     const distance = getDistance(
                         userCoords,
                         roomCoords
                     );
+                    if (joinCount >= room.max_people) continue;
+
                     if (distance <= 1) {
-                        roomArray.push({ ...room, distance });
+                        roomArray.push({ ...room, distance, join_count: joinCount });
                     }
                 }
                 setRoomList(roomArray.sort((a, b) => a.distance - b.distance) || []);
@@ -109,8 +112,14 @@ export default function AllRoom() {
                                         <div className={styles.roomWithText} style={{ backgroundImage: `url("https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/store/store_${room.store_id}.jpg")`, backgroundSize: "cover", backgroundPosition: "center 80%" }}>
                                             <div className={styles.roomDetail}>
                                                 <div className={styles.roomTitle}>{room.room_name}</div>
-                                                <div className={styles.roomDistance}>{Math.floor(room.distance * 10) / 10}km</div>
                                                 <div className={styles.roomAddress}>{room.room_address}</div>
+                                                <progress className={styles["gongu_progress"]} value={room.join_count} max={room.max_people}></progress>
+                                                <div className={styles["gongu_bottom"]}>
+                                                    <div style={{ display: "flex", alignItems: "center" }}>
+                                                        <div className={styles["gongu_people"]}>{room.join_count}/{room.max_people} {room.status}</div>
+                                                    </div>
+                                                    <div className={styles["gongu_delivery"]}>{Math.floor(room.distance * 10) / 10}km</div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
