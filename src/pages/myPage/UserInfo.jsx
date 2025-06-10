@@ -80,8 +80,8 @@ export default function UserInfo() {
         <div className={styles.value}><FormattedDate dateString={createdAt} /></div>
       </div>
       <div className={styles.myButtonContainer}>
-        <button onClick={editButton}>수정하기</button>
-        <button onClick={quitButton}>회원탈퇴</button>
+        <button className={styles.myButtonEdit} onClick={editButton}>수정하기</button>
+        <button className={styles.myButtonQuit} onClick={quitButton}>회원탈퇴</button>
       </div>
     </div>
     
