@@ -54,7 +54,7 @@ export default function AllRoom() {
                 </div>
                 <div className={styles.AllRoomBody}>
                     <div className={styles.rooms}>
-                        {roomList.lenght >0 ? (
+                        {roomList.length >0 ? (
                             roomList.map((room, index) => (
                             <div key={room.id} className={styles.roomList}>
                                 <div>
