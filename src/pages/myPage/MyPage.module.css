@@ -30,24 +30,21 @@
     width: 300px;
     height: 120px;
     border-radius: 10px;
+    position: relative;
 }
 
 .userName {
-    /*border-bottom: 2px solid #ccc;*/
     font-size: large;
     font-weight: bold;
     margin: 18px 125px 1px 22px;
 }
 
 .bearImage {
+    position: absolute;
     width: 30px;
-    /* 가로 크기 조절 */
-    height: auto;
-    /* 비율 유지 */
-    margin-left: 10px;
-    /* 텍스트랑 간격 띄우기 */
-    vertical-align: middle;
-    /* 텍스트와 수직 정렬 */
+    height: 30px;
+    top: 18px;
+    right: 32px;
 }
 
 .gaugeBar {
@@ -122,7 +119,7 @@
 
 .myMenuLi {
     font-size: large;
-    margin: 10px;
+    margin: 10px 10px 30px 40px;
 }
 
 .myMenuLi::before {
@@ -251,9 +248,10 @@ input[readOnly] {
 }
 
 .myQna {
-    border: solid 1px gray;
+    border: solid 2px gray;
     margin: 5px 0px 15px 15px;
     padding-bottom: 10px;
+    border-radius: 15px;
 }
 
 .qnaDate h1 {
@@ -280,7 +278,7 @@ input[readOnly] {
 }
 
 .qnaTextArea {
-    width: 885px;
+    width: 790px;
     height: 130px;
     font-size: medium;
     font-weight: 1000;

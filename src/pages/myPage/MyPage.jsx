@@ -3,7 +3,6 @@ import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import GaugeBar from "../../components/gaugeBar";
 import MyHeader from "./MyHeader";
 import styles from "./MyPage.module.css";
-import Header from "../../components/Header";
 import supabase from "../../config/supabaseClient";
 import thousands from "thousands";
 
@@ -17,6 +16,7 @@ export default function MyPage() {
   const [myNickname, setMyNickname] = useState("");
   const [myCash, setMyCash] = useState(0);
   const [myRating, setMyRating] = useState(0); // 평점 0~5
+  const [bear, setBear] = useState("good");
 
   const handleChargeClick = () => {
     window.open("/delivery-moa/cashcharge", "_blank", "width=500,height=700");
@@ -50,6 +50,7 @@ export default function MyPage() {
         setMyCash(data.cash);
         setMyUserId(sessionData.user.id);
         setMyRating(data.user_rating ?? 50); // 평점 없으면 50
+
       }
     };
 
@@ -79,12 +80,25 @@ export default function MyPage() {
     { name: "문의내역", path: "myqna" },
   ];
 
+  useEffect(() => {
+    console.log("rating: ", myRating);
+    if (myRating >= 80) {
+      setBear("good");
+    } else if (myRating < 30) {
+      setBear("bad");
+    } else {
+      setBear("soso");
+    }
+  });
+
+
   return (
     <main className={styles.myPage_main}>
       <div className={styles.myPage}>
         <div className={styles.myPageLeft}>
           <div className={styles.profile}>
-            <h2 className={styles.userName}>{myNickname} 님</h2>
+            <div className={styles.userName}>{myNickname} 님
+              <div><img className={styles.bearImage} src={`https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/${bear}.png`}></img></div></div>
             <br />
             {/* 평점 0~5 → 0~100으로 변환해서 GaugeBar에 전달 */}
             <GaugeBar value={myRating} />

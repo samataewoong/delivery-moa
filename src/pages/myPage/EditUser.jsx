@@ -124,6 +124,7 @@ export default function EditUser() {
                 <div className={styles.label}>비밀번호:</div>
                 <div className={styles.passwordEye}>
                     <input
+                        style={{ border: "none", outline: "none" }}
                         type={showPassword ? "text" : "password"}
                         id="editPassWord"
                         onChange={passWordChange}
