@@ -26,7 +26,7 @@ export default function RoomOrderStatus({ room_id }) {
                     console.log("Received payload:", payload);
                     if (payload.new.room_id === Number(room_id)) {
                         let tmp = null;
-                        setRoomJoin((prevRoomJoin) => (tmp = [...prevRoomJoin.filter((row) => (!((row.user_id === payload.new?.user_id || row.user_id === payload.old?.user_id) && (row.room_id == Number(payload.new?.room_id) || row.room_id === Number(payload.old?.room_id))))), payload.new].filter((row) => (row)).sort((a, b) => Date.parse(a.joined_at) - Date.parse(b.joined_at)),tmp));
+                        setRoomJoin((prevRoomJoin) => (tmp = [...(prevRoomJoin || []).filter((row) => (!((row.user_id === payload.new?.user_id || row.user_id === payload.old?.user_id) && (row.room_id == Number(payload.new?.room_id) || row.room_id === Number(payload.old?.room_id))))), payload.new].filter((row) => (row)).sort((a, b) => Date.parse(a.joined_at) - Date.parse(b.joined_at)),tmp));
                         console.log("Room ID matches, fetching room join data...");
                     }
                     if (payload.eventType === "DELETE"){
