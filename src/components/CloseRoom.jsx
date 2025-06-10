@@ -136,7 +136,12 @@ export default function CloseRoom({ userId, roomList }) {
 									currentOverlay.current = null;
 								};
 							}
-							const clickRoom = () => {
+							const clickRoom = async () => {
+								const roomJoinData = await selectRoomJoin({ room_id: room.id, user_id: userId  });
+								if(roomJoinData.length > 0){
+									navigate(`/room/${room.id}`);
+									return;
+								}
 								if (!window.confirm(`"${room.room_name}" 공구방으로 이동하시겠습니까?`)) return;
 								navigate(`/room/${room.id}`);
 							};
