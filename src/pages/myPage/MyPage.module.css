@@ -1,404 +1,436 @@
 .myPage_main {
-    display: flex;
-    justify-content: center;
-    width: 100%;
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 .myPage {
-    display: flex;
-    width: 1280px;
-    background-color: white;
-    padding: 20px 0;
-    box-sizing: border-box;
-    border-radius: 10px;
-    box-shadow: 4px 6px 2px rgba(0, 0, 0, 0.2);
-    margin: 80px 0;
-    gap: 20px;
-    flex-wrap: wrap;
-    /* 화면 작아지면 줄 바꿈 */
+  display: flex;
+  width: 1280px;
+  background-color: white;
+  padding: 20px 0;
+  box-sizing: border-box;
+  border-radius: 10px;
+  box-shadow: 4px 6px 2px rgba(0, 0, 0, 0.2);
+  margin: 80px 0;
+  gap: 20px;
+  flex-wrap: wrap;
+  /* 화면 작아지면 줄 바꿈 */
 }
 
 .myPageLeft {
-    border-right: 1px solid #ccc;
-    padding: 20px;
-    box-sizing: border-box;
+  flex: 0 0 340px;
+  /* 고정 너비 (px 단위 권장) */
+  border-right: 1px solid #ccc;
+  padding: 20px;
+  box-sizing: border-box;
+  min-width: 200px;
+  /* 최소 너비 지정 */
 }
 
 .profile {
-    border: 1px solid #ccc;
-    margin: 2px;
-    width: 300px;
-    height: 120px;
-    border-radius: 10px;
-    position: relative;
-    box-shadow: 4px 6px 2px rgba(0, 0, 0, 0.2);
+  border: 1px solid #ccc;
+  margin: 2px;
+  width: 300px;
+  height: 120px;
+  border-radius: 10px;
+  position: relative;
+  box-shadow: 4px 6px 2px rgba(0, 0, 0, 0.2);
 }
 
 .userName {
-    font-size: large;
-    font-weight: bold;
-    margin: 18px 125px 1px 22px;
+  font-size: large;
+  font-weight: bold;
+  margin: 18px 125px 1px 22px;
 }
 
 .bearImage {
-    position: absolute;
-    width: 30px;
-    height: 30px;
-    top: 18px;
-    right: 32px;
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  top: 18px;
+  right: 32px;
 }
 
 .gaugeBar {
-    margin: -11px 20px 5px;
-    position: relative;
-    background-color: #eee;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    overflow: hidden;
-    box-sizing: border-box;
+  margin: -11px 20px 5px;
+  position: relative;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .gaugeFill {
-    height: 100%;
-    transition: width 0.6s ease-in-out;
+  height: 100%;
+  transition: width 0.6s ease-in-out;
 }
 
 .gaugeText {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-weight: bold;
-    color: #000;
-    font-family: Arial, sans-serif;
-    pointer-events: none;
-    user-select: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: bold;
+  color: #000;
+  font-family: Arial, sans-serif;
+  pointer-events: none;
+  user-select: none;
 }
 
 .myCash {
-    display: flex;
-    /* 좌우 끝에 배치 */
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    /* 가로 전체 차지 */
-    max-width: 300px;
-    /* 최대 크기 제한 (필요하면 조정) */
-    margin-right: 180px;
-    font-size: large;
-    box-sizing: border-box;
-    padding: 0 25px;
-    /* 양옆 약간 패딩 */
+  display: flex;
+  /* 좌우 끝에 배치 */
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  /* 가로 전체 차지 */
+  max-width: 300px;
+  /* 최대 크기 제한 (필요하면 조정) */
+  margin-right: 180px;
+  font-size: large;
+  box-sizing: border-box;
+  padding: 0 25px;
+  /* 양옆 약간 패딩 */
 }
 
 .label {
-    flex-shrink: 0;
-    /* 줄어들지 않게 */
+  flex-shrink: 0;
+  /* 줄어들지 않게 */
 }
 
 .amount {
-    text-align: left;
-    white-space: nowrap;
-    /* 줄바꿈 방지 */
-    overflow: hidden;
-    text-overflow: ellipsis;
-    /* 너무 길면 말줄임표 처리 */
-    max-width: 100px;
-    /* 최소 너비 */
-    margin-left: 10px;
+  text-align: left;
+  white-space: nowrap;
+  /* 줄바꿈 방지 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* 너무 길면 말줄임표 처리 */
+  max-width: 100px;
+  /* 최소 너비 */
+  margin-left: 10px;
 }
 
 /* MyPage.module.css */
 .myMenu {
-    padding: 0px 7px 0px 95px;
+  padding: 0px 7px 0px 95px;
 }
 
 .myMenuUl {
-    list-style-type: none;
-    padding-left: 20px;
+  list-style-type: none;
+  padding-left: 20px;
 }
 
 .myMenuLi {
-    font-size: 21px;
-    margin: 10px 10px 30px 40px;
+  font-size: 21px;
+  margin: 10px 10px 30px 40px;
 }
 
 .myMenuLi::before {
-    content: "- ";
-    color: black;
-    font-weight: bold;
-    margin-right: 8px;
-    display: inline-block;
-    width: 12px;
+  content: "- ";
+  color: black;
+  font-weight: bold;
+  margin-right: 8px;
+  display: inline-block;
+  width: 12px;
 }
 
-
 .myPageRight {
-    width: 900px;
-    padding: 20px;
-    box-sizing: border-box;
-    overflow-y: auto;
-    min-width: 300px;
-    /* 최소 너비 */
+  flex: 1 1 700px;
+  /* 여유 공간을 채움, 최소 700px */
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  border-right: solid 1px #ccc;
+  min-width: 300px;
+  /* 최소 너비 */
 }
 
 .myHeader {
-    text-align: left;
-    font-weight: bold;
-    font-size: 24px;
-    border-bottom: solid 1px #CCD;
-    margin-bottom: 40px;
-    padding: 14px;
+  text-align: left;
+  font-weight: bold;
+  font-size: x-large;
+  border-bottom: solid 1px #ccd;
+  margin-bottom: 40px;
+  padding: 14px;
 }
 
 .chargeButton {
-    padding: 4px 9px;
-    font-size: 15px;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  padding: 4px 9px;
+  font-size: 15px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .chargeButton:hover {
-    background-color: #45a049;
+  background-color: #45a049;
 }
 
 .userInfo {
-    padding: 52.5px 82.5px;
-    font-size: x-large;
+  padding: 100px 30px 5px 135px;
+  font-size: x-large;
 }
 
 .infoRow {
-    display: flex;
-    margin-bottom: 45px;
+  display: flex;
+  margin-bottom: 45px;
 }
 
 .infoRow .label {
-    width: 100px;
-    /* 고정 너비 */
-    font-weight: 500;
+  width: 100px;
+  /* 고정 너비 */
+  font-weight: 500;
 }
 
 .infoRow .value {
-    width: 535px;
-    margin-left: 25px;
-    border-bottom: solid #ccc 2px;
-    padding-bottom: 5px;
-    /* 남은 공간 차지 */
+  width: 535px;
+  margin-left: 25px;
+  border-bottom: solid #ccc 2px;
+  padding-bottom: 5px;
+  /* 남은 공간 차지 */
 }
 
 .myButtonContainer {
-    margin-left:205px;
+  margin-left: 205px;
 }
 
 .myButtonEdit {
-    text-align: center;
-    width: 160px;
-    height: 45px;
-    font-weight: 500;
-    font-size: large;
-    padding: 5px;
-    margin: 10px;
-    border-radius: 7px;
-    background-color: #ffb1b1;
-    cursor: pointer;
-    border: none;
+  text-align: center;
+  width: 160px;
+  height: 45px;
+  font-weight: 500;
+  font-size: large;
+  padding: 5px;
+  margin: 10px;
+  border-radius: 7px;
+  background-color: #ffb1b1;
+  cursor: pointer;
+  border: none;
 }
 
 .myButtonEdit:hover {
-    background-color: #ff8a8a;
+  background-color: #ff8a8a;
 }
 
 .myButtonQuit {
-    text-align: center;
-    width: 160px;
-    height: 45px;
-    font-weight: 500;
-    font-size: large;
-    padding: 5px;
-    margin: 10px;
-    border-radius: 7px;
-    background-color: #d4d4d4;
-    cursor: pointer;
-    border: none;
+  text-align: center;
+  width: 160px;
+  height: 45px;
+  font-weight: 500;
+  font-size: large;
+  padding: 5px;
+  margin: 10px;
+  border-radius: 7px;
+  background-color: #d4d4d4;
+  cursor: pointer;
+  border: none;
 }
 
 .myButtonQuit:hover {
-    background-color: #ceced3;
+  background-color: #ceced3;
 }
 
 .editInput {
-    border: none;
-    border-bottom: solid 3px black;
-    font-size: x-large;
-    outline: none;
-    margin-left: 25px;
-    width: 540px;
-    padding-bottom: 5px;
+  border: none;
+  border-bottom: solid 3px black;
+  font-size: x-large;
+  outline: none;
+  margin-left: 25px;
+  width: 540px;
+  padding-bottom: 5px;
 }
 
 input[readOnly] {
-    background-color: #ccc;
+  background-color: #ccc;
 }
 
 .editButton {
-    border-radius: 7px;
-    width: 670px;
-    height: 50px;
-    font-size: x-large;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  border-radius: 7px;
+  width: 670px;
+  height: 50px;
+  font-size: x-large;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .editButton:hover {
-    background-color: #d0d0d0;
+  background-color: #d0d0d0;
 }
 
 .passwordEye {
-    border-bottom: solid;
-    width: 540px;
-    margin-left: 25px;
-    padding-bottom: 5px;
+  border-bottom: solid;
+  width: 540px;
+  margin-left: 25px;
+  padding-bottom: 5px;
 }
 
 .passwordEye input {
-    border: none;
-    font-size: x-large;
-    margin-right: 200px;
+  border: none;
+  font-size: x-large;
+  margin-right: 200px;
 }
 
 .myQna {
-    border: solid 2px gray;
-    margin: 5px 0px 15px 15px;
-    padding-bottom: 10px;
-    border-radius: 15px;
+  border: solid 2px gray;
+  margin: 5px 0px 15px 15px;
+  padding-bottom: 10px;
+  border-radius: 15px;
 }
 
 .qnaDate h1 {
-    padding: 0px 0px 10px 10px;
-    border-bottom: 1px dotted;
-    color: gray;
-    font-size: medium;
+  padding: 0px 0px 10px 10px;
+  border-bottom: 1px dotted;
+  color: gray;
+  font-size: medium;
 }
 
 .qnaTitle {
-    padding-left: 7px;
-    position: relative;
+  padding-left: 7px;
+  position: relative;
+  padding-left: 7px;
+  position: relative;
 }
 
 .qnaTitle h3 {
-    padding: 15px;
-    font-size: medium;
+  padding: 15px;
+  font-size: medium;
 }
 
 .qnaContent {
-    margin-bottom: 10px;
-    padding-left: 15px;
-    margin-top: 10px;
+  margin-bottom: 10px;
+  padding-left: 15px;
+  margin-top: 10px;
 }
 
 .qnaTextArea {
-    width: 790px;
-    height: 130px;
-    font-size: medium;
-    font-weight: 1000;
-    padding-top: 7px;
-    border: none;
+  width: 790px;
+  height: 130px;
+  font-size: medium;
+  font-weight: 1000;
+  padding-top: 7px;
+  border: none;
 }
 
 .answer {
-    border-top: 1px solid #d0d0d0;
-    margin-top: 10px;
-    padding: 10px;
+  border-top: 1px solid #d0d0d0;
+  margin-top: 10px;
+  padding: 10px;
 }
 
 .answer b {
-    padding-top: 10px;
+  padding-top: 10px;
 }
 
 .answer h4 {
-    padding-left: 10px;
-    font-weight: 400;
+  padding-left: 10px;
+  font-weight: 400;
 }
 
 .deleteReview {
-    border-radius: 5px;
-    margin-left: 10px;
-    cursor: pointer;
-    width: 80px;
-    height: 35px;
-    font-weight: 400;
-    font-size: 14px;
-    background-color: #d4d4d4;
-    border: none;
+  border-radius: 5px;
+  margin-left: 10px;
+  cursor: pointer;
+  width: 80px;
+  height: 35px;
+  font-weight: 400;
+  font-size: 14px;
+  background-color: #d4d4d4;
+  border: none;
 }
 
 .editReview {
-   border-radius: 5px;
-    margin-left: 10px;
-    cursor: pointer;
-    width: 80px;
-    height: 35px;
-    font-weight: 400;
-    font-size: 14px;
-    background-color: #ffb1b1;
-    border: none;
+  border-radius: 5px;
+  margin-left: 10px;
+  cursor: pointer;
+  width: 80px;
+  height: 35px;
+  font-weight: 400;
+  font-size: 14px;
+  background-color: #ffb1b1;
+  border: none;
 }
 
 .editReview:hover {
-    background-color: #ff8a8a;
+  background-color: #ff8a8a;
 }
 
 .deleteReview:hover {
-    background-color: #ceced3;
+  background-color: #ceced3;
 }
 
 .qnaPages {
-    text-align: center;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: center;
-    gap: 12px;
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 12px;
 }
 
 .qnaPages button {
-    font-size: medium;
-    border: none;
-    cursor: pointer;
-    opacity: 0.5;
-    /* 기본 연하게 */
-    font-weight: normal;
-    margin: 0 5px;
-    padding: 5px 10px;
-    background: none;
-    color: rgb(66, 64, 64);
-    /* 기본 글자색 연한 회색 */
-    transition: opacity 0.3s, font-weight 0.3s, color 0.3s;
+  font-size: medium;
+  border: none;
+  cursor: pointer;
+  opacity: 0.5;
+  /* 기본 연하게 */
+  font-weight: normal;
+  margin: 0 5px;
+  padding: 5px 10px;
+  background: none;
+  color: rgb(66, 64, 64);
+  /* 기본 글자색 연한 회색 */
+  transition: opacity 0.3s, font-weight 0.3s, color 0.3s;
 }
 
 .qnaPages button:hover:not(:disabled) {
-    opacity: 0.8;
-    /* 호버 시 살짝 강조 */
-    color: #333;
-    /* 호버 시 글자색 조금 진하게 */
+  opacity: 0.8;
+  /* 호버 시 살짝 강조 */
+  color: #333;
+  /* 호버 시 글자색 조금 진하게 */
 }
 
 .qnaPages button.activePage {
-    font-weight: bold;
-    opacity: 1;
-    color: black;
-    cursor: default;
+  font-weight: bold;
+  opacity: 1;
+  color: black;
+  cursor: default;
 }
 
 .downIcon {
-    font-size: 30px;
-    color: rgb(31, 31, 31);
-    position: absolute;
-    bottom: 0px;
-    right: 15px;
+  font-size: 30px;
+  color: rgb(31, 31, 31);
+  position: absolute;
+  bottom: 0px;
+  right: 15px;
+}
+.menuSticky {
+  position: sticky;
+  top: 25px; /* 헤더 높이 만큼 여백 (상황에 맞게 조정) */
+  z-index: 10; /* 필요시 */
+}
+.qnaButtonWrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+.qnaWriteBtn {
+  background-color: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.qnaWriteBtn:hover {
+  background-color: #e35a5a;
 }
