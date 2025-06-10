@@ -3,9 +3,9 @@ import styles from "../pages/myPage/MyPage.module.css";
 export default function GaugeBar({ value = 0 }) {
   const safeValue = Math.min(Math.max(value, 0), 100);
 
-  let fillColor = "#4caf50";
-  if (safeValue < 30) fillColor = "#f44336"; // 빨강
-  else if (safeValue < 80) fillColor = "#ffeb3b"; // 노랑
+  let fillColor = "#ff6b6b";
+  // if (safeValue < 30) fillColor = "#f44336"; // 빨강
+  // else if (safeValue < 80) fillColor = "#ffeb3b"; // 노랑
 
   return (
     <div

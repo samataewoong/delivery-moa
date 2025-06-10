@@ -1,4 +1,4 @@
-.myPage_main{
+.myPage_main {
     display: flex;
     justify-content: center;
     width: 100%;
@@ -12,7 +12,7 @@
     box-sizing: border-box;
     border-radius: 10px;
     box-shadow: 4px 6px 2px rgba(0, 0, 0, 0.2);
-    margin: 80px 0 ;
+    margin: 80px 0;
     gap: 20px;
     flex-wrap: wrap;
     /* 화면 작아지면 줄 바꿈 */
@@ -31,6 +31,7 @@
     height: 120px;
     border-radius: 10px;
     position: relative;
+    box-shadow: 4px 6px 2px rgba(0, 0, 0, 0.2);
 }
 
 .userName {
@@ -118,7 +119,7 @@
 }
 
 .myMenuLi {
-    font-size: large;
+    font-size: 21px;
     margin: 10px 10px 30px 40px;
 }
 
@@ -190,20 +191,43 @@
 }
 
 .myButtonContainer {
-    text-align: center;
+    margin-left:205px;
 }
 
-.myButtonContainer button {
-    width: 90px;
+.myButtonEdit {
+    text-align: center;
+    width: 160px;
     height: 45px;
-    font-weight: bold;
-    font-size: medium;
+    font-weight: 500;
+    font-size: large;
     padding: 5px;
     margin: 10px;
     border-radius: 7px;
-    border: 2px solid #c8d1ca;
-    background-color: #c8d1ca;
+    background-color: #ffb1b1;
     cursor: pointer;
+    border: none;
+}
+
+.myButtonEdit:hover {
+    background-color: #ff8a8a;
+}
+
+.myButtonQuit {
+    text-align: center;
+    width: 160px;
+    height: 45px;
+    font-weight: 500;
+    font-size: large;
+    padding: 5px;
+    margin: 10px;
+    border-radius: 7px;
+    background-color: #d4d4d4;
+    cursor: pointer;
+    border: none;
+}
+
+.myButtonQuit:hover {
+    background-color: #ceced3;
 }
 
 .editInput {
@@ -263,7 +287,7 @@ input[readOnly] {
 
 .qnaTitle {
     padding-left: 7px;
-    position:relative;
+    position: relative;
 }
 
 .qnaTitle h3 {
@@ -305,30 +329,32 @@ input[readOnly] {
     border-radius: 5px;
     margin-left: 10px;
     cursor: pointer;
-    width: 70px;
-    height: 30px;
+    width: 80px;
+    height: 35px;
     font-weight: 400;
-    border: solid #000 2px;
-    background-color: transparent;
+    font-size: 14px;
+    background-color: #d4d4d4;
+    border: none;
 }
 
 .editReview {
-    border-radius: 5px;
+   border-radius: 5px;
     margin-left: 10px;
     cursor: pointer;
-    width: 70px;
-    height: 30px;
+    width: 80px;
+    height: 35px;
     font-weight: 400;
-    border: solid #000 2px;
-    background-color: transparent;
+    font-size: 14px;
+    background-color: #ffb1b1;
+    border: none;
 }
 
 .editReview:hover {
-    background-color: rgb(198, 213, 218);
+    background-color: #ff8a8a;
 }
 
 .deleteReview:hover {
-    background-color: rgb(198, 213, 218);
+    background-color: #ceced3;
 }
 
 .qnaPages {
