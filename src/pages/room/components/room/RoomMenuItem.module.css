@@ -2,6 +2,24 @@
     font-size: 24px;
     margin-left: 20px;
     font-weight: 350;
+    max-width: 320px;
+    width: fit-content;
+    white-space: nowrap; /* Prevents text from wrapping to the next line */
+    overflow: hidden; /* Hides any text that overflows the container */
+    text-overflow: ellipsis; /* Adds ellipsis (...) to indicate overflow */
+    text-overflow: ellipsis;
+}
+.tooltip {
+    position: relative;
+    background-color: #333;
+    width: fit-content;
+    color: #fff;
+    padding: 5px;
+    border-radius: 3px;
+    font-size: 12px;
+    z-index: 1000;
+    margin-left: 20px;
+    white-space: nowrap;
 }
 .menu_price {
     font-size: 24px;
