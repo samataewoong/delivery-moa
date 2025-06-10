@@ -21,6 +21,7 @@ import AllRoom from "./pages/roomPage/AllRoom";
 import RoomCreatePage from "./pages/room_create/RoomCreatePage";
 import Hamburger from "./components/Hamburger";
 import MainHeader from "./components/MainHeader";
+import SelectRoom from "./pages/SelectedRoom";
 import React, { useState, useEffect } from "react";
 import supabase from "./config/supabaseClient";
 import { useLocation } from "react-router-dom";
@@ -103,6 +104,7 @@ function App() {
           <Route path="/search" element={<Search />} />
           <Route path="/forgotpw" element={<ForgotPassword/>}/>
           <Route path="/resetpw" element={<ResetPassword/>}/>
+          <Route path="/selectroom/:store_id" element={<SelectRoom/>} />
           {/* 마이페이지 및 하위 라우트 */}
           <Route path="/mypage" element={<MyPage />}>
             <Route index element={<UserInfo />} />
