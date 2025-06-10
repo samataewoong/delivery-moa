@@ -2,21 +2,17 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./MyPage.module.css";
 import supabase from "../../config/supabaseClient";
-import FormattedDate from "../../components/FormattedDate";
 import DateToString from "../../utils/DateToString";
 
 export default function EditUser() {
-    // db update 구현해야함
     const navigate = useNavigate();
 
     const [nickname, setNickname] = useState("");
-    const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [createdAt, setCreatedAt] = useState("");
     const [session, setSession] = useState(null);
 
-
-    // 현재 로그인된 유저 정보 갖고오기
+    // 현재 로그인된 유저 정보 불러오기
     useEffect(() => {
         const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
             setSession(session);
@@ -24,11 +20,11 @@ export default function EditUser() {
             if (session?.user) {
                 const user = session.user;
 
-                // 이메일, 가입일 설정
+                // 이메일과 가입일 저장
                 setEmail(user.email ?? "");
                 setCreatedAt(user.created_at ?? "");
 
-                // 추가 유저 정보 가져오기 (user 테이블)
+                // 닉네임 가져오기 (user 테이블)
                 const { data, error } = await supabase
                     .from("user")
                     .select("*")
@@ -39,12 +35,10 @@ export default function EditUser() {
                     console.error("추가 유저 정보 불러오기 실패:", error);
                 } else {
                     setNickname(data?.nickname ?? "");
-                    setPassword(data?.password ?? "");
                 }
             } else {
                 setEmail("");
                 setNickname("");
-                setPassword("");
                 setCreatedAt("");
             }
         });
@@ -52,20 +46,31 @@ export default function EditUser() {
         return () => subscription.unsubscribe(); // 언마운트 시 정리
     }, []);
 
-
     const nickNameChange = (e) => {
         setNickname(e.target.value ?? "");
-    }
-    const passWordChange = (e) => {
-        setPassword(e.target.value ?? "");
-    }
-    const [showPassword, setShowPassword] = useState(false);
+    };
 
-    const eyeClick = () => setShowPassword(prev => !prev);
+    // 비밀번호 재설정 링크 이메일 전송
+    const sendResetEmail = async () => {
+        const email = session?.user?.email;
+        if (!email) {
+            alert("이메일 정보가 없습니다.");
+            return;
+        }
 
-    // 수정
+        const { error } = await supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: 'http://localhost:5173/delivery-moa/resetpw',
+        });
+
+        if (error) {
+            setMessage('❌ 이메일 전송 실패: ' + error.message);
+        } else {
+            setMessage('📧 이메일을 확인해 주세요! 비밀번호 재설정 링크가 전송되었어요.');
+        }
+    };
+
+    // 닉네임 수정 저장
     const editComplete = async () => {
-
         if (!session || !session.user) {
             alert("로그인 정보가 없습니다");
             return;
@@ -73,11 +78,24 @@ export default function EditUser() {
 
         const userId = session.user.id;
 
-        // 닉네임 업데이트
+        // 닉네임 중복 확인(본인 제외)
+        const {data: existingUser, error} = await supabase
+        .from("user")
+        .select("id")
+        .eq("nickname", nickname)
+        .neq("id",userId)
+        .single();
+
+        if(existingUser){
+            alert("이미 사용 중인 닉네임입니다");
+            return;
+        }
+
+        // 중복 아니면 닉네임 수정
         const { error: nicknameError } = await supabase
             .from("user")
             .update({
-                nickname: nickname
+                nickname: nickname,
             })
             .eq("id", userId);
 
@@ -86,19 +104,10 @@ export default function EditUser() {
             return;
         }
 
-        // 비밀번호 업데이트
-        if (password !== "") {
-            const { error: passwordError } = await supabase.auth.updateUser({
-                password: password
-            });
-
-            if (passwordError) {
-                console.log('비밀번호 변경 실패:', passwordError.message);
-            }
-        }
         alert("수정이 완료되었습니다!");
         navigate("../userinfo");
-    }
+    };
+
     return (
         <div className={styles.userInfo}>
             <div className={styles.infoRow}>
@@ -110,7 +119,11 @@ export default function EditUser() {
                     onChange={nickNameChange}
                     value={nickname}
                 />
+                <button className={styles.editnameButton} onClick={editComplete}>
+                    닉네임 수정하기
+                </button>
             </div>
+
             <div className={styles.infoRow}>
                 <div className={styles.label}>이메일:</div>
                 <input
@@ -120,24 +133,7 @@ export default function EditUser() {
                     readOnly
                 />
             </div>
-            <div className={styles.infoRow}>
-                <div className={styles.label}>비밀번호:</div>
-                <div className={styles.passwordEye}>
-                    <input
-                        style={{ border: "none", outline: "none" }}
-                        type={showPassword ? "text" : "password"}
-                        id="editPassWord"
-                        onChange={passWordChange}
-                        value={password}
-                        placeholder="6자 이상 입력하세요"
-                    />
-                    <ion-icon
-                        id="pwEyes"
-                        name={showPassword ? "eye-off-outline" : "eye-outline"}
-                        onClick={eyeClick}
-                    ></ion-icon>
-                </div>
-            </div>
+
             <div className={styles.infoRow}>
                 <div className={styles.label}>가입일:</div>
                 <input
@@ -147,7 +143,13 @@ export default function EditUser() {
                     value={DateToString(createdAt)}
                 />
             </div>
-            <button className={styles.editButton} onClick={editComplete}>수정완료</button>
+
+
+            <div className={styles.infoRow}>
+                <button onClick={sendResetEmail} className={styles.editemailButton}>
+                    비밀번호 변경 이메일 전송
+                </button>
+            </div>
         </div>
-    )
+    );
 }
