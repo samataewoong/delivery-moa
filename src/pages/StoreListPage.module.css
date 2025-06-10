@@ -110,3 +110,8 @@
 .deliveryfree {
     color: blue;
 }
+
+.room_no_result{
+    padding: 80px;
+    text-align: center;
+}

@@ -93,24 +93,29 @@ export default function StoreListPage() {
 
                 <div className={styles["second_body"]}>
                     <div className={styles["storelist_wrap"]}>
-                        {filteredStores.map((item) => (
-                            <Link key={item.id} to={`/store/${item.id}`} onClick={(e) => storeClick(e, item.id)}>
-                                <div className={styles["img_explain_wrap"]}>
-                                    <div className={styles["storesquare_img"]}>
-                                        <img src={`${storeUrl}${item.id}.jpg`} />
+                        {filteredStores.length > 0 ? (
+                            filteredStores.map((item) => (
+                                <Link key={item.id} to={`/store/${item.id}`} onClick={(e) => storeClick(e, item.id)}>
+                                    <div className={styles["img_explain_wrap"]}>
+                                        <div className={styles["storesquare_img"]}>
+                                            <img src={`${storeUrl}${item.id}.jpg`} />
+                                        </div>
+                                        <div className={styles["storeexplain"]}>
+                                            <h2> {item.store_name} </h2>
+                                            <h4> 가게위치 {item.store_address} </h4>
+                                            <h5> 배달비 : <span className={styles["deliveryfree"]}> 무료배달 </span></h5>
+                                            <h5> 최소주문 {item.min_price}원 </h5>
+
+                                        </div>
                                     </div>
-                                    <div className={styles["storeexplain"]}>
-                                        <h2> {item.store_name} </h2>
-                                        <h4> 가게위치 {item.store_address} </h4>
-                                        <h5> 배달비 : <span className={styles["deliveryfree"]}> 무료배달 </span></h5>
-                                        <h5> 최소주문 {item.min_price}원 </h5>
+                                </Link>
+                            ))
 
-                                    </div>
-                                </div>
-
-                            </Link>
-                        ))}
-
+                        ) : (
+                            <div className={styles.room_no_result}>
+                                주문 가능한 공구방이 없습니다.
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
