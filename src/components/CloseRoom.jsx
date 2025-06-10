@@ -162,21 +162,17 @@ export default function CloseRoom({ userId, roomList }) {
 		});
 	}, [userAddress, roomList]);
 	return userId ? (
-		<div className={styles.mapContainer}>
+
 			<div
 				className={styles.closeMap}
 				ref={mapRef}
-				style={{ width: "950px", height: "600px" }}
 			></div>
-		</div>
+
 	) : (
-		<div className={styles.mapContainer}>
-			<div
-				className={styles.closeMap}
-				style={{ width: "900px", height: "400px" }}
-			>
+
+			<div className={styles.closeMap}>
 				<p>로그인이 필요합니다.</p>
 			</div>
-		</div>
+
 	);
 }
