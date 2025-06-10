@@ -10,6 +10,7 @@ export default function RoomMenuItem({
     const menuQuantitySubButton = 'https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/menu_quantity_sub_button.png';
     const menuQuantitySubButtonDisabled = 'https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/menu_quantity_sub_button_disabled.png';
     const [quantity, setQuantity] = useState(menu.quantity);
+    const [isHovered, setIsHovered] = useState(false);
 
     return (
         <div key={menu.id} className={style.menu_item}>
@@ -45,8 +46,15 @@ export default function RoomMenuItem({
                     <div className={style.menu_quantity_add}></div>
                 )}
             </div>
-            <div className={style.menu_name}>{menu.menu_name}</div>
-            <div className={style.menu_price}>{thousands(`${menu.menu_price}`)}</div>
+            <div 
+                className={style.menu_name} 
+                onMouseEnter={() => setIsHovered(true)} 
+                onMouseLeave={() => setIsHovered(false)}
+            >
+                {menu.menu_name}
+            </div>
+            {isHovered && <div className={style.tooltip}>{menu.menu_name}</div>}
+            {(!isHovered) && <div className={style.menu_price}>{thousands(`${menu.menu_price}`)}</div>}
         </div>
     );
 }
