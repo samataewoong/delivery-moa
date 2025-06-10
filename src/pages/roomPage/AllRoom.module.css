@@ -37,6 +37,7 @@
 .rooms {
     width: 400px;
     box-sizing: border-box;
+    overflow-y: auto;
 }
 .room_no_result{
     width: 390px;
@@ -59,7 +60,6 @@
     overflow: hidden;
     display: flex;
     margin-bottom: 20px;
-    overflow-y: auto;
 }
 .roomWithText{
     position: relative;
