@@ -86,7 +86,7 @@
 }
 
 .button:hover {
-    background-color: red;
+    background-color: #FF6B6B;
 }
 
 .buttonSecondary {
@@ -98,7 +98,7 @@
     background-color: #e0e0e0;
 }
 .itemCard {
-  background-color: #f9f9f9;
+  background-color: #fde1b3;
   border-radius: 10px;
   padding: 12px 16px;
   margin-bottom: 16px;
