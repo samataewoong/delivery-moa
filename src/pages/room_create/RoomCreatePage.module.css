@@ -25,7 +25,7 @@
 }
 
 .label_box {
-    font-size: 10px;
+    font-size: 20px;
     color: #999;
 }
 
@@ -44,6 +44,14 @@
 .input_button_box {
     background-color: white;
     background-color: #ffc3c3;
+    border: none;
+    box-sizing: border-box;
+    padding: 10px;
+    margin-top: 10px;
+}
+.input_button_box:hover {
+    background-color: white;
+    background-color: #FF6B6B;
     border: none;
     box-sizing: border-box;
     padding: 10px;
