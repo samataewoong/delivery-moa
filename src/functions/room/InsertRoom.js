@@ -3,6 +3,7 @@ import supabase from '../../config/supabaseClient';
 export default async function insertRoom({
     room_name,
     room_address,
+    room_address_detail,
     max_people,
     leader_id,
     store_id
@@ -13,6 +14,7 @@ export default async function insertRoom({
         .insert({
             room_name,
             room_address,
+            room_address_detail,
             max_people,
             leader_id,
             store_id
