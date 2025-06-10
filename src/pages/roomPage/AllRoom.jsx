@@ -57,15 +57,12 @@ export default function AllRoom() {
                         {roomList.length >0 ? (
                             roomList.map((room, index) => (
                             <div key={room.id} className={styles.roomList}>
-                                <div>
-                                    <img
-                                        className={styles.roomListImg}
-                                        alt="undefined 이미지"
-                                        src={`https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/store/store_${room.store_id}.jpg`}
-                                    />
-                                    <div className={styles.roomTitle}>{room.room_name}</div>
-                                    <div className={styles.roomDistance}>{Math.floor(room.distance * 10) / 10}km</div>
-                                    <div className={styles.roomAddress}>{room.room_address}</div>
+                                <div className={styles.roomWithText} style={{backgroundImage: `url("https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/store/store_${room.store_id}.jpg")`, backgroundSize: "cover", backgroundPosition: "center 80%"}}>
+                                    <div className={styles.roomDetail}>
+                                        <div className={styles.roomTitle}>{room.room_name}</div>
+                                        <div className={styles.roomDistance}>{Math.floor(room.distance * 10) / 10}km</div>
+                                        <div className={styles.roomAddress}>{room.room_address}</div>
+                                    </div>
                                 </div>
                             </div>
                         ))
