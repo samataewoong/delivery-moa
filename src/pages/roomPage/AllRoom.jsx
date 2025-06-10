@@ -45,6 +45,25 @@ export default function AllRoom() {
         };
         fetchUserData();
     }, [userId]);
+
+    const roomClick = async (e, roomId) => {
+        e.preventDefault();
+
+        const { data } = await supabase.from("room_join").select("*").eq("room_id", roomId).eq("user_id", userId);
+
+        if (data.length > 0) {
+            const move = window.confirm("이미 참여중인 방입니다. 이동하시겠습니까?");
+            if (move) {
+            navigate(`/delivery-moa/room/${roomId}`);
+            }
+        } else {
+            const confirmJoin = window.confirm("이 공구방에 참여하시겠습니까?");
+            if (confirmJoin) {
+                window.location.href = `/delivery-moa/room/${roomId}`;
+            }
+        }
+    }
+
     return (
         <main className={styles.main_body}>
             <div className={styles.main_container}>
@@ -57,7 +76,7 @@ export default function AllRoom() {
                     <div className={styles.rooms}>
                         {roomList.length > 0 ? (
                             roomList.map((room, index) => (
-                                <Link key={room.id} to={`/room/${room.id}`}>
+                                <Link key={room.id} to={`/room/${room.id}`} onClick={(e) => roomClick(e, room.id)}>
                                     <div key={room.id} className={styles.roomList}>
                                         <div className={styles.roomWithText} style={{ backgroundImage: `url("https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/store/store_${room.store_id}.jpg")`, backgroundSize: "cover", backgroundPosition: "center 80%" }}>
                                             <div className={styles.roomDetail}>
