@@ -27,7 +27,7 @@
     width: 1240px;
     height: auto;
     box-sizing: border-box;
-    padding: 40px 20px;
+    padding: 20px 20px;
     background-color: white;
     border-radius: 10px;
     box-shadow: 4px 6px 2px rgba(0, 0, 0, 0.2);
@@ -40,7 +40,7 @@
 }
 .room_no_result{
     width: 390px;
-    height: 580px;
+    height: 600px;
     background-color: #F7F7F7;
     border-radius: 10px;
     box-sizing: border-box;
@@ -53,25 +53,39 @@
     box-sizing: border-box;
 }
 .roomList {
-    border: solid 1px black;
-    border-radius: 11px;
+    border-radius: 10px;
     width: 390px;
     height: 150px;
     overflow: hidden;
     display: flex;
+    margin-bottom: 20px;
+    overflow-y: auto;
 }
-
+.roomWithText{
+    position: relative;
+    height: 150px;
+    width: 390px;
+}
 .roomTitle {
     text-align: end;
     margin-right: 15px;
     font-weight: bold;
     font-size: large;
+    opacity: 100%;
 }
-
+.roomDetail{
+    width: 390px;
+    height: 50px;
+    background-color: white;
+    opacity: 80%;
+    bottom: 0;
+    position: absolute;
+}
 .roomAddress {
     text-align: end;
     margin-right: 15px;
     font-weight: 600px;
+    opacity: 100%;
 }
 .roomDistance {
     float: left;
@@ -79,12 +93,13 @@
     margin-right: 15px;
     font-size: medium;
     font-weight: 600px;
+    opacity: 100%;
 }
 
 
 
 .roomListImg {
-    width: 380px;
+    width: 390px;
     height: 100px;
     border-radius: 10px 10px 0 0;
     object-fit: cover;
