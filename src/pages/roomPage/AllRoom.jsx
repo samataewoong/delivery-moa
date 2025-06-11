@@ -8,6 +8,7 @@ import selectUser from "../../functions/user/SelectUser";
 import { getCoordinates } from "../../functions/maps/Coord";
 import { getDistance } from "../../functions/maps/Distance";
 import { Link, useNavigate } from "react-router-dom";
+import React, { useRef } from 'react';
 
 export default function AllRoom() {
     const navigate = useNavigate();
@@ -95,11 +96,26 @@ export default function AllRoom() {
             }
         }
     }
+    // 스크롤 위치
+    const roomRefs = useRef({});
+    const scrollContainerRef = useRef(null);
     // 마커 누르면 방 체크
-	const infowindowClick = (roomId) => {
-		setSelectedRoomId(roomId);
-		console.log("선택된 방 ID:", roomId);
-	}
+    const infowindowClick = (roomId) => {
+        setSelectedRoomId(roomId);
+        console.log("선택된 방 ID:", roomId);
+
+        const container = scrollContainerRef.current;
+        const target = roomRefs.current[roomId];
+
+        if (container && target) {
+            const offsetTop = target.offsetTop - container.offsetTop;
+
+            container.scrollTo({
+                top: offsetTop - 20, // 여유 공간
+                behavior: 'smooth',
+            });
+        }
+    };
 
     return (
         <main className={styles.main_body}>
@@ -110,12 +126,12 @@ export default function AllRoom() {
                     <div>진행중인 공구방</div>
                 </div>
                 <div className={styles.AllRoomBody}>
-                    <div className={styles.rooms}>
+                    <div className={styles.rooms} ref={scrollContainerRef}>
                         {roomList.length > 0 ? (
                             roomList.map((room, index) => (
                                 <Link key={room.id} to={`/room/${room.id}`} onClick={(e) => roomClick(e, room.id)}>
-                                    <div key={room.id} className={styles.roomList}>
-                                        <div className={styles.roomWithText} style={{ backgroundImage: `url("https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/store/store_${room.store_id}.jpg")`, backgroundSize: "cover", backgroundPosition: "center 80%" }}>
+                                    <div ref={(el) => (roomRefs.current[room.id] = el)} key={room.id} className={styles.roomList} style={{ border: room.id === selectedRoomId ? "3px solid #d87575" : "none", }}>
+                                        <div className={styles.roomWithText} style={{ backgroundImage: `url("https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/store/store_${room.store_id}.jpg")`, backgroundSize: "cover", backgroundPosition: "center 80%", }}>
                                             <div className={styles.roomDetail}>
                                                 <div className={styles.roomTitle}>{room.room_name}</div>
                                                 <div className={styles.roomAddress}>{room.room_address}</div>
@@ -138,7 +154,7 @@ export default function AllRoom() {
                         )}
                     </div>
                     <div className={styles.roomMap}>
-                        <CloseRoom userId={userId} roomList={roomList} onSelectRoomId={infowindowClick}/>
+                        <CloseRoom userId={userId} roomList={roomList} onSelectRoomId={infowindowClick} />
                     </div>
                 </div>
             </div>
