@@ -420,7 +420,7 @@ input[readOnly] {
 
 .downIcon {
   font-size: 30px;
-  color: rgb(31, 31, 31);
+  color: #ff6b6b;
   position: absolute;
   bottom: 0px;
   right: 15px;

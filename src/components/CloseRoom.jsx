@@ -40,17 +40,17 @@ export default function CloseRoom({ userId, roomList, onSelectRoomId }) {
 				}
 			)
 			.subscribe();
-        const roomSubscribe = supabase
-            .realtime
-            .channel("realtime:room_watch_on_close_room_page")
-            .on(
-                "postgres_changes",
-                { event: '*', schema: 'public', table: 'room' },
-                (payload) => {
-                    fetchUserData();
-                }
-            )
-            .subscribe();
+		const roomSubscribe = supabase
+			.realtime
+			.channel("realtime:room_watch_on_close_room_page")
+			.on(
+				"postgres_changes",
+				{ event: '*', schema: 'public', table: 'room' },
+				(payload) => {
+					fetchUserData();
+				}
+			)
+			.subscribe();
 
 		fetchUserData();
 		return () => {
@@ -142,13 +142,14 @@ export default function CloseRoom({ userId, roomList, onSelectRoomId }) {
 						if (typeof onSelectRoomId === "function") {
 							onSelectRoomId(room.id);
 						}
-						
+
 						setTimeout(() => {
 							const closeBtn = document.getElementById(`closeButton-${room.id}`);
 							if (closeBtn) {
 								closeBtn.onclick = () => {
 									customOverlay.setMap(null);
 									currentOverlay.current = null;
+									onSelectRoomId(null)
 								};
 							}
 							const clickRoom = async () => {
