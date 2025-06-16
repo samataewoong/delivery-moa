@@ -1,11 +1,16 @@
 import { useState, useEffect } from "react";
 import supabase from "../../config/supabaseClient";
+import styles from "./MyPage.module.css";
 
 export default function OrderList() {
   const [userId, setUserId] = useState("");
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
   const [openOrderIds, setOpenOrderIds] = useState([]); //펼쳐진 주문 id배열
+  const PAGE_SIZE = 5;
+  const [page, setPage] = useState(1);
+
+  const displayedOrders = orders.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   //로그인된 유저 정보 가져옴
   useEffect(() => {
@@ -55,15 +60,14 @@ export default function OrderList() {
   };
 
   return (
-    <div>
-      <h2 style={{ fontSize: "1.5rem", margin: "16px 0" }}>내 주문 내역</h2>
+    <div className={styles.order_body}>
       {loading ? (
         <p>불러오는 중...</p>
       ) : orders.length === 0 ? (
         <p>주문 내역이 없습니다.</p>
       ) : (
         <ul style={{ listStyle: "none", padding: 0 }}>
-          {orders.map((order) => {
+          {displayedOrders.map((order) => {
             const total = (order.room_order || []).reduce(
               (sum, item) => sum + item.menu_price * item.quantity,
               0
@@ -143,6 +147,8 @@ export default function OrderList() {
                         ))
                       )}
                     </ul>
+                    <button className={styles.qnaPages} disabled={page === 1} onClick={() => setPage(page - 1)}>이전</button>
+                    <button disabled={page * PAGE_SIZE >= orders.length} onClick={() => setPage(page + 1)}>다음</button>
                   </div>
                 )}
               </li>

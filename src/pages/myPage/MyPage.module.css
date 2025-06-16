@@ -134,59 +134,69 @@
   font-weight: bold;
   font-size: 24px;
   border-bottom: solid 1px #ccd;
-  margin-bottom: 20px;
   padding: 14px;
 }
 .userInfo {
   padding: 45px 142.5px;
   font-size: 18px;
-  width: 100%;
-  margin: 0 auto;
   background-color: white;
   border-radius: 10px;
   box-sizing: border-box;
+  margin-top: 20px;
 }
 .myButtonContainer{
   display: flex;
   justify-content: center;
   align-items: center;
 }
-
-
-
-
-
-
-
-
-
-
-
 .infoRow {
   display: flex;
   margin-bottom: 45px;
-  
+  justify-content: center;
+  align-items: center;
 }
-
 .infoRow .label {
   width: 100px;
-  /* 고정 너비 */
   font-weight: 500;
 }
-
 .infoRow .value {
   width: 535px;
   margin-left: 25px;
   border-bottom: solid #ccc 2px;
 }
-
-
+.editnameButton {
+  border-radius: 10px;
+  border: none;
+  width: 80px;
+  height: auto;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  background-color: #ffb1b1;
+}
+.editnameButton:hover {
+  background-color: #ff8a8a;
+}
+.editInput {
+  border: none;
+  border-bottom: solid 1px #ccd;
+  font-size: 18px;
+  outline: none;
+  margin-left: 25px;
+  width: 540px;
+  padding-bottom: 5px;
+}
+.info_Row{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .myButtonEdit {
   text-align: center;
   width: 160px;
   height: 45px;
   font-weight: 500;
-  font-size: large;
+  font-size: 18px;
   padding: 5px;
   margin: 10px;
   border-radius: 7px;
@@ -194,10 +204,114 @@
   cursor: pointer;
   border: none;
 }
-
 .myButtonEdit:hover {
   background-color: #ff8a8a;
 }
+.editemailButton {
+  border-radius: 10px;
+  width: 370px;
+  height: 50px;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  margin: 10px;
+  transition: background-color 0.3s ease;
+  background-color: #ffb1b1;
+  border: none;
+}
+.editemailButton:hover {
+  background-color: #ff8a8a;
+}
+.order_body{
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+
+
+
+
+
+.qnaButtonWrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+  margin-top: 20px;
+}
+.myQna {
+  border: solid 2px gray;
+  margin: 20px 0;
+  padding-bottom: 10px;
+  border-radius: 15px;
+  background-color: white;
+}
+.qnaDate {
+  padding: 10px;
+  border-bottom: 1px dotted;
+  color: gray;
+  font-size: 16px;
+  font-weight: 700;
+  box-sizing: border-box;
+}
+.qnaTitle {
+  box-sizing: border-box;
+  padding:20px;
+  position: relative;
+}
+.qnaanswer {
+  padding-bottom: 15px;
+  font-size: 16px;
+}
+.qnaContent {
+  padding: 20px 0;
+}
+.qnaTextArea {
+  width: 100%;
+  height: 180px;
+  font-size: 14px;
+  font-weight: 1000;
+  border: none;
+}
+.deleteReview {
+  border-radius: 5px;
+  margin: 10px 0;
+  cursor: pointer;
+  width: 80px;
+  height: 35px;
+  font-weight: 400;
+  font-size: 14px;
+  background-color: #d4d4d4;
+  border: none;
+}
+.editReview {
+  border-radius: 5px;
+  margin: 10px;
+  cursor: pointer;
+  width: 80px;
+  height: 35px;
+  font-weight: 400;
+  font-size: 14px;
+  background-color: #ffb1b1;
+  border: none;
+}
+
+.editReview:hover {
+  background-color: #ff8a8a;
+}
+
+.deleteReview:hover {
+  background-color: #ceced3;
+}
+
+
+
+
+
+
+
+
+
+
 
 .myButtonQuit {
   text-align: center;
@@ -217,48 +331,10 @@
   background-color: #ceced3;
 }
 
-.editInput {
-  border: none;
-  border-bottom: solid 3px black;
-  font-size: x-large;
-  outline: none;
-  margin-left: 25px;
-  width: 540px;
-  padding-bottom: 5px;
-}
-
 input[readOnly] {
-  background-color: #ccc;
+  background-color: #d4d4d4;
 }
 
-.editnameButton {
-  border-radius: 10px;
-  width: 150px;
-  height: auto;
-  font-size: 16px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-bottom: 20px;
-}
-
-.editemailButton {
-  border-radius: 10px;
-  width: 670px;
-  height: 50px;
-  font-size: x-large;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-bottom: 20px;
-}
-
-.editnameButton:hover {
-  background-color: #d0d0d0;
-}
-.editemailButton:hover {
-  background-color: #d0d0d0;
-}
 
 .passwordEye {
   border-bottom: solid;
@@ -273,46 +349,14 @@ input[readOnly] {
   margin-right: 200px;
 }
 
-.myQna {
-  border: solid 2px gray;
-  margin: 5px 0px 15px 15px;
-  padding-bottom: 10px;
-  border-radius: 15px;
-}
 
-.qnaDate h1 {
-  padding: 0px 0px 10px 10px;
-  border-bottom: 1px dotted;
-  color: gray;
-  font-size: medium;
-}
 
-.qnaTitle {
-  padding-left: 7px;
-  position: relative;
-  padding-left: 7px;
-  position: relative;
-}
 
-.qnaTitle h3 {
-  padding: 15px;
-  font-size: medium;
-}
 
-.qnaContent {
-  margin-bottom: 10px;
-  padding-left: 15px;
-  margin-top: 10px;
-}
 
-.qnaTextArea {
-  width: 790px;
-  height: 130px;
-  font-size: medium;
-  font-weight: 1000;
-  padding-top: 7px;
-  border: none;
-}
+
+
+
 
 .answer {
   border-top: 1px solid #d0d0d0;
@@ -329,37 +373,6 @@ input[readOnly] {
   font-weight: 400;
 }
 
-.deleteReview {
-  border-radius: 5px;
-  margin-left: 10px;
-  cursor: pointer;
-  width: 80px;
-  height: 35px;
-  font-weight: 400;
-  font-size: 14px;
-  background-color: #d4d4d4;
-  border: none;
-}
-
-.editReview {
-  border-radius: 5px;
-  margin-left: 10px;
-  cursor: pointer;
-  width: 80px;
-  height: 35px;
-  font-weight: 400;
-  font-size: 14px;
-  background-color: #ffb1b1;
-  border: none;
-}
-
-.editReview:hover {
-  background-color: #ff8a8a;
-}
-
-.deleteReview:hover {
-  background-color: #ceced3;
-}
 
 .qnaPages {
   text-align: center;
@@ -419,11 +432,7 @@ input[readOnly] {
   top: 25px; /* 헤더 높이 만큼 여백 (상황에 맞게 조정) */
   z-index: 10; /* 필요시 */
 }
-.qnaButtonWrapper {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 1rem;
-}
+
 
 .qnaWriteBtn {
   background-color: #ff6b6b;
