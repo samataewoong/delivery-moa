@@ -20,7 +20,6 @@ export default function MyQnA() {
 
   const itemsPerPage = 3;
 
-  // ✅ 데이터 가져오는 함수 분리
   const fetchUserData = async () => {
     if (!userId) return;
 
@@ -67,10 +66,9 @@ export default function MyQnA() {
     const confirmed = window.confirm("문의를 수정하시겠습니까?");
     if (!confirmed) return;
     setEditQnaById(qna.id);
-    setEditing(true); // ✅ 모달 열기
+    setEditing(true);
   };
 
-  // ✅ 모달 닫기 함수
   const closeModal = () => {
     setEditing(false);
     setEditQnaById(null);
@@ -129,9 +127,7 @@ export default function MyQnA() {
         paginatedQna.map((qna) => (
           <div key={qna.id} className={styles.myQna}>
             <div className={styles.qnaDate}>
-              <h1>
                 <FormattedDate dateString={qna.created_at} />
-              </h1>
             </div>
             <div className={styles.qnaTitle}>
               <b>Q. {qna.title}</b>
@@ -142,7 +138,7 @@ export default function MyQnA() {
                   value={qna.q_contents}
                 />
               </div>
-              <h3>답변유무 {qna.q_answer ? "Yes" : "No"}</h3>
+              <div className={styles.qnaanswer}>답변유무 {qna.q_answer ? "Yes" : "No"}</div>
               <div
                 style={qna.q_answer ? { cursor: "pointer" } : {}}
                 onClick={() => toggleAnswer(qna.id)}
@@ -216,7 +212,6 @@ export default function MyQnA() {
         </div>
       )}
 
-      {/* ✅ 수정 모달 삽입 */}
       {editing && editQnaById && (
         <EditModal qnaId={editQnaById} onClose={closeModal} />
       )}

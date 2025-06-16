@@ -120,7 +120,7 @@ export default function EditUser() {
                     value={nickname}
                 />
                 <button className={styles.editnameButton} onClick={editComplete}>
-                    닉네임 수정하기
+                    수정
                 </button>
             </div>
 
@@ -145,9 +145,9 @@ export default function EditUser() {
             </div>
 
 
-            <div className={styles.infoRow}>
+            <div className={styles.info_Row}>
                 <button onClick={sendResetEmail} className={styles.editemailButton}>
-                    비밀번호 변경 이메일 전송
+                    비밀번호 변경 / 이메일 전송
                 </button>
             </div>
         </div>
