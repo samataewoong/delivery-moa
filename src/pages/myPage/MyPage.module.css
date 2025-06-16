@@ -3,183 +3,169 @@
   justify-content: center;
   width: 100%;
 }
-
-.myPage {
-  display: flex;
+.myPage_box{
   width: 1280px;
-  background-color: white;
-  padding: 20px 0;
-  box-sizing: border-box;
-  border-radius: 10px;
-  box-shadow: 4px 6px 2px rgba(0, 0, 0, 0.2);
-  margin: 80px 0;
-  gap: 20px;
-  flex-wrap: wrap;
-  /* 화면 작아지면 줄 바꿈 */
-}
-
-.myPageLeft {
-  flex: 0 0 340px;
-  /* 고정 너비 (px 단위 권장) */
-  border-right: 1px solid #ccc;
-  padding: 20px;
-  box-sizing: border-box;
-  min-width: 200px;
-  /* 최소 너비 지정 */
-}
-
-.profile {
-  border: 1px solid #ccc;
-  margin: 2px;
-  width: 300px;
-  height: 120px;
-  border-radius: 10px;
-  position: relative;
-  box-shadow: 4px 6px 2px rgba(0, 0, 0, 0.2);
-}
-
-.userName {
-  font-size: large;
-  font-weight: bold;
-  margin: 18px 125px 1px 22px;
-}
-
-.bearImage {
-  position: absolute;
-  width: 30px;
-  height: 30px;
-  top: 18px;
-  right: 32px;
-}
-
-.gaugeBar {
-  margin: -11px 20px 5px;
-  position: relative;
-  background-color: #eee;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  overflow: hidden;
+  padding: 80px 20px;
   box-sizing: border-box;
 }
-
-.gaugeFill {
-  height: 100%;
-  transition: width 0.6s ease-in-out;
-}
-
-.gaugeText {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-weight: bold;
-  color: #000;
-  font-family: Arial, sans-serif;
-  pointer-events: none;
-  user-select: none;
-}
-
-.myCash {
-  display: flex;
-  /* 좌우 끝에 배치 */
-  align-items: center;
-  justify-content: space-between;
+.myPage_userInfo{
   width: 100%;
-  /* 가로 전체 차지 */
-  max-width: 300px;
-  /* 최대 크기 제한 (필요하면 조정) */
-  margin-right: 180px;
-  font-size: large;
+  height: 235px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  padding: 0 55px;
   box-sizing: border-box;
-  padding: 0 25px;
-  /* 양옆 약간 패딩 */
 }
-
-.label {
-  flex-shrink: 0;
-  /* 줄어들지 않게 */
+.circle_with_text{
+  justify-content: center;
+  margin-right: 50px;
 }
-
-.amount {
-  text-align: left;
-  white-space: nowrap;
-  /* 줄바꿈 방지 */
-  overflow: hidden;
-  text-overflow: ellipsis;
-  /* 너무 길면 말줄임표 처리 */
-  max-width: 100px;
-  /* 최소 너비 */
-  margin-left: 10px;
+.circle{
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #000;
 }
-
-/* MyPage.module.css */
-.myMenu {
-  padding: 0px 7px 0px 95px;
+.circle_text {
+    margin-top: 8px;
+    text-align: center;
+    font-size: 16px;
+    display: flex;
 }
-
-.myMenuUl {
-  list-style-type: none;
-  padding-left: 20px;
-}
-
-.myMenuLi {
-  font-size: 21px;
-  margin: 10px 10px 30px 40px;
-}
-
-.myMenuLi::before {
-  content: "- ";
+.circle_pencil{
+  width: 22px;
+  height: 22px;
   color: black;
-  font-weight: bold;
-  margin-right: 8px;
-  display: inline-block;
-  width: 12px;
 }
-
-.myPageRight {
-  flex: 1 1 700px;
-  /* 여유 공간을 채움, 최소 700px */
-  padding: 20px;
+.userRating{
+  width: 640px;
+}
+.usernickName{
+  font-size: 22px;
+  font-weight: 700;
+}
+.progress_box{
+  width: 545px;
+  height: 20px;
+  margin: 20px 0;
+  background-color: #eee;
+  border-radius: 10px;
+  appearance: none;
+  -webkit-appearance: none;
   box-sizing: border-box;
-  overflow-y: auto;
-  border-right: solid 1px #ccc;
-  min-width: 300px;
-  /* 최소 너비 */
 }
-
-.myHeader {
-  text-align: left;
-  font-weight: bold;
-  font-size: x-large;
-  border-bottom: solid 1px #ccd;
-  margin-bottom: 40px;
-  padding: 14px;
+.progress_box::-webkit-progress-bar {
+    background-color: #eee;
+    width: 100%;
 }
-
-.chargeButton {
+.progress_box::-webkit-progress-value {
+    background-color: #FF6B6B;
+}
+.progress_box::-moz-progress-bar {
+    background-color: #FF6B6B;
+}
+.user_cash{
+  width: 340px;
+  height: 120px;
+  box-sizing: border-box;
+  border: 1px solid black;
+  border-radius: 10px;
+  padding: 30px;
+  display: flex;
+  align-items: center;
+}
+.coin_imo{
+  width: 40px;
+  height: 40px;
+}
+.coin_confirm{
+  font-size: 20px;
+  margin-left: auto;
+}
+.charge_Button {
   padding: 4px 9px;
-  font-size: 15px;
-  background-color: none;
+  font-size: 20px;
+  background-color: white;
   color: #ff6b6b;
   border: none;
   border-radius: 10px;
   cursor: pointer;
+  margin-left: 10px;
   transition: background-color 0.3s ease;
 }
 
-.chargeButton:hover {
-  background-color: #1fab89;
+.charge_Button:hover {
+  background-color: #ff6b6b;
   color: white;
 }
-
-.userInfo {
-  padding: 100px 30px 5px 135px;
-  font-size: x-large;
+.main_body{
+  margin: 20px 0;
+  width: 100%;
+  height: auto;
+  min-height: 580px;
+  padding: 40px 30px;
+  border-radius: 10px;
+  background-color: white;
+  box-sizing: border-box;
+  display: flex;
 }
+.my_MenuUl{
+  list-style: none;
+  padding-inline-start: 0;
+  width: 170px;
+}
+.my_MenuLi{
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+.my_Menu_right{
+  background-color: #f7f7f7;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  margin-left: 25px;
+  width: 985px;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.myHeader {
+  font-weight: bold;
+  font-size: 24px;
+  border-bottom: solid 1px #ccd;
+  margin-bottom: 20px;
+  padding: 14px;
+}
+.userInfo {
+  padding: 45px 142.5px;
+  font-size: 18px;
+  width: 100%;
+  margin: 0 auto;
+  background-color: white;
+  border-radius: 10px;
+  box-sizing: border-box;
+}
+.myButtonContainer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+
+
+
+
+
+
+
 
 .infoRow {
   display: flex;
   margin-bottom: 45px;
+  
 }
 
 .infoRow .label {
@@ -192,13 +178,8 @@
   width: 535px;
   margin-left: 25px;
   border-bottom: solid #ccc 2px;
-  padding-bottom: 5px;
-  /* 남은 공간 차지 */
 }
 
-.myButtonContainer {
-  margin-left: 205px;
-}
 
 .myButtonEdit {
   text-align: center;
@@ -457,4 +438,157 @@ input[readOnly] {
 
 .qnaWriteBtn:hover {
   background-color: #e35a5a;
+}
+
+.myPage {
+  display: flex;
+  background-color: white;
+  box-sizing: border-box;
+  border-radius: 10px;
+  box-shadow: 4px 6px 2px rgba(0, 0, 0, 0.2);
+  gap: 20px;
+}
+
+.myPageLeft {
+  flex: 0 0 340px;
+  /* 고정 너비 (px 단위 권장) */
+  border-right: 1px solid #ccc;
+  padding: 20px;
+  box-sizing: border-box;
+  min-width: 200px;
+  /* 최소 너비 지정 */
+}
+
+.profile {
+  border: 1px solid #ccc;
+  margin: 2px;
+  width: 300px;
+  height: 120px;
+  border-radius: 10px;
+  position: relative;
+  box-shadow: 4px 6px 2px rgba(0, 0, 0, 0.2);
+}
+
+.userName {
+  font-size: large;
+  font-weight: bold;
+  margin: 18px 125px 1px 22px;
+}
+
+.bearImage {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  top: 18px;
+  right: 32px;
+}
+
+.gaugeBar {
+  margin: -11px 20px 5px;
+  position: relative;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.gaugeFill {
+  height: 100%;
+  transition: width 0.6s ease-in-out;
+}
+
+.gaugeText {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: bold;
+  color: #000;
+  font-family: Arial, sans-serif;
+  pointer-events: none;
+  user-select: none;
+}
+
+.myCash {
+  display: flex;
+  /* 좌우 끝에 배치 */
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  /* 가로 전체 차지 */
+  max-width: 300px;
+  /* 최대 크기 제한 (필요하면 조정) */
+  margin-right: 180px;
+  font-size: large;
+  box-sizing: border-box;
+  padding: 0 25px;
+  /* 양옆 약간 패딩 */
+}
+
+.label {
+  flex-shrink: 0;
+  /* 줄어들지 않게 */
+}
+
+.amount {
+  text-align: left;
+  white-space: nowrap;
+  /* 줄바꿈 방지 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* 너무 길면 말줄임표 처리 */
+  max-width: 100px;
+  /* 최소 너비 */
+  margin-left: 10px;
+}
+
+/* MyPage.module.css */
+.myMenu {
+  padding: 0px 7px 0px 95px;
+}
+
+.myMenuUl {
+  list-style-type: none;
+  padding-left: 20px;
+}
+
+.myMenuLi {
+  font-size: 21px;
+  margin: 10px 10px 30px 40px;
+}
+
+.myMenuLi::before {
+  content: "- ";
+  color: black;
+  font-weight: bold;
+  margin-right: 8px;
+  display: inline-block;
+  width: 12px;
+}
+
+.myPageRight {
+  flex: 1 1 700px;
+  /* 여유 공간을 채움, 최소 700px */
+  padding: 20px;
+  box-sizing: border-box;
+  overflow-y: auto;
+  border-right: solid 1px #ccc;
+  min-width: 300px;
+  /* 최소 너비 */
+}
+.chargeButton {
+  padding: 4px 9px;
+  font-size: 15px;
+  background-color: none;
+  color: #ff6b6b;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.chargeButton:hover {
+  background-color: #1fab89;
+  color: white;
 }
