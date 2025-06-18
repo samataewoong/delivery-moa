@@ -217,8 +217,8 @@ export default function HamburgerMenu({ isOpen, session, nickname, handleLogout,
                 {session && nickname && (
                     <div className={styles["chat_list"]}>
                         <div className={styles["chat_list_title"]}>참여중인 채팅방 목록</div>
-                        {userRoom.length > 0 ? (
-                            userRoom.map((room) => (
+                        {userRoom.filter(room => room.status !== "종료").length > 0 ? (
+                            userRoom.filter(room => room.status !== "종료").map((room) => (
                                 <div key={room.id} className={styles["chat_list_room"]}
                                     onClick={() => window.location.href = `/delivery-moa/room/${room.id}`}>
                                     <img className={styles["chat_list_circle"]} src={`${roomUrl}${room.store_id}.jpg`} />

@@ -1,15 +1,16 @@
-.main{
+.main {
     width: 1280px;
     display: flex;
     justify-content: center;
 }
+
 .hamburger_nav {
     position: absolute;
     top: 115px;
-    right: calc((100vw - 1280px) / 2 );
+    right: calc((100vw - 1280px) / 2);
     width: 434px;
     background-color: white;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 30px 45px;
     z-index: 1000;
     overflow-y: auto;
@@ -51,19 +52,23 @@
     text-align: left;
     margin-top: 40px;
 }
-.user_box{
+
+.user_box {
     display: flex;
 }
+
 .user_coin {
     display: flex;
     margin: 40px 0 30px 0;
     justify-content: space-between;
 }
-.coin_box{
+
+.coin_box {
     display: flex;
     align-items: center;
     gap: 8px;
 }
+
 .coin_imo {
     width: auto;
     height: 38px;
@@ -101,6 +106,7 @@
 .gongu_progress::-webkit-progress-value {
     background-color: #FF6B6B;
 }
+
 .gongu_progress::-moz-progress-bar {
     background-color: #FF6B6B;
 }
@@ -123,6 +129,8 @@
 .chat_list_circle {
     width: 90px;
     height: 90px;
+    min-width: 90px;
+    min-height: 90px;
     border-radius: 50%;
     object-fit: cover;
     object-position: center 80%;
@@ -166,20 +174,23 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
-    width: 320px;
+    width: 329px;
 }
 
 .chat_time {
     font-size: 16px;
+    justify-content: end;
     color: #7B7A7A;
 }
-.score_box{
+
+.score_box {
     display: flex;
     gap: 10px;
     margin-bottom: 5px;
     align-items: center;
 }
-.score_text{
+
+.score_text {
     font-size: 16px;
     background-color: #6a7eff;
     color: white;
@@ -187,7 +198,8 @@
     padding: 3px 6px;
     margin-left: auto;
 }
-.score_img{
+
+.score_img {
     width: 30px;
     height: auto;
 }
