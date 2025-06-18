@@ -10,12 +10,8 @@ export default function GaugeBar({ value = 0 }) {
   return (
     <div
       className={styles.gaugeBar}
-      style={{ width: "255px", height: "20px" }}
       aria-label={`Progress: ${safeValue}%`}
       role="progressbar"
-      aria-valuemin={0}
-      aria-valuemax={100}
-      aria-valuenow={safeValue}
     >
       <div
         className={styles.gaugeFill}

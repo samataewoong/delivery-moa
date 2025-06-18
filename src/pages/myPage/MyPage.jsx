@@ -100,10 +100,18 @@ export default function MyPage() {
               <img className={styles.circle_pencil} src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/line-md_pencil%20(1).png" />
             </div>
           </div>
-          <div className={styles.userRating}>
-            <div className={styles.usernickName}>{myNickname} 님</div>
-            <progress className={styles.progress_box} value={myRating} max={100} />
+          <div className={styles.userRating_body} v>
+            <div className={styles.userRating}>
+              <div className={styles.userDetail}>
+                <img className={styles.bearImage}
+                  src={`https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/${bear}.png`} />
+                <div className={styles.usernickName}>{myNickname} 님</div>
+              </div>
+              {/* <progress className={styles.progress_box} value={myRating} max={100} /> */}
+              <GaugeBar value={myRating} />
+            </div>
           </div>
+
           <div className={styles.user_cash}>
             <img
               className={styles["coin_imo"]}
@@ -136,72 +144,6 @@ export default function MyPage() {
             ))}
           </ul>
           <div className={styles.my_Menu_right}>
-            <MyHeader menuList={menuList} />
-            <Outlet context={{ userSession: session, userId: myUserId }} />
-          </div>
-        </div>
-
-
-
-
-
-
-
-
-
-        
-        <div className={styles.myPage}>
-          <div className={styles.myPageLeft}>
-            <div className={styles.menuSticky}>
-              <div className={styles.profile}>
-                <div className={styles.userName}>
-                  {myNickname} 님
-                  <div>
-                    <img
-                      className={styles.bearImage}
-                      src={`https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/${bear}.png`}
-                    ></img>
-                  </div>
-                </div>
-                <br />
-                {/* 평점 0~5 → 0~100으로 변환해서 GaugeBar에 전달 */}
-                <GaugeBar value={myRating} />
-                <div className={styles.myCash}>
-                  <span style={{ display: "flex" }}>
-                    <span className={styles.label}>내 캐시:</span>
-                    <span className={styles.amount}>{thousands(myCash)}</span>
-                    <span>원</span>
-                  </span>
-                  <button
-                    className={styles.chargeButton}
-                    onClick={handleChargeClick}
-                  >
-                    충전
-                  </button>
-                </div>
-              </div>
-              <div className={styles.myMenu}>
-                <ul className={styles.myMenuUl}>
-                  {menuList.map(({ name, path }) => (
-                    <li key={path} className={styles.myMenuLi}>
-                      <Link
-                        to={`/mypage/${path}`}
-                        style={{
-                          textDecoration: "none",
-                          fontWeight: currentMenu === path ? "bold" : "normal",
-                          color: "black",
-                        }}
-                      >
-                        {name}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <div className={styles.myPageRight}>
             <MyHeader menuList={menuList} />
             <Outlet context={{ userSession: session, userId: myUserId }} />
           </div>

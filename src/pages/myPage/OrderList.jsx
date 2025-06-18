@@ -7,10 +7,6 @@ export default function OrderList() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
   const [openOrderIds, setOpenOrderIds] = useState([]); //펼쳐진 주문 id배열
-  const PAGE_SIZE = 5;
-  const [page, setPage] = useState(1);
-
-  const displayedOrders = orders.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   //로그인된 유저 정보 가져옴
   useEffect(() => {
@@ -67,7 +63,7 @@ export default function OrderList() {
         <p>주문 내역이 없습니다.</p>
       ) : (
         <ul style={{ listStyle: "none", padding: 0 }}>
-          {displayedOrders.map((order) => {
+          {orders.map((order) => {
             const total = (order.room_order || []).reduce(
               (sum, item) => sum + item.menu_price * item.quantity,
               0
@@ -147,8 +143,6 @@ export default function OrderList() {
                         ))
                       )}
                     </ul>
-                    <button className={styles.qnaPages} disabled={page === 1} onClick={() => setPage(page - 1)}>이전</button>
-                    <button disabled={page * PAGE_SIZE >= orders.length} onClick={() => setPage(page + 1)}>다음</button>
                   </div>
                 )}
               </li>
@@ -159,41 +153,3 @@ export default function OrderList() {
     </div>
   );
 }
-//   return (
-//     <div>
-//       <h2>내 주문 내역</h2>
-//       {loading ? (
-//         <p> 불러오는 중...</p>
-//       ) : orders.length === 0 ? (
-//         <p>주문 재녁이 없습니다.</p>
-//       ) : (
-//         orders.map((order) => (
-//           <li key={order.order_id}>
-//             주문번호: {order.order_id}
-//             <br />방 ID: {order.room_id}
-//             <br />
-//             가게 ID: {order.store_id}
-//             <br />
-//             주문상세:
-//             <ul>
-//               {(order.room_order || []).map((item, idx) => (
-//                 <li key={idx}>
-//                   메뉴: {item.menu_name} <br />
-//                   수량: {item.quantity}개 <br />
-//                   가격: {item.menu_price}원 <br />
-//                   소계: {item.menu_price * item.quantity}원
-//                 </li>
-//               ))}
-//             </ul>
-//             결제 금액:{" "}
-//             {(order.room_order || []).reduce(
-//               (sum, item) => sum + item.menu_price * item.quantity,
-//               0
-//             )}
-//             원<br />
-//           </li>
-//         ))
-//       )}
-//     </div>
-//   );
-// }

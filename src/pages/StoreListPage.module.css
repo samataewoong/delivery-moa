@@ -35,6 +35,7 @@
     padding: 20px;
     margin-top: 80px;
     margin-bottom: 40px;
+    box-shadow: 4px 6px 2px rgba(0, 0, 0, 0.2);
 }
 
 
@@ -55,8 +56,11 @@
     flex-direction: column;
     align-items: center;
     width: 100px;
+    transition: background-color 0.3s ease;
 }
-
+.circle_with_text:hover {
+    transform: translateY(-5px);
+}
 .circle {
     width: 100px;
     height: 100px;
@@ -68,6 +72,7 @@
     align-items: center;
     margin-top: 10px;
 }
+
 
 .circle_text {
     margin-top: 8px;
@@ -82,6 +87,7 @@
     margin-bottom: 80px;
     border-radius: 10px;
     padding-bottom: 40px;
+    box-shadow: 4px 6px 2px rgba(0, 0, 0, 0.2);
 }
 
 .img_explain_wrap {

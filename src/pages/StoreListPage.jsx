@@ -68,7 +68,9 @@ export default function StoreListPage() {
         <>
             <div className={styles["storelist_body"]}>
                 <div className={styles["circle_category_outer"]}>
-                    <button className={styles["scroll_button"]} onClick={scrollLeft}>{"<"}</button>
+                    <button className={styles["scroll_button"]} onClick={scrollLeft}>
+                        <img src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/backbtn.png" />
+                    </button>
                     <div className={styles["circle_category_wrap"]} ref={categoryRef}>
                         {categories.map((item) => (
                             <div key={item.id}
@@ -85,7 +87,9 @@ export default function StoreListPage() {
                         ))}
                     </div>
 
-                    <button className={styles["scroll_button"]} onClick={scrollRight}>{">"}</button>
+                    <button className={styles["scroll_button"]} onClick={scrollRight}>
+                        <img src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/backbtn2.png" />
+                    </button>
                 </div>
 
 
