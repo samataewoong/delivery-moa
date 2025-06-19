@@ -87,7 +87,7 @@ export default function MainPage({ toggleMenu }) {
     //카테고리 목록
     useEffect(() => {
         const fetchCategories = async () => {
-            const { data, error } = await supabase.from("menu_category").select("id, category");
+            const { data, error } = await supabase.from("menu_category").select("id, category").order("num");
             if (error) {
                 console.error("카테고리 불러오기 오류:", error);
             } else {
