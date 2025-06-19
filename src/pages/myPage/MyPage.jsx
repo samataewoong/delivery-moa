@@ -94,7 +94,9 @@ export default function MyPage() {
       <div className={styles.myPage_box}>
         <div className={styles.myPage_userInfo}>
           <div className={styles.circle_with_text}>
-            <div className={styles.circle}></div>
+            <img className={styles.circle} 
+            src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/mypagePerson.png">
+            </img>
             <div className={styles.circle_text}>
               <div>프로필수정</div>
               <img className={styles.circle_pencil} src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/line-md_pencil%20(1).png" />
