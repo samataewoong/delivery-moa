@@ -221,7 +221,8 @@ export default function MainPage({ toggleMenu }) {
                         <div className={styles["popular_text"]}>지금 인기있는 메뉴</div>
                         <div className={styles["popular_list_wrap"]}>
                             {menu.slice(0, 5).map((item) => (
-                                <div key={item.id} className={styles["popular_with_text"]}>
+                                <Link key={item.id} to={`/store/${item.store_id}`}>
+                                <div className={styles["popular_with_text"]}>
                                     <img
                                         className={styles["popular_img"]}
                                         src={`${popularUrl}${item.id}.jpg`} />
@@ -233,6 +234,7 @@ export default function MainPage({ toggleMenu }) {
                                         </div>
                                     </div>
                                 </div>
+                                </Link>
                             ))}
                         </div>
                     </div>
