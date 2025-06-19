@@ -22,7 +22,8 @@
 }
 .circle_with_text{
   justify-content: center;
-  margin-right: 50px;
+  margin-right: 40px;
+  width: 110px;
 }
 .circle{
   width: 100px;
@@ -33,13 +34,14 @@
 .circle_text {
     margin-top: 8px;
     text-align: center;
-    font-size: 16px;
+    font-size: 17px;
     display: flex;
 }
 .circle_pencil{
-  width: 22px;
-  height: 22px;
+  width: 21px;
+  height: 21px;
   color: black;
+  margin: 2px;
 }
 .userRating_body{
   display: flex;
@@ -48,6 +50,7 @@
 }
 .userRating{
   width: 640px;
+  height: 60px;
 }
 .usernickName{
   font-size: 22px;
