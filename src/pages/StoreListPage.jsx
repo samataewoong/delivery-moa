@@ -45,7 +45,7 @@ export default function StoreListPage() {
     }
 
     // 가게 필터링
-    const filteredStores = selectedCategoryId
+    const filteredStores = selectedCategoryId && selectedCategoryId !== "ALL"
         ? store.filter((item) => item.category_id === selectedCategoryId)
         : store;
 
