@@ -11,127 +11,25 @@ import { useNavigate } from "react-router-dom";
 
 export default function RoomOrderUserCard({
     position,
-    room_id,
-    user_id,
+    room,
+    roomJoin,
+    roomJoinList,
+    me,
 }) {
     const navigate = useNavigate();
-    const [user, setUser] = useState(null);
-    const [room, setRoom] = useState(null);
-    const [roomJoin, setRoomJoin] = useState(null);
-    const [roomJoinList, setRoomJoinList] = useState([]);
     const [isLeader, setIsLeader] = useState(false);
     const [isSelf, setIsSelf] = useState(false);
     const [orderId, setOrderId] = useState(null);
+    const [user, setUser] = useState(null);
     const basic_profile = "https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/profile-image/mypagePerson.png"
-
-    useEffect(() => {
-        async function fetchRoom() {
-            const roomData = await selectRoom({
-                room_id,
-            });
-            if (roomData.length > 0) {
-                setRoom(roomData[0]);
-            }
-        }
-        const roomSubscribe = supabase
-            .realtime
-            .channel(`realtime:room_status_watch_on_room_order_user_card_in_room_${room_id}_user_${user_id}`)
-            .on(
-                "postgres_changes",
-                { event: '*', schema: 'public', table: 'room' },
-                (payload) => {
-                    if (payload.new.id === Number(room_id)) {
-                        fetchRoom();
-                        if (payload.new.status === '조리중') {
-                            setTimeout(async () => {
-                                await updateRoom({
-                                    room_id,
-                                    status: "배송중",
-                                });
-                            }, 60000);
-                        }
-                        if (payload.new.status === '배송중') {
-                            setTimeout(async () => {
-                                await updateRoom({
-                                    room_id,
-                                    status: "픽업 대기중",
-                                });
-                            }, 60000);
-                        }
-                    }
-                })
-            .subscribe();
-        fetchRoom();
-        return () => {
-            roomSubscribe.unsubscribe();
-        }
-    }, [room_id]);
-    useEffect(() => {
-        async function fetchUser() {
-            const userData = await selectUser({
-                user_id,
-            });
-            setUser(userData[0]);
-        }
-        const userSubscribe = supabase
-            .realtime
-            .channel(`realtime:user_watch_on_room_order_user_card_in_room_${room_id}_user_${user_id}`)
-            .on(
-                "postgres_changes",
-                { event: '*', schema: 'public', table: 'user' },
-                (payload) => {
-                    if (payload.new.id === user_id) {
-                        fetchUser();
-                    }
-                }
-            )
-            .subscribe();
-        fetchUser();
-        return () => {
-            userSubscribe.unsubscribe();
-        };
-    }, [user_id]);
     
-    useEffect(() => {
-        async function fetchRoomJoinList() {
-
-            const roomJoinData = await selectRoomJoin({ room_id });
-            setRoomJoinList(roomJoinData.sort((a, b) => Date.parse(a.joined_at) - Date.parse(b.joined_at)));
-            if (roomJoinData.filter((join) => (join.user_id === user_id)).length > 0) {
-                setRoomJoin(roomJoinData.filter((join) => join.user_id === user_id)[0]);
-            }
-        }
-        const roomJoinListSubscribe = supabase
-            .realtime
-            .channel(`realtime:room_join_status_update_watch_on_room_order_user_card_in_room_${room_id}_user_${user_id}`)
-            .on(
-                "postgres_changes",
-                { event: '*', schema: 'public', table: 'room_join' },
-                (payload) => {
-                    if (payload.new.room_id === Number(room_id)) {
-                        let tmp = null;
-                        setRoomJoin((prevRoomJoin) => (tmp = [...(prevRoomJoin || []).filter((row) => (!((row.user_id === payload.new?.user_id || row.user_id === payload.old?.user_id) && (row.room_id == Number(payload.new?.room_id) || row.room_id === Number(payload.old?.room_id))))), payload.new].filter((row) => (row)).sort((a, b) => Date.parse(a.joined_at) - Date.parse(b.joined_at)), tmp));
-                        console.log("Room ID matches, fetching room join data...");
-                    }
-                    if (payload.eventType === "DELETE") {
-                        let tmp = null;
-                        setRoomJoin((prevRoomJoin) => (tmp = [...prevRoomJoin.filter((row) => (row.id !== payload.old.id))], tmp));
-                    }
-                }
-            )
-            .subscribe();
-        fetchRoomJoinList();
-        return () => {
-            roomJoinListSubscribe.unsubscribe();
-        };
-    }, [room_id]);
     useEffect(() => {
         async function fetchOrder() {
             const { data: orderData, error: orderError } = await supabase
                 .from('order')
                 .select('*')
-                .eq('room_id', room_id)
-                .eq('user_id', user_id)
+                .eq('room_id', room?.id)
+                .eq('user_id', user?.id)
                 .order('order_id', { ascending: false })
                 .maybeSingle();
             if (orderError) {
@@ -141,7 +39,7 @@ export default function RoomOrderUserCard({
         }
         const orderSubscribe = supabase
             .realtime
-            .channel(`realtime:order_status_watch_on_room_order_user_card_in_room_${room_id}_user_${user_id}`)
+            .channel(`realtime:order_status_watch_on_room_order_user_card_in_room_${room?.id}_user_${roomJoin?.user_id}`)
             .on(
                 "postgres_changes",
                 { event: '*', schema: 'public', table: 'order' },
@@ -156,28 +54,55 @@ export default function RoomOrderUserCard({
         return () => {
             orderSubscribe.unsubscribe();
         };
-    }, [room_id]);
+    }, [room?.id]);
+    useEffect(() => {
+        async function fetchUser() {
+            if (!roomJoin || !roomJoin?.user_id) return;
+            const userData = await selectUser({ user_id: roomJoin.user_id });
+            if (userData.length > 0) {
+                setUser(userData[0]);
+            } else {
+                console.error("User not found");
+            }
+        }
+        const userSubscribe = supabase
+            .realtime
+            .channel(`realtime:user_watch_on_room_order_user_card_in_room_${room?.id}_user_${roomJoin?.user_id}`)
+            .on(
+                "postgres_changes",
+                { event: '*', schema: 'public', table: 'user' },
+                (payload) => {
+                    if (payload.new.id === roomJoin?.user_id) {
+                        fetchUser();
+                    }
+                }
+            )
+            .subscribe();
+        fetchUser();
+        return () => {
+            userSubscribe.unsubscribe();
+        };
+    }, [roomJoin, roomJoinList, room?.id]);
     useEffect(() => {
         async function fetchIsLeader() {
-            if (room && room.leader_id === user_id) {
+            if (room && room.leader_id === roomJoin?.user_id) {
                 setIsLeader(true);
             } else {
                 setIsLeader(false);
             }
         }
         fetchIsLeader();
-    }, [room, user, user_id, room_id]);
+    }, [room?.id, me?.id, roomJoin]);
     useEffect(() => {
         async function fetchIsSelf() {
-            const { id } = await getAuthUser();
-            if (id == user_id) {
+            if(roomJoin?.user_id === me?.id) {
                 setIsSelf(true);
             } else {
                 setIsSelf(false);
             }
         }
         fetchIsSelf();
-    }, [user_id]);
+    }, [roomJoin]);
     async function handleEndRecruit() {
         try {
             if (!confirm('모집을 마감하시겠습니까?')) return;

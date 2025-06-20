@@ -8,73 +8,17 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getCoordinates } from "../../../../functions/maps/Coord";
 
-export default function RoomHeader({ room_id }) {
+export default function RoomHeader({
+    room,
+    roomJoin,
+    me,
+}) {
     const navigate = useNavigate();
-    const [room, setRoom] = useState(null);
-    const [roomJoin, setRoomJoin] = useState([]);
     const [canLeave, setCanLeave] = useState(false);
     const backBtnLogo = 'https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/backbtn.png';
     const leaveBtnLogo = 'https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/leavebtn.png';
     const locationIcon = 'https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/location_icon_red.png';
-    const [error, setError] = useState(null);
 
-    useEffect(() => {
-        async function fetchRoomJoin() {
-            try {
-                const { id: user_id } = await getAuthUser();
-                const roomJoinData = await selectRoomJoin({
-                    room_id,
-                });
-                if (roomJoinData.length > 0) {
-                    setRoomJoin(roomJoinData);
-                }
-            } catch (error) {
-                setError(error);
-            }
-        }
-        async function fetchRoom() {
-            try {
-                const roomData = await selectRoom({
-                    room_id,
-                });
-                if (roomData.length > 0) {
-                    setRoom(roomData[0]);
-                }
-            } catch (error) {
-                setError(error);
-            }
-        }
-        const roomSubscribe = supabase
-            .realtime
-            .channel(`realtime:room_status_watch_on_room_header_in_room_${room_id}`)
-            .on(
-                "postgres_changes",
-                { event: '*', schema: 'public', table: 'room' },
-                (payload) => {
-                if (payload.new.id === Number(room_id)) {
-                    fetchRoom();
-                }
-            })
-            .subscribe();
-        const roomJoinSubscribe = supabase
-            .realtime
-            .channel(`realtime:room_join_leave_button_on_room_header_in_room_${room_id}`)
-            .on(
-                "postgres_changes",
-                { event: '*', schema: 'public', table:'room_join'  },
-                (payload) => {
-                if (payload.new.room_id === Number(room_id)) {
-                    fetchRoomJoin();
-                }
-            })
-            .subscribe();
-        fetchRoomJoin();
-        fetchRoom();
-        return () => {
-            roomSubscribe.unsubscribe();
-            roomJoinSubscribe.unsubscribe();
-        }
-    }, [room_id]);
     useEffect(() => {
         async function fetchCanLeave() {
             if (
@@ -83,10 +27,9 @@ export default function RoomHeader({ room_id }) {
                 && roomJoin.length > 0
             ) {
                 try {
-                    const { id: user_id } = await getAuthUser();
                     if (
                         room
-                        && room.leader_id == user_id
+                        && room.leader_id == me.id
                     ) {
                         // 방장인 경우
                         if (
@@ -99,7 +42,7 @@ export default function RoomHeader({ room_id }) {
                     } else {
                         // 일반인 경우
                         if (
-                            roomJoin.filter((join) => (join.user_id == user_id && join.status == '준비 완료')).length
+                            roomJoin.filter((join) => (join.user_id == me?.id && join.status == '준비 완료')).length
                         ) {
                             setCanLeave(false);
                         } else {
@@ -112,7 +55,7 @@ export default function RoomHeader({ room_id }) {
             }
         }
         fetchCanLeave();
-    }, [room, roomJoin, room_id]);
+    }, [room, roomJoin, me]);
     async function handleLeaveRoom() {
         try {
             const { id: user_id } = await getAuthUser();
