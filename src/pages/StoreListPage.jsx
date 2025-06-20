@@ -14,7 +14,7 @@ export default function StoreListPage() {
         const fetchCategories = async () => {
 
             const [{ data:categoryData, error:categoryError }, { data:storeData, error:storeError }] = await Promise.all([
-                supabase.from("menu_category").select("id, category"),
+                supabase.from("menu_category").select("id, category").order("num"),
                 supabase.from("store").select("*")
             ]);
 
