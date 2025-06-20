@@ -6,6 +6,7 @@ import selectRoomJoin from "../../../../functions/room_join/SelectRoomJoin";
 
 export default function RoomOrderStatus({
     room,
+    room_id,
     roomJoin,
     me,
 }) {
@@ -26,6 +27,7 @@ export default function RoomOrderStatus({
                             position={position}
                             key={user?.user_id}
                             room={room}
+                            room_id={room_id}
                             roomJoin={roomJoin.filter((join) => (join.user_id === user.user_id))[0]}
                             roomJoinList={roomJoin}
                             me={me}

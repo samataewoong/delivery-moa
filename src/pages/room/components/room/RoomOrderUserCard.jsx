@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 export default function RoomOrderUserCard({
     position,
     room,
+    room_id,
     roomJoin,
     roomJoinList,
     me,
@@ -44,7 +45,7 @@ export default function RoomOrderUserCard({
                 "postgres_changes",
                 { event: '*', schema: 'public', table: 'order' },
                 (payload) => {
-                    if (payload.new.room_id === Number(room_id) && payload.new.user_id === user_id) {
+                    if (payload.new.room_id === Number(room_id) && payload.new.user_id === roomJoin?.user_id) {
                         fetchOrder();
                     }
                 }
@@ -94,6 +95,52 @@ export default function RoomOrderUserCard({
         fetchIsLeader();
     }, [room?.id, me?.id, roomJoin]);
     useEffect(() => {
+        if (!room?.status) return;
+        if (room?.leader_id !== me?.id) return;
+        if(room?.status === "조리중") {
+            setTimeout(async () => {
+                await updateRoom({
+                    room_id: room.id,
+                    status: "배달중",
+                })
+            }, 60 * 1000); // 60초 후에 상태 변경
+        }
+
+    }, [room?.status]);
+
+    useEffect(() => {
+        const roomSubscribe = supabase
+            .realtime
+            .channel(`realtime:room_status_watch_on_room_order_user_card_in_room_${room_id}_user_${roomJoin?.user_id}`)
+            .on(
+                "postgres_changes",
+                { event: '*', schema: 'public', table: 'room' },
+                (payload) => {
+                    if (payload.new.id === Number(room_id)) {
+                        if (payload.new.status === '조리중') {
+                            setTimeout(async () => {
+                                await updateRoom({
+                                    room_id,
+                                    status: "배송중",
+                                });
+                            }, 60000);
+                        }
+                        if (payload.new.status === '배송중') {
+                            setTimeout(async () => {
+                                await updateRoom({
+                                    room_id,
+                                    status: "픽업 대기중",
+                                });
+                            }, 60000);
+                        }
+                    }
+                })
+            .subscribe();
+        return () => {
+            roomSubscribe.unsubscribe();
+        }
+    }, [room_id]);
+    useEffect(() => {
         async function fetchIsSelf() {
             if(roomJoin?.user_id === me?.id) {
                 setIsSelf(true);
@@ -119,7 +166,7 @@ export default function RoomOrderUserCard({
             if (!confirm('픽업하시겠습니까?')) return;
             await updateRoomJoin({
                 room_id,
-                user_id,
+                user_id: roomJoin.user_id,
                 status: "픽업 완료",
             });
             navigate(`/gongucomplete/${orderId}`);
