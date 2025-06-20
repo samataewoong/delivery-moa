@@ -48,8 +48,7 @@ export default function HamburgerMenu({ isOpen, session, nickname, handleLogout,
                         .select("created_at")
                         .eq("room_id", roomId)
                         .order("created_at", { ascending: false })
-                        .limit(1)
-                        .single();
+                        .maybeSingle();
 
                     return {
                         room_id: roomId,
