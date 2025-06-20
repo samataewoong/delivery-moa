@@ -57,10 +57,10 @@ export default function RoomMenu({
 
     const handleOrder = async () => {
         if (!room || !me) return;
-        if (!store || !menus.length) return;
+        if (!store || !roomMenus.length) return;
 
 
-        const room_order = menus.filter(menu => menu.quantity > 0);
+        const room_order = roomMenus.filter(menu => menu.quantity > 0);
         if (room_order.length === 0) {
             alert("주문할 메뉴가 없습니다.");
             return;
