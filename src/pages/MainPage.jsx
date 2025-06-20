@@ -2,7 +2,6 @@ import styles from "./MainPage.module.css";
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import supabase from "../config/supabaseClient";
-import CloseRoom from "../components/CloseRoom";
 import { useNavigate } from "react-router-dom";
 
 export default function MainPage({ toggleMenu }) {
@@ -22,14 +21,53 @@ export default function MainPage({ toggleMenu }) {
     }
     //로그인 정보
     useEffect(() => {
-        const getSession = async () => {
+        const getData = async () => {
             const { data: { session },
             } = await supabase.auth.getSession();
             setSession(session);
             if (session?.user) fetchNickname(session.user.id);
+
+            const [popularData, categoryData, roomData] = await Promise.all([
+                supabase.from("popular").select("*"),
+                supabase.from("menu_category").select("id, category").order("num"),
+                supabase
+                    .from("room")
+                    .select(`id, store_id, room_name, room_address, max_people, room_join(count)`)
+                    .eq("status", "모집중")
+            ]);
+
+            if (popularData.error) {
+                console.error("인기메뉴 불러오기 오류:", popularData.error)
+            } else {
+                setMenu(popularData.data);
+            }
+
+            if (categoryData.error) {
+                console.error("카테고리 불러오기 오류:", categoryData.error);
+            } else {
+                setCategories(categoryData.data);
+            }
+
+            if (roomData.error) {
+                console.error("room 불러오기 오류:", roomData.error);
+            } else {
+                const formattedRooms = roomData.data.map(room => {
+                    const joinCount = Array.isArray(room.room_join) && room.room_join.length > 0
+                        ? room.room_join[0].count
+                        : 0;
+
+                    return {
+                        ...room,
+                        join_count: joinCount
+                    };
+                }).filter(room => room.join_count < room.max_people);
+
+                console.log("formattedRooms:", formattedRooms);
+                setRooms(formattedRooms);
+            }
         };
 
-        getSession();
+        getData();
 
         const {
             data: { subscription },
@@ -38,7 +76,6 @@ export default function MainPage({ toggleMenu }) {
             if (session?.user) fetchNickname(session.user.id);
             else setNickname("");
         });
-
         return () => subscription.unsubscribe();
     }, []);
 
@@ -55,59 +92,7 @@ export default function MainPage({ toggleMenu }) {
         }
         navigate(`/search?keyword=${encodeURIComponent(keyword)}`);
     };
-    //공구방 데이터
-    useEffect(() => {
-        const fetchRoom = async () => {
-            const { data, error } = await supabase
-                .from("room")
-                .select(`id, store_id, room_name, room_address, max_people, room_join(count)`)
-                .eq("status", "모집중");
 
-            if (error) {
-                console.error("room 불러오기 오류:", error);
-            } else {
-                const formattedRooms = data.map(room => {
-                    const joinCount = Array.isArray(room.room_join) && room.room_join.length > 0
-                        ? room.room_join[0].count
-                        : 0;
-
-                    return {
-                        ...room,
-                        join_count: joinCount
-                    };
-                }).filter(room => room.join_count < room.max_people);
-
-                console.log("formattedRooms:", formattedRooms);
-                setRooms(formattedRooms);
-            }
-        };
-
-        fetchRoom();
-    }, []);
-    //카테고리 목록
-    useEffect(() => {
-        const fetchCategories = async () => {
-            const { data, error } = await supabase.from("menu_category").select("id, category").order("num");
-            if (error) {
-                console.error("카테고리 불러오기 오류:", error);
-            } else {
-                setCategories(data);
-            }
-        };
-        fetchCategories();
-    }, []);
-    //지금인기있는메뉴
-    useEffect(() => {
-        const fetchMenu = async () => {
-            const { data, error } = await supabase.from("popular").select("*");
-            if (error) {
-                console.error("인기메뉴 불러오기 오류:", error)
-            } else {
-                setMenu(data);
-            }
-        };
-        fetchMenu();
-    }, []);
     //채팅방에 사용자 있는지 확인
     const roomClick = async (e, roomId) => {
         e.preventDefault();
@@ -222,18 +207,18 @@ export default function MainPage({ toggleMenu }) {
                         <div className={styles["popular_list_wrap"]}>
                             {menu.slice(0, 5).map((item) => (
                                 <Link key={item.id} to={`/store/${item.store_id}`}>
-                                <div className={styles["popular_with_text"]}>
-                                    <img
-                                        className={styles["popular_img"]}
-                                        src={`${popularUrl}${item.id}.jpg`} />
-                                    <div className={styles["popular_square"]}>
-                                        <div className={styles["popular_title"]}>{item.title}</div>
-                                        <div className={styles["popular_detail"]}>
-                                            <div className={styles["popular_star"]}>★★★★★</div>
-                                            <div className={styles["popular_detail_text"]}>{item.price}원</div>
+                                    <div className={styles["popular_with_text"]}>
+                                        <img
+                                            className={styles["popular_img"]}
+                                            src={`${popularUrl}${item.id}.jpg`} />
+                                        <div className={styles["popular_square"]}>
+                                            <div className={styles["popular_title"]}>{item.title}</div>
+                                            <div className={styles["popular_detail"]}>
+                                                <div className={styles["popular_star"]}>★★★★★</div>
+                                                <div className={styles["popular_detail_text"]}>{item.price}원</div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
                                 </Link>
                             ))}
                         </div>

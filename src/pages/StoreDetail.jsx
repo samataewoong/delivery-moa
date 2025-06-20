@@ -14,8 +14,13 @@ export default function StoreDetail(){
 
     useEffect(() => {
         async function fetchStore() {
-            const { data } = await supabase.from("store").select("*").eq("id",store_id).single();
+            const [{ data }, {data:menuData}] = await Promise.all([
+                supabase.from("store").select("*").eq("id",store_id).single(),
+                supabase.from("menu")
+            .select("*, img_id(bucket, folder, filename)").eq("store_id",store_id)
+            ]);
             setStore(data);
+            setmenu(menuData);
         }
         fetchStore();
     }, [store_id]);
@@ -73,17 +78,8 @@ export default function StoreDetail(){
             showMap(store.store_address);
         }
     }, [store]);
-
-    useEffect(() => {
-        async function fetchMenu(){
-            const {data:menuData} = await supabase.from("menu")
-            .select("*, img_id(bucket, folder, filename)").eq("store_id",store_id);
-            setmenu(menuData);
-        }
-        fetchMenu();
-    },[store_id]);
     
-    if(!store) return <div>Loading...</div>
+    if(!store) return;
 
     return (
         <>

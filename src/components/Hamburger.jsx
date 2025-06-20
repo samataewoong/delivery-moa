@@ -12,6 +12,7 @@ export default function HamburgerMenu({ isOpen, session, nickname, handleLogout,
     const [cash, setCash] = useState(0);
     const [menuHeight, setMenuHeight] = useState("auto");
     const [myRating, setMyRating] = useState(0);
+    const [isReady, setIsReady] = useState(false);
 
     const [face, setFace] = useState("soso");
 
@@ -22,43 +23,22 @@ export default function HamburgerMenu({ isOpen, session, nickname, handleLogout,
             const userId = session?.user?.id;
             if (!userId) return;
 
+            const [{ data: userData, error: userError }, { data: roomJoinData, error: roomJoinError }] = await Promise.all([
+                supabase
+                    .from("user").select("cash, user_rating").eq("id", userId).single(),
+                supabase.from("room_join").select("room_id").eq("user_id", userId),
 
-            //Cash(코인)값 가져오기
-            const { data: userData, error: userError } = await supabase
-                .from("user")
-                .select("cash, user_rating")
-                .eq("id", userId)
-                .single();
+            ]);
+            if (roomJoinError || !roomJoinData) return;
+            const roomIds = roomJoinData.map((j) => j.room_id);
 
-            if (!userError && userData) {
-                setCash(userData.cash);
-                setMyRating(userData.user_rating);
-                if (userData.user_rating >= 80) {
-                    setFace("good");
-                } else if (userData.user_rating < 30) {
-                    setFace("bad");
-                } else {
-                    setFace("soso");
-                }
-            }
-
-            const { data, error } = await supabase
-                .from("room_join")
-                .select("room_id")
-                .eq("user_id", userId);
-            if (error || !data) return;
-            const roomIds = data.map((j) => j.room_id);
-
-
-            const { data: roomData, error: roomError } = await supabase
-                .from("room")
-                .select("id, room_name, store_id, max_people, status")
-                .in("id", roomIds);
+            const [{ data: roomData, error: roomError }, { data: countpeople }] = await Promise.all([
+                supabase.from("room").select("id, room_name, store_id, max_people, status")
+                    .in("id", roomIds),
+                supabase.from("room_join")
+                    .select("room_id, user_id", { count: "exact" })
+            ]);
             if (roomError || !roomData) return;
-
-            const { data: countpeople } = await supabase
-                .from("room_join")
-                .select("room_id, user_id", { count: "exact" });
 
             const chatTimes = await Promise.all(
                 roomIds.map(async (roomId) => {
@@ -92,7 +72,11 @@ export default function HamburgerMenu({ isOpen, session, nickname, handleLogout,
                     latest_chat: chatInfo?.latest_chat,
                 };
             });
+            setCash(userData.cash);
+            setMyRating(userData.user_rating);
             setUserRoom(formattedRooms);
+            setFace(userData.user_rating >= 80 ? "good" : userData.user_rating < 30 ? "bad" : "soso");
+            setIsReady(true);
         };
         if (session) {
             fetchUserRooms();
@@ -152,6 +136,7 @@ export default function HamburgerMenu({ isOpen, session, nickname, handleLogout,
 
 
     if (!isOpen) return null;
+    if (!isReady) return null;
 
     const roomUrl =
         "https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/store/store_";

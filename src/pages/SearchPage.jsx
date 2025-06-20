@@ -1,6 +1,6 @@
 import styles from "./SearchPage.module.css";
 import { useState, useEffect } from "react";
-import { Link, matchPath } from "react-router-dom";
+import { Link } from "react-router-dom";
 import supabase from "../config/supabaseClient";
 import { useLocation } from "react-router-dom";
 
@@ -19,17 +19,15 @@ export default function SearchPage() {
 
     useEffect(() => {
         const fetchResults = async () => {
-            const { data: storeResult } = await supabase
+            const [{ data: storeResult }, { data: menuResult }, { data: roomData }] = await Promise.all([
+                supabase
                 .from("store").select("*")
-                .ilike("store_name", `%${keyword}%`);
-            setStoreData(storeResult);
-
-            const { data: menuResult } = await supabase.from("menu").select(`*, store_id( * ), img_id( * )`).ilike("menu_name", `%${keyword}%`);
-            setMenuData(menuResult);
+                .ilike("store_name", `%${keyword}%`),
+                supabase.from("menu").select(`*, store_id( * ), img_id( * )`).ilike("menu_name", `%${keyword}%`),
+                supabase.from("room").select("*").ilike("room_name", `%${keyword}%`)
+            ]);
 
             const storeIds = storeResult?.map((s) => s.id) || [];
-
-            const { data: roomData } = await supabase.from("room").select("*").ilike("room_name", `%${keyword}%`);
 
             const { data: roomstoreData } = await supabase.from("room").select("*").eq("store_id", storeIds);
 
@@ -39,8 +37,9 @@ export default function SearchPage() {
             ].filter(
                 (room, index, self) => self.findIndex((r) => r.id === room.id) === index
             );
+            setStoreData(storeResult);
+            setMenuData(menuResult);
             setRoomData(roomResult);
-
         };
         fetchResults();
     }, [keyword]);
@@ -52,16 +51,16 @@ export default function SearchPage() {
                 <div className={styles["search_hitory_box"]}>
                     <div>
                         <ul className={styles["search_category"]}>
-                            {["전체", "배달", "메뉴", "공구방"].map((tab) => (
+                            {["전체", "가게", "메뉴", "공구방"].map((tab) => (
                                 <li key={tab} 
                                 className={category === tab ? styles["active_tab"] : ""}
                                 onClick={() => setCategory(tab)}>{tab}</li>
                             ))}
                         </ul>
                     </div>
-                    {(category === "전체" || category === "배달") && (
+                    {(category === "전체" || category === "가게") && (
                         <>
-                            <div className={styles["search_keyword"]}>배달</div>
+                            <div className={styles["search_keyword"]}>가게</div>
                             <hr />
                             {storeData.length > 0 ? (
                                 (category === "전체" ? storeData.slice(0, 4) : storeData).map((item) => (
@@ -88,6 +87,12 @@ export default function SearchPage() {
                             ) : (
                                 <div className={styles["search_noResult"]}>검색 결과가 없습니다.</div>
                             )}
+                            {category === "전체" && storeData.length > 4 && (
+                                <div className={styles["more"]}>
+                                    <button onClick={() => {setCategory("가게");
+                                    window.scrollTo({ top: 0 });}}>더보기</button>
+                                </div>
+                            )}
                         </>
                     )}
                     {(category === "전체" || category === "메뉴") && (
@@ -111,6 +116,12 @@ export default function SearchPage() {
                                 ))
                             ) : (
                                 <div className={styles["search_noResult"]}>검색 결과가 없습니다.</div>
+                            )}
+                            {category === "전체" && menuData.length > 4 && (
+                                <div className={styles["more"]}>
+                                    <button onClick={() => {setCategory("메뉴");
+                                    window.scrollTo({ top: 0 });}}>더보기</button>
+                                </div>
                             )}
                             
                         </>
