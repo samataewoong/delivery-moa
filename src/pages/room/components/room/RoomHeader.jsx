@@ -21,6 +21,9 @@ export default function RoomHeader({
 
     useEffect(() => {
         async function fetchCanLeave() {
+            if (!me) {
+                return;
+            }
             if (
                 room
                 && roomJoin
