@@ -8,11 +8,11 @@ import selectMenu from "../../../../functions/menu/SelectMenu";
 import selectRoom from "../../../../functions/room/SelectRoom";
 import selectOrder from "../../../../functions/order/SelectOrder";
 import insertOrder from "../../../../functions/order/InsertOrder";
-import getAuthme from "../../../../functions/auth/GetAuthUser";
+import getAuthUser from "../../../../functions/auth/GetAuthUser";
 import selectStore from "../../../../functions/store/SelectStore";
-import selectme from "../../../../functions/user/SelectUser";
+import selectUser from "../../../../functions/user/SelectUser";
 import updateRoomJoin from "../../../../functions/room_join/UpdateRoomJoin";
-import updateme from "../../../../functions/user/UpdateUser";
+import updateUser from "../../../../functions/user/UpdateUser";
 
 export default function RoomMenu({
     room,
@@ -53,7 +53,7 @@ export default function RoomMenu({
         return () => {
             orderSubscribe.unsubscribe();
         };
-    }, [room?.id]);
+    }, [room?.id, me?.id]);
 
     const handleOrder = async () => {
         if (!room || !me) return;
@@ -77,8 +77,8 @@ export default function RoomMenu({
                 room_order,
                 total_price
             });
-            await updateme({
-                user_id,
+            await updateUser({
+                user_id: me?.id,
                 cash: me?.cash - total_price,
             });
             const orderData = await selectOrder({ room_id: room?.id, user_id: me?.id });
@@ -132,7 +132,7 @@ export default function RoomMenu({
                     총 금액
                 </div>
             </div>}
-            {roomMenus && <div className={style.room_menu_button_box}>
+            {me && roomMenus && <div className={style.room_menu_button_box}>
                 {order ? (
                     <button className={style.room_menu_order_button_disabled} disabled>
                         준비 완료

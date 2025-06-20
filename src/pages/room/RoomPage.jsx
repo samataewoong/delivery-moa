@@ -10,9 +10,11 @@ import selectRoom from "../../functions/room/SelectRoom";
 import selectMenu from "../../functions/menu/SelectMenu";
 import selectUser from "../../functions/user/SelectUser";
 import selectStore from "../../functions/store/SelectStore";
+import getAuthUser from "../../functions/auth/GetAuthUser";
 
 export default function RoomPage() {
     const { room_id } = useParams();
+    const [user_id, setUserId] = useState(null);
     const [room, setRoom] = useState(null);
     const [roomJoin, setRoomJoin] = useState([]);
     const [roomMenus, setRoomMenus] = useState([]);
@@ -51,6 +53,16 @@ export default function RoomPage() {
             const storeData = await selectStore({ store_id: roomData[0].store_id });
             setStore(storeData[0]);
         }
+        async function fetchUser() {
+            const { id } = await getAuthUser();
+            setUserId(id);
+            const userData = await selectUser({ user_id: id });
+            if (userData.length > 0) {
+                setUser(userData[0]);
+            } else {
+                console.error("User not found");
+            }
+        }
         const roomJoinListSubscribe = supabase
             .realtime
             .channel(`realtime:room_join_watch_in_room`)
@@ -85,6 +97,7 @@ export default function RoomPage() {
             .subscribe();
         supabase.auth.onAuthStateChange(async (event, user) => {
             if (event === "SIGNED_IN" || event === "USER_UPDATED") {
+                setUserId(user?.id);
                 const userData = await selectUser({ user_id: user.id });
                 setUser(userData[0]);
             } else {
@@ -98,13 +111,14 @@ export default function RoomPage() {
                 "postgres_changes",
                 { event: '*', schema: 'public', table: 'user' },
                 (payload) => {
-                    if (payload.new.id === user?.id) {
+                    if (payload.new.id === user_id) {
                         setUser((prevUser) => ({ ...prevUser, ...payload.new }));
                     }
                 }
             )
             .subscribe();
 
+        fetchUser();
 
         fetchRoom();
         fetchMenus();
@@ -123,7 +137,7 @@ export default function RoomPage() {
             alignItems: "center",
         }}>
             <RoomJoin room={room} />
-            <RoomHeader room={room} roomJoin={roomJoin} />
+            <RoomHeader room={room} roomJoin={roomJoin} me={user} />
             <RoomBody room_id={room_id} room={room} store={store} roomJoin={roomJoin} setRoomMenus={setRoomMenus} roomMenus={roomMenus} me={user} />
         </div>
     );
