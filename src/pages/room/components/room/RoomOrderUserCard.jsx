@@ -250,7 +250,8 @@ export default function RoomOrderUserCard({
             <div>
                 <img 
                 className={style.user_profile_image} 
-                src={user?.profile_url || basic_profile} />
+                src={user?.profile_url || basic_profile}
+                onError={(e) => (e.currentTarget.src = basic_profile)} />
             </div>
             <div className={style.user_profile_status_box}>
                 <div className={style.user_profile_left_box}>

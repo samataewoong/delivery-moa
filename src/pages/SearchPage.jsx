@@ -130,8 +130,8 @@ export default function SearchPage() {
                         <>
                             <div className={styles["search_keyword"]}>공구방</div>
                             <hr />
-                            {roomData.filter(room => room.status !== "삭제" && room.status !== "종료" ).length > 0 ? (
-                                (category === "전체" ? roomData.filter(room => room.status !== "삭제" && room.status !== "종료" ).slice(0, 4) : roomData).filter(room => room.status !== "삭제" && room.status !== "종료" ).map((item) => (
+                            {roomData.filter(room => room.status == "모집중").length > 0 ? (
+                                (category === "전체" ? roomData.filter(room => room.status == "모집중").slice(0, 4) : roomData).filter(room => room.status == "모집중").map((item) => (
                                     <Link key={item.id} to={`/room/${item.id}`}>
                                     <div className={styles["search_result"]}>
                                         <img className={styles["search_store_img"]}
