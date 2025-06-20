@@ -8,93 +8,55 @@ import selectMenu from "../../../../functions/menu/SelectMenu";
 import selectRoom from "../../../../functions/room/SelectRoom";
 import selectOrder from "../../../../functions/order/SelectOrder";
 import insertOrder from "../../../../functions/order/InsertOrder";
-import getAuthUser from "../../../../functions/auth/GetAuthUser";
+import getAuthme from "../../../../functions/auth/GetAuthUser";
 import selectStore from "../../../../functions/store/SelectStore";
-import selectUser from "../../../../functions/user/SelectUser";
+import selectme from "../../../../functions/user/SelectUser";
 import updateRoomJoin from "../../../../functions/room_join/UpdateRoomJoin";
-import updateUser from "../../../../functions/user/UpdateUser";
+import updateme from "../../../../functions/user/UpdateUser";
 
-export default function RoomMenu({ room_id }) {
+export default function RoomMenu({
+    room,
+    store,
+    roomMenus,
+    setRoomMenus,
+    me,
+}) {
     const navigate = useNavigate();
-    const [menus, setMenus] = useState([]);
-    const [error, setError] = useState(null);
-    const [store, setStore] = useState(null);
-    const [order, setOrder] = useState(null);
-    const [user, setUser] = useState(null);
     const menuIcon = 'https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/cart.png';
+    const [order, setOrder] = useState(null);
 
     useEffect(() => {
-        let user_id = null;
+        async function fetchOrder() {
+            if (!room || !me) return;
+            const orderData = await selectOrder({ room_id: room.id, user_id: me.id });
+            if (orderData.length > 0) {
+                setOrder(orderData[0]);
+            } else {
+                setOrder(null);
+            }
+        }
         const orderSubscribe = supabase
             .realtime
-            .channel(`realtime:order_ready_check_on_room_menu_in_room_${room_id}`)
+            .channel(`realtime:order_ready_check_on_room_menu_in_room_${room?.id}`)
             .on(
                 "postgres_changes",
                 { event:'*', schema: 'public', table: 'order' },
                 (payload) => {
                 if (payload.op === "INSERT") {
-                    if (payload.new.room_id === Number(room_id) && payload.new.user_id === user_id) {
+                    if (payload.new.room_id === Number(room?.id) && payload.new.user_id === me?.id) {
                         setOrder(payload.new);
                     }
                 }
             })
             .subscribe();
-        const userSubscribe = supabase
-            .realtime
-            .channel(`realtime:user_cash_watch_on_room_menu_in_room_${room_id}`)
-            .on(
-                "postgres_changes",
-                { event:'*', schema: 'public', table: 'user' },
-                (payload) => {
-                if (payload.new.id === user_id) {
-                    setUser(payload.new);
-                }
-            })
-            .subscribe();
-        async function fetchAll() {
-            try {
-                const { id } = await getAuthUser();
-                user_id = id;
-            } catch (error) {
-                return;
-            }
-
-            if (!user_id) {
-                return;
-            }
-            try {
-                const userData = await selectUser({ user_id });
-                setUser(userData[0]);
-            } catch (error) {
-                console.error("Error fetching user:", error);
-            }
-            try {
-                const roomData = await selectRoom({ room_id: Number(room_id) });
-                if (roomData && roomData.length > 0) {
-                    const storeData = await selectStore({ store_id: roomData[0].store_id });
-                    setStore(storeData[0]);
-                }
-                if (roomData && roomData.length > 0) {
-                    const menuData = await selectMenu({ store_id: roomData[0].store_id });
-                    setMenus(menuData.map((menu) => ({ ...menu, quantity: 0 })));
-                }
-                if (user_id) {
-                    const orderData = await selectOrder({ room_id, user_id });
-                    if (orderData) setOrder(orderData[0]);
-                }
-            } catch (error) {
-                console.error("Error fetching data:", error);
-                setError(error);
-            }
-        }
-        fetchAll();
+        fetchOrder();
         return () => {
             orderSubscribe.unsubscribe();
-            userSubscribe.unsubscribe();
         };
-    }, [room_id]);
+    }, [room?.id]);
 
     const handleOrder = async () => {
+        if (!room || !me) return;
         if (!store || !menus.length) return;
 
 
@@ -104,26 +66,26 @@ export default function RoomMenu({ room_id }) {
             return;
         }
         if(!confirm("주문하시겠습니까?\n주문시 주문 취소 및 변경이 불가능합니다.")) return;
-        const store_id = store.id;
-        const { id: user_id } = await getAuthUser();
+        const store_id = room?.store_id;
+        const user_id = me?.id;
         const total_price = room_order.reduce((total, item) => total + (item.menu_price * item.quantity), 0);
         try {
             await insertOrder({
                 store_id,
-                room_id,
-                user_id,
+                room_id: room?.id,
+                user_id: me?.id,
                 room_order,
                 total_price
             });
-            await updateUser({
+            await updateme({
                 user_id,
-                cash: user.cash - total_price,
+                cash: me?.cash - total_price,
             });
-            const orderData = await selectOrder({ room_id, user_id });
+            const orderData = await selectOrder({ room_id: room?.id, user_id: me?.id });
             setOrder(orderData[0]);
             await updateRoomJoin({
-                room_id,
-                user_id,
+                room_id: room?.id,
+                user_id: me?.id,
                 status: "준비 완료"
             });
             navigate(`/ordercomplete/${orderData[0].order_id}`);
@@ -143,12 +105,12 @@ export default function RoomMenu({ room_id }) {
                 </div>
             </div>
             <div className={style.room_menus}>
-                {menus && !order ? (
-                    menus.map((menu) => (
+                {roomMenus && !order ? (
+                    roomMenus.map((menu) => (
                         <RoomMenuItem
                             key={menu.id}
                             menu={menu}
-                            setMenus={setMenus}
+                            setMenus={setRoomMenus}
                         />
                     ))
                 ) : (
@@ -162,21 +124,21 @@ export default function RoomMenu({ room_id }) {
                     )
                 )}
             </div>
-            {menus.length && <div className={style.total_price_box}>
+            {roomMenus.length && <div className={style.total_price_box}>
                 <div className={style.total_price_value}>
-                    {thousands(menus.reduce((total, menu) => (total + (menu.menu_price * menu.quantity)), 0))} 원
+                    {thousands(roomMenus.reduce((total, menu) => (total + (menu.menu_price * menu.quantity)), 0))} 원
                 </div>
                 <div className={style.total_price_title}>
                     총 금액
                 </div>
             </div>}
-            {store && menus && <div className={style.room_menu_button_box}>
+            {roomMenus && <div className={style.room_menu_button_box}>
                 {order ? (
                     <button className={style.room_menu_order_button_disabled} disabled>
                         준비 완료
                     </button>
-                ) : (menus.reduce((total, menu) => (total + menu.quantity * menu.menu_price), 0) >= store.min_price ? (
-                    (user?.cash >= menus.reduce((total, menu) => (total + menu.quantity * menu.menu_price), 0)) ? (
+                ) : (roomMenus.reduce((total, menu) => (total + menu.quantity * menu.menu_price), 0) >= store?.min_price ? (
+                    (me?.cash >= roomMenus.reduce((total, menu) => (total + menu.quantity * menu.menu_price), 0)) ? (
                         <button className={style.room_menu_order_button} onClick={handleOrder}>
                             주문하기
                         </button>
@@ -189,7 +151,7 @@ export default function RoomMenu({ room_id }) {
                     )
                 ) : (
                     <button className={style.room_menu_order_button_disabled} disabled>
-                        {thousands(store.min_price)} 원 이상 주문 가능
+                        {thousands(store?.min_price)} 원 이상 주문 가능
                     </button>
                 ))}
             </div>}

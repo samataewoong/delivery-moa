@@ -8,7 +8,7 @@ export default function Chat({
 }) {
 	return (
 		<div className={styles.chat}>
-			<ChatHeader room_id={room_id} />
+			<ChatHeader />
 			<ChatList room_id={room_id} />
 			<ChatInput room_id={room_id} />
 		</div>
