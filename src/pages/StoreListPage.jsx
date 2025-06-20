@@ -1,5 +1,4 @@
 import styles from "./StoreListPage.module.css";
-import Header from "../components/Header";
 import { useState, useEffect, useRef } from "react";
 import supabase from "../config/supabaseClient";
 import { Link } from "react-router-dom";
@@ -13,32 +12,25 @@ export default function StoreListPage() {
 
     useEffect(() => {
         const fetchCategories = async () => {
-            const { data, error } = await supabase
-                .from("menu_category")
-                .select("id, category");
-            if (error) {
-                console.error("카테고리 불러오기 오류: ", error);
+
+            const [{ data:categoryData, error:categoryError }, { data:storeData, error:storeError }] = await Promise.all([
+                supabase.from("menu_category").select("id, category"),
+                supabase.from("store").select("*")
+            ]);
+
+            if (categoryError) {
+                console.error("카테고리 불러오기 오류: ", categoryError);
             } else {
-                setCategories(data);
+                setCategories(categoryData);
+            }
+            if (storeError) {
+                console.error("스토어 불러오기 오류:", storeError);
+            } else {
+                setStore(storeData);
             }
         };
         fetchCategories();
     }, []);
-
-    useEffect(() => {
-        const fetchStores = async () => {
-            const { data, error } = await supabase
-                .from("store")
-                .select("*");
-            if (error) {
-                console.error("스토어 불러오기 오류:", error);
-            } else {
-                setStore(data);
-            }
-        };
-        fetchStores();
-    }, []);
-
 
     const storeClick = (e, id) => {
         console.log("store clicked:", id);

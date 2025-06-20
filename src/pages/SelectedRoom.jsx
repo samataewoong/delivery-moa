@@ -15,12 +15,9 @@ export default function SelectRoom() {
 
     useEffect(() => {
         async function fetchUser() {
-            try {
-                const { id } = await getAuthUser();
-                setUserId(id);
-            } catch (error) {
-                console.error(error);
-            }
+            const { id } = await getAuthUser();
+            setUserId(id);
+            console.error(error);
         }
         fetchUser();
     }, []);
@@ -28,10 +25,11 @@ export default function SelectRoom() {
 
     useEffect(() => {
         const fetchResults = async () => {
-            const { data: roomResultData } = await supabase.from("room").select("*").eq("store_id", store_id);
+            const [{ data: roomResultData }, { data }] = await Promise.all([
+                supabase.from("room").select("*").eq("store_id", store_id),
+                supabase.from("store").select("*").eq("id", store_id).single()
+            ]);
             setRoomSelect(roomResultData);
-
-            const { data } = await supabase.from("store").select("*").eq("id", store_id).single();
             setStore(data);
         }
         fetchResults();
