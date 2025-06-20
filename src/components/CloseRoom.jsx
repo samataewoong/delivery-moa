@@ -107,7 +107,7 @@ export default function CloseRoom({ userId, roomList, onSelectRoomId }) {
 						title: room.room_name,
 						image: new window.kakao.maps.MarkerImage(
 							`${import.meta.env.BASE_URL}/web_logo.png`,
-							new window.kakao.maps.Size(30, 35)
+							new window.kakao.maps.Size(38.55,33.55)
 						),
 					});
 					const markerPosition = marker.getPosition();
