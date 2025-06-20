@@ -117,15 +117,6 @@ body {
     background-color: #e1e1e1;
 }
 
-.btn-review {
-    background-color: yellow;
-    color: #333;
-}
-
-.btn-review:hover {
-    background-color: yellowgreen;
-}
-
 .notice {
     margin-top: 20px;
     padding: 15px;
