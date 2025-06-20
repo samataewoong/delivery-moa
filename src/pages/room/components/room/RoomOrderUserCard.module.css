@@ -49,6 +49,10 @@
     height: 59px;
     border-radius: 9999px;
     background-color: #f0f0f0;
+    object-fit: cover;
+    display: block;
+    border: 0.3px solid #ccd;
+    box-sizing: border-box;
 }
 .user_profile_status_box {
     display: flex;

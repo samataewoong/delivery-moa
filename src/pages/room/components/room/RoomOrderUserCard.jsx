@@ -22,6 +22,8 @@ export default function RoomOrderUserCard({
     const [isLeader, setIsLeader] = useState(false);
     const [isSelf, setIsSelf] = useState(false);
     const [orderId, setOrderId] = useState(null);
+    const basic_profile = "https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/profile-image/mypagePerson.png"
+
     useEffect(() => {
         async function fetchRoom() {
             const roomData = await selectRoom({
@@ -89,12 +91,13 @@ export default function RoomOrderUserCard({
             userSubscribe.unsubscribe();
         };
     }, [user_id]);
+    
     useEffect(() => {
         async function fetchRoomJoinList() {
 
             const roomJoinData = await selectRoomJoin({ room_id });
             setRoomJoinList(roomJoinData.sort((a, b) => Date.parse(a.joined_at) - Date.parse(b.joined_at)));
-            if(roomJoinData.filter((join) => (join.user_id === user_id)).length > 0){
+            if (roomJoinData.filter((join) => (join.user_id === user_id)).length > 0) {
                 setRoomJoin(roomJoinData.filter((join) => join.user_id === user_id)[0]);
             }
         }
@@ -107,12 +110,12 @@ export default function RoomOrderUserCard({
                 (payload) => {
                     if (payload.new.room_id === Number(room_id)) {
                         let tmp = null;
-                        setRoomJoin((prevRoomJoin) => (tmp = [...(prevRoomJoin || []).filter((row) => (!((row.user_id === payload.new?.user_id || row.user_id === payload.old?.user_id) && (row.room_id == Number(payload.new?.room_id) || row.room_id === Number(payload.old?.room_id))))), payload.new].filter((row) => (row)).sort((a, b) => Date.parse(a.joined_at) - Date.parse(b.joined_at)),tmp));
+                        setRoomJoin((prevRoomJoin) => (tmp = [...(prevRoomJoin || []).filter((row) => (!((row.user_id === payload.new?.user_id || row.user_id === payload.old?.user_id) && (row.room_id == Number(payload.new?.room_id) || row.room_id === Number(payload.old?.room_id))))), payload.new].filter((row) => (row)).sort((a, b) => Date.parse(a.joined_at) - Date.parse(b.joined_at)), tmp));
                         console.log("Room ID matches, fetching room join data...");
                     }
-                    if (payload.eventType === "DELETE"){
+                    if (payload.eventType === "DELETE") {
                         let tmp = null;
-                        setRoomJoin((prevRoomJoin) => (tmp = [...prevRoomJoin.filter((row) => (row.id !== payload.old.id))],tmp));
+                        setRoomJoin((prevRoomJoin) => (tmp = [...prevRoomJoin.filter((row) => (row.id !== payload.old.id))], tmp));
                     }
                 }
             )
@@ -244,7 +247,9 @@ export default function RoomOrderUserCard({
     console.log("roomJoin:", roomJoin); // Debugging line
     return (
         <div className={boxClassName}>
-            <div className={style.user_profile_image} />
+            <div>
+                <img className={style.user_profile_image} src={user?.profile_url || basic_profile} onError={(e) => (e.currentTarget.src = basic_profile)}/>
+            </div>
             <div className={style.user_profile_status_box}>
                 <div className={style.user_profile_left_box}>
                     {user && <div className={style.user_profile_nickname}>
