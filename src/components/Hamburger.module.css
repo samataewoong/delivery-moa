@@ -32,6 +32,17 @@
     font-size: 16px;
 
 }
+.user_profile_image{
+    width: 59px;
+    height: 59px;
+    border-radius: 9999px;
+    background-color: #f0f0f0;
+    object-fit: cover;
+    display: block;
+    border: 0.3px solid #ccd;
+    box-sizing: border-box;
+    margin-right: 10px;
+}
 
 .userName {
     font-size: 24px;
@@ -56,12 +67,16 @@
 
 .user_box {
     display: flex;
+    height: 59px;
+    align-items: center;
 }
 
 .user_coin {
     display: flex;
-    margin: 40px 0 30px 0;
+    margin: 40px 0 10px 0;
     justify-content: space-between;
+    
+    
 }
 
 .coin_box {

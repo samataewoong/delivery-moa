@@ -88,7 +88,7 @@ export default function SelectRoom() {
                                 </Link>
                             ))
                         ) : (
-                            <div className={styles["search_noResult"]}>검색 결과가 없습니다.</div>
+                            <div className={styles["search_noResult"]}>개설된 방이 없습니다.</div>
                         )}
                     </div>
                 </div>

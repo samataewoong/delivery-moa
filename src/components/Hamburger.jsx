@@ -13,6 +13,7 @@ export default function HamburgerMenu({ isOpen, session, nickname, handleLogout,
     const [menuHeight, setMenuHeight] = useState("auto");
     const [myRating, setMyRating] = useState(0);
     const [isReady, setIsReady] = useState(false);
+    const [user, setUser] = useState(null);
 
     const [face, setFace] = useState("soso");
 
@@ -25,7 +26,7 @@ export default function HamburgerMenu({ isOpen, session, nickname, handleLogout,
 
             const [{ data: userData, error: userError }, { data: roomJoinData, error: roomJoinError }] = await Promise.all([
                 supabase
-                    .from("user").select("cash, user_rating").eq("id", userId).single(),
+                    .from("user").select("cash, user_rating, profile_url").eq("id", userId).single(),
                 supabase.from("room_join").select("room_id").eq("user_id", userId),
 
             ]);
@@ -72,6 +73,7 @@ export default function HamburgerMenu({ isOpen, session, nickname, handleLogout,
                     latest_chat: chatInfo?.latest_chat,
                 };
             });
+            setUser(userData);
             setCash(userData.cash);
             setMyRating(userData.user_rating);
             setUserRoom(formattedRooms);
@@ -141,6 +143,7 @@ export default function HamburgerMenu({ isOpen, session, nickname, handleLogout,
     const roomUrl =
         "https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/store/store_";
     const scoreUrl = "https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/";
+    const basic_profile = "https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/profile-image/mypagePerson.png"
 
     return (
         <div className={styles["main"]} ref={menuRef}>
@@ -162,6 +165,12 @@ export default function HamburgerMenu({ isOpen, session, nickname, handleLogout,
                     <>
                         <div className={styles["user_coin"]}>
                             <div className={styles["user_box"]}>
+                                <div>
+                                    <img
+                                        className={styles["user_profile_image"]}
+                                        src={user?.profile_url || basic_profile}
+                                        onError={(e) => (e.currentTarget.src = basic_profile)} />
+                                </div>
                                 <div className={styles["userName"]}>{nickname}님</div>
                                 <button className={styles["userName_btn"]} onClick={handleLogout}>로그아웃</button>
                             </div>
