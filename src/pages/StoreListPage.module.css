@@ -57,6 +57,7 @@
     align-items: center;
     width: 100px;
     transition: background-color 0.3s ease;
+    cursor: pointer;
 }
 .circle_with_text:hover {
     transform: translateY(-5px);
@@ -72,7 +73,6 @@
     align-items: center;
     margin-top: 10px;
 }
-
 
 .circle_text {
     margin-top: 8px;
