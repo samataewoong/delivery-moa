@@ -17,6 +17,7 @@ export default function MyPage() {
   const [myCash, setMyCash] = useState(0);
   const [myRating, setMyRating] = useState(0); // 평점 0~5
   const [bear, setBear] = useState("good");
+  const [profileUrl, setProfileUrl] = useState("");
 
   const handleChargeClick = () => {
     window.open("/delivery-moa/cashcharge", "_blank", "width=500,height=700");
@@ -39,7 +40,7 @@ export default function MyPage() {
 
       const { data, error } = await supabase
         .from("user")
-        .select("nickname, cash, user_rating") // 평점도 포함
+        .select("nickname, cash, user_rating, profile_url") // 평점도 포함
         .eq("id", sessionData.user.id)
         .single();
 
@@ -49,7 +50,8 @@ export default function MyPage() {
         setMyNickname(data.nickname);
         setMyCash(data.cash);
         setMyUserId(sessionData.user.id);
-        setMyRating(data.user_rating ?? 50); // 평점 없으면 50
+        setMyRating(data.user_rating ?? 50);
+        setProfileUrl(data.profile_url);
       }
     };
 
@@ -89,27 +91,90 @@ export default function MyPage() {
     }
   }, [myRating]);
 
+  const basic_profile = "https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/profile-image/mypagePerson.png"
+
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if(profileUrl) {
+      const url = new URL(profileUrl);
+      const pathname = url.pathname;
+      const prefix = "/storage/v1/object/public/profile-image/";
+      const filePath = pathname.startsWith(prefix)
+        ? pathname.substring(prefix.length)
+        : null;
+
+        if (filePath) {
+        const { error: deleteError } = await supabase.storage
+          .from("profile-image")
+          .remove([filePath]);
+
+        if (deleteError) {
+          console.error("기존 이미지 삭제 실패:", deleteError.message);
+          // 삭제 실패해도 업로드 계속 진행
+        } else {
+          console.log("기존 이미지 삭제 완료:", filePath);
+        }
+      }
+    }
+
+    const fileExt = file.name.split(".").pop();
+    const fileName = `${myUserId}.${fileExt}`;
+    const filePath = `${myUserId}/${fileName}`;
+
+    const { error: uploadError } = await supabase.storage.from("profile-image").upload(filePath, file, { cacheControl: "3600", upsert: true, });
+
+    if (uploadError) {
+      console.error("업로드 실패", uploadError.message);
+      alert("업로드 실패");
+      return;
+    }
+    const { data: publicUrlData } = supabase.storage
+      .from("profile-image")
+      .getPublicUrl(filePath);
+
+    const imageUrl = publicUrlData.publicUrl;
+
+    await supabase
+    .from("user")
+    .update({ profile_url: imageUrl })
+    .eq("id", myUserId);
+
+    setProfileUrl(publicUrlData.publicUrl + "?t=" + new Date().getTime());
+    
+    setProfileUrl(imageUrl);
+    alert("프로필 이미지가 업로드되었습니다!");
+
+    const imageUrlWithCacheBust = `${imageUrl}?t=${new Date().getTime()}`;
+    setProfileUrl(imageUrlWithCacheBust);
+  }
+
   return (
     <main className={styles.myPage_main}>
       <div className={styles.myPage_box}>
         <div className={styles.myPage_userInfo}>
           <div className={styles.circle_with_text}>
-            <img className={styles.circle} 
-            src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/mypagePerson.png">
+            <img className={styles.circle}
+              src={profileUrl || basic_profile}
+              onError={(e) => (e.target.src = basic_profile)}>
             </img>
-            <div className={styles.circle_text}>
-              <div>프로필수정</div>
-              <img className={styles.circle_pencil} src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/line-md_pencil%20(1).png" />
+            <div>
+              <label className={styles.circle_text}>
+                <input type="file" onChange={handleFileChange} className={styles.fileUpload}/>
+                <div>프로필수정</div>
+                <img className={styles.circle_pencil} src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/line-md_pencil%20(1).png"/>
+              </label>
             </div>
           </div>
-          <div className={styles.userRating_body} v>
+          <div className={styles.userRating_body} >
             <div className={styles.userRating}>
               <div className={styles.userDetail}>
                 <img className={styles.bearImage}
                   src={`https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/${bear}.png`} />
                 <div className={styles.usernickName}>{myNickname} 님</div>
               </div>
-              {/* <progress className={styles.progress_box} value={myRating} max={100} /> */}
               <GaugeBar value={myRating} />
             </div>
           </div>
