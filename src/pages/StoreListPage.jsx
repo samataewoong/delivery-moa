@@ -30,6 +30,16 @@ export default function StoreListPage() {
             }
         };
         fetchCategories();
+        const fetchStores = async () => {
+            const { data: dataStore, error: errorStore } = await supabase
+                .from("store")
+                .select("*");
+            if (errorStore) {
+                console.error("스토어 불러오기 오류:", errorStore);
+            } else {
+                setStore(dataStore);
+            }
+
     }, []);
 
     const storeClick = (e, id) => {
