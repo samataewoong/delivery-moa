@@ -133,8 +133,7 @@ export default function RoomOrderUserCard({
                 .eq('room_id', room_id)
                 .eq('user_id', user_id)
                 .order('order_id', { ascending: false })
-                .limit(1)
-                .single();
+                .maybeSingle();
             if (orderError) {
                 console.error(orderError);
             }
