@@ -24,7 +24,7 @@ import MainHeader from "./components/MainHeader";
 import SelectRoom from "./pages/SelectedRoom";
 import React, { useState, useEffect } from "react";
 import supabase from "./config/supabaseClient";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Search from "./pages/SearchPage";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
@@ -33,6 +33,7 @@ function App() {
   const [isOpen, setIsOpen] = useState(false);
   const [nickname, setNickname] = useState("");
   const [session, setSession] = useState(null);
+  const navigate = useNavigate();
 
   const fetchNickname = async (user_id) => {
     const { data } = await supabase.from("user").select("nickname").eq("id", user_id).single();
@@ -68,6 +69,7 @@ function App() {
     } else {
       setSession(null);
       setNickname("");
+      navigate("/login");
     }
   };
   const toggleMenu = (e) => {
