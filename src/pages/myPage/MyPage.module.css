@@ -44,6 +44,7 @@
     text-align: center;
     font-size: 17px;
     display: flex;
+    cursor: pointer;
 }
 .circle_pencil{
   width: 21px;
