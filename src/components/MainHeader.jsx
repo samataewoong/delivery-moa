@@ -8,7 +8,7 @@ import CloseRoom from "../components/CloseRoom";
 export default function MainHeader({ toggleMenu }) {
     const [nickname, setNickname] = useState("");
     const [session, setSession] = useState(null);
-
+    const [addressDetail, setAddressDetail] = useState("");
     const [address, setAddress] = useState("");
     const [showMapModal, setShowMapModal] = useState(false);
     const closeMapModal = () => setShowMapModal(false);
@@ -52,6 +52,23 @@ export default function MainHeader({ toggleMenu }) {
             if (data && data.length > 0) {
                 setAddress(data[0].address);
             }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+    async function updateAddressDetail(addressDetail) {
+        try {
+            const { data, error } = await supabase
+                .from("user")
+                .update({ room_address_detail: addressDetail })
+                .eq('id', session.user.id);
+
+            if (error) {
+                throw error;
+            }
+
+            const detail = data?.[0]?.room_address_detail ?? "";
+            setAddressDetail(detail);
         } catch (error) {
             console.error(error);
         }
@@ -149,9 +166,18 @@ export default function MainHeader({ toggleMenu }) {
     }, [session]);
 
     const handleHamburgerClick = (e) => {
-    e.stopPropagation(); // 이벤트 버블링 방지
-    toggleMenu(e);
-}
+        e.stopPropagation(); // 이벤트 버블링 방지
+        toggleMenu(e);
+    }
+
+    const saveAddress = () => {
+        if(!addressDetail){
+            alert('상세주소를 입력하세요.');
+            return;
+        }
+        updateAddressDetail(addressDetail);
+        closeMapModal();
+    }
 
     const userId = session?.user?.id;
     return (
@@ -195,10 +221,18 @@ export default function MainHeader({ toggleMenu }) {
                         )}
 
                         {showMapModal && (
-                            <div className={styles["modalStyle"]} onClick={closeMapModal}>
+                            <div className={styles["modalStyle"]}>
                                 <div className={styles["popupStyle"]} onClick={(e) => e.stopPropagation()}>
                                     <div ref={mapRef} className={styles["modal_map"]}></div>
+                                    <div className={styles["label_box"]}>주소</div>
+                                    <input className={styles["address_not"]} type="text" placeholder="주소" value={address}/>
+                                    <div className={styles["label_box_detail"]}>상세주소</div>
+                                    <input className={styles["address_not"]} type="text" value={addressDetail} onChange={(e) => setAddressDetail(e.target.value)} placeholder="상세주소"/>
                                     <div style={{ textAlign: "center", marginTop: "15px" }}>
+                                        <button
+                                            onClick={saveAddress} className={styles["modal_btn"]}>
+                                            확인
+                                        </button>
                                         <button
                                             onClick={closeMapModal} className={styles["modal_btn"]}>
                                             닫기

@@ -1,5 +1,5 @@
 import styles from "./Header.module.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, matchPath } from "react-router-dom";
 import supabase from "../config/supabaseClient";
 import { useNavigate } from "react-router-dom";
@@ -16,7 +16,36 @@ export default function Header({ excludes, toggleMenu }) {
     const [session, setSession] = useState(null);
     const [keyword, setKeyword] = useState("");
     const [address, setAddress] = useState("");
+
+    const [showMapModal, setShowMapModal] = useState(false);
+    const [addressDetail, setAddressDetail] = useState("");
+    const mapRef = useRef(null);
+    const closeMapModal = () => setShowMapModal(false);
+
     const navigate = useNavigate();
+
+    const waitForKakaoMaps = (retries = 10, interval = 300) => {
+        return new Promise((resolve, reject) => {
+            let attempts = 0;
+            const check = () => {
+                if (
+                    window.kakao &&
+                    window.kakao.maps &&
+                    window.kakao.maps.Map &&
+                    window.kakao.maps.services &&
+                    window.kakao.maps.services.Geocoder
+                ) {
+                    resolve();
+                } else if (attempts >= retries) {
+                    reject(new Error('카카오 지도 API가 준비되지 않았습니다.'));
+                } else {
+                    attempts++;
+                    setTimeout(check, interval);
+                }
+            };
+            check();
+        });
+    };
 
     useEffect(() => {
         if (session?.user) {
@@ -44,18 +73,77 @@ export default function Header({ excludes, toggleMenu }) {
                 throw error;
             }
 
-            setNickname(data.nickname);
             setAddress(data.address);
         } catch (error) {
             console.error(error);
         }
     }
+    async function updateAddressDetail(addressDetail) {
+        try {
+            const { data, error } = await supabase
+                .from("user")
+                .update({ room_address_detail: addressDetail })
+                .eq('id', session.user.id);
+
+            if (error) {
+                throw error;
+            }
+
+            const detail = data?.[0]?.room_address_detail ?? "";
+            setAddressDetail(detail);
+
+        } catch (error) {
+            console.error(error);
+        }
+    }
+    const showMap = async (addr) => {
+        await waitForKakaoMaps();
+
+        if (!mapRef.current) return;
+
+        const geocoder = new window.kakao.maps.services.Geocoder();
+
+        geocoder.addressSearch(addr, (result, status) => {
+            if (status === window.kakao.maps.services.Status.OK) {
+                const coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
+                const map = new window.kakao.maps.Map(mapRef.current, {
+                    center: coords,
+                    level: 3,
+                });
+
+                setTimeout(() => {
+                    window.kakao.maps.event.trigger(map, "resize");
+                }, 200);
+
+                new window.kakao.maps.Marker({
+                    map: map,
+                    position: coords,
+                });
+            }
+        });
+    };
+    const saveAddress = () => {
+        if(!addressDetail){
+            alert('상세주소를 입력하세요.');
+            return;
+        }
+        updateAddressDetail(addressDetail);
+        closeMapModal();
+    }
+    useEffect(() => {
+        if (showMapModal && address) {
+            setTimeout(() => {
+                showMap(address);
+            }, 300);
+        }
+    }, [showMapModal, address]);
 
     const handleClick = () => {
         new window.daum.Postcode({
             oncomplete: function (data) {
                 setAddress(data.address);
                 updateAddress(data.address);
+                setShowMapModal(true);
             },
         }).open();
     };
@@ -138,11 +226,9 @@ export default function Header({ excludes, toggleMenu }) {
                                     <button className={styles["location_btn"]} onClick={handleClick}>
                                         <img className={styles["location_icon"]} src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/location_icon_white.png" />
                                     </button>
-                                    {address ? (
-                                        <div onClick={handleClick}>{address}</div>
-                                    ) : (
-                                        <div onClick={handleClick}>주소를 입력하세요</div>
-                                    )}
+                                    <div onClick={handleClick}>
+                                        {address || "주소를 입력하세요"}
+                                    </div>
                                 </>
                             ) : (
                                 <div className={styles["main_login"]}>
@@ -150,13 +236,34 @@ export default function Header({ excludes, toggleMenu }) {
                                     <Link className={styles["location_login"]} to="/register">회원가입</Link>
                                 </div>
                             )}
+                            {showMapModal && (
+                                <div className={styles["modalStyle"]}>
+                                    <div className={styles["popupStyle"]} onClick={(e) => e.stopPropagation()}>
+                                        <div ref={mapRef} className={styles["modal_map"]}></div>
+                                        <div className={styles["label_box"]}>주소</div>
+                                        <input className={styles["address_not"]} type="text" placeholder="주소" value={address} />
+                                        <div className={styles["label_box_detail"]}>상세주소</div>
+                                        <input className={styles["address_not"]} type="text" value={addressDetail} onChange={(e) => setAddressDetail(e.target.value)} placeholder="상세주소" />
+                                        <div style={{ textAlign: "center", marginTop: "15px" }}>
+                                            <button
+                                                onClick={saveAddress} className={styles["modal_btn"]}>
+                                                확인
+                                            </button>
+                                            <button
+                                                onClick={closeMapModal} className={styles["modal_btn"]}>
+                                                닫기
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                     <div className={styles["hamburger"]}>
                         <button onClick={(e) => {
-            e.stopPropagation(); // 이벤트 버블링 방지
-            toggleMenu(e);
-        }}  className={styles["hamburger_btn"]}>
+                            e.stopPropagation(); // 이벤트 버블링 방지
+                            toggleMenu(e);
+                        }} className={styles["hamburger_btn"]}>
                             <img
                                 src="https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/main_img/hamburger-md.png"
                                 alt="햄버거 메뉴"
