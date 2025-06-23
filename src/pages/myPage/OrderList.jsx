@@ -9,6 +9,7 @@ export default function OrderList() {
   const [currentPage, setCurrentPage] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
   const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const itemsPerPage = 5;
 
@@ -39,6 +40,7 @@ export default function OrderList() {
   //현재 페이지 데이터만 fetch
   useEffect(() => {
     if (!userId) return;
+    setLoading(true);
     const fetchOrders = async () => {
       const from = currentPage * itemsPerPage;
       const to = from + itemsPerPage - 1;
@@ -49,6 +51,7 @@ export default function OrderList() {
         .order("created_at", { ascending: false })
         .range(from, to);
       setOrders(error ? [] : data);
+      setLoading(false);
     };
     fetchOrders();
   }, [userId, currentPage]);
@@ -66,7 +69,17 @@ export default function OrderList() {
 
   return (
     <div className="styles.order_body">
-      {orders.length === 0 ? (
+      {loading ? (
+        <ul style={{ listStyle: "none", padding: 0 }}>
+          {Array.from({ length: 5 }).map((_, i) => (
+            <li key={i} className={styles.skeletonCard}>
+              <div className={`${styles.skeletonBox} ${styles.long}`} />
+              <div className={`${styles.skeletonBox} ${styles.medium}`} />
+              <div className={`${styles.skeletonBox} ${styles.short}`} />
+            </li>
+          ))}
+        </ul>
+      ) : orders.length === 0 ? (
         <p>주문 내역이 없습니다.</p>
       ) : (
         <ul style={{ listStyle: "none", padding: 0 }}>

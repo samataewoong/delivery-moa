@@ -3,12 +3,12 @@
   justify-content: center;
   width: 100%;
 }
-.myPage_box{
+.myPage_box {
   width: 1280px;
   padding: 80px 20px;
   box-sizing: border-box;
 }
-.myPage_userInfo{
+.myPage_userInfo {
   width: 100%;
   height: 235px;
   border-radius: 10px;
@@ -20,15 +20,15 @@
   box-sizing: border-box;
   box-shadow: 4px 6px 2px rgba(0, 0, 0, 0.2);
 }
-.fileUpload{
+.fileUpload {
   display: none;
 }
-.circle_with_text{
+.circle_with_text {
   justify-content: center;
   margin-right: 40px;
   width: 110px;
 }
-.circle{
+.circle {
   width: 100px;
   height: 100px;
   border-radius: 50%;
@@ -36,32 +36,32 @@
   object-fit: cover;
   display: block;
 }
-.circle img{
+.circle img {
   object-fit: cover;
 }
 .circle_text {
-    margin-top: 8px;
-    text-align: center;
-    font-size: 17px;
-    display: flex;
-    cursor: pointer;
+  margin-top: 8px;
+  text-align: center;
+  font-size: 17px;
+  display: flex;
+  cursor: pointer;
 }
-.circle_pencil{
+.circle_pencil {
   width: 21px;
   height: 21px;
   color: black;
   margin: 2px;
 }
-.userRating_body{
+.userRating_body {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-.userRating{
+.userRating {
   width: 640px;
   height: 60px;
 }
-.usernickName{
+.usernickName {
   font-size: 22px;
   font-weight: 700;
 }
@@ -70,7 +70,7 @@
   height: 30px;
   margin-right: 10px;
 }
-.progress_box{
+.progress_box {
   width: 545px;
   height: 20px;
   margin: 20px 0;
@@ -81,16 +81,16 @@
   box-sizing: border-box;
 }
 .progress_box::-webkit-progress-bar {
-    background-color: #eee;
-    width: 100%;
+  background-color: #eee;
+  width: 100%;
 }
 .progress_box::-webkit-progress-value {
-    background-color: #FF6B6B;
+  background-color: #ff6b6b;
 }
 .progress_box::-moz-progress-bar {
-    background-color: #FF6B6B;
+  background-color: #ff6b6b;
 }
-.user_cash{
+.user_cash {
   width: 340px;
   height: 120px;
   box-sizing: border-box;
@@ -100,11 +100,11 @@
   display: flex;
   align-items: center;
 }
-.coin_imo{
+.coin_imo {
   width: 40px;
   height: 40px;
 }
-.coin_confirm{
+.coin_confirm {
   font-size: 20px;
   margin-left: auto;
 }
@@ -124,7 +124,7 @@
   background-color: #ff6b6b;
   color: white;
 }
-.main_body{
+.main_body {
   margin: 20px 0;
   width: 100%;
   height: auto;
@@ -136,16 +136,16 @@
   box-sizing: border-box;
   display: flex;
 }
-.my_MenuUl{
+.my_MenuUl {
   list-style: none;
   padding-inline-start: 0;
   width: 170px;
 }
-.my_MenuLi{
+.my_MenuLi {
   font-size: 20px;
   margin-bottom: 20px;
 }
-.my_Menu_right{
+.my_Menu_right {
   background-color: #f7f7f7;
   border-radius: 10px;
   border: 1px solid #ccc;
@@ -170,12 +170,12 @@
   box-shadow: rgba(0, 0, 0, 0.04) 0px 2px;
   border: 1px solid rgb(221, 221, 221);
 }
-.userDetail{
+.userDetail {
   display: flex;
   align-items: center;
   width: 540px;
 }
-.myButtonContainer{
+.myButtonContainer {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -217,7 +217,7 @@
   width: 540px;
   padding-bottom: 5px;
 }
-.info_Row{
+.info_Row {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -253,14 +253,9 @@
 .editemailButton:hover {
   background-color: #ff8a8a;
 }
-.order_body{
+.order_body {
   box-sizing: border-box;
 }
-
-
-
-
-
 
 .qnaButtonWrapper {
   display: flex;
@@ -287,7 +282,7 @@
 }
 .qnaTitle {
   box-sizing: border-box;
-  padding:20px;
+  padding: 20px;
   position: relative;
 }
 .qnaanswer {
@@ -334,7 +329,7 @@
 .deleteReview:hover {
   background-color: #ceced3;
 }
-.gaugeBar{
+.gaugeBar {
   width: 545px;
   height: 20px;
   margin: none;
@@ -342,20 +337,11 @@
   left: -20px;
   top: 20px;
 }
-.gaugeFill{
+.gaugeFill {
   background-color: "#ff6b6b";
 }
 
-
-
-
-
-
-
-
-
-
-.myButtonQuit {
+z .myButtonQuit {
   text-align: center;
   width: 160px;
   height: 45px;
@@ -377,7 +363,6 @@ input[readOnly] {
   background-color: #d4d4d4;
 }
 
-
 .passwordEye {
   border-bottom: solid;
   width: 540px;
@@ -390,15 +375,6 @@ input[readOnly] {
   font-size: x-large;
   margin-right: 200px;
 }
-
-
-
-
-
-
-
-
-
 
 .answer {
   border-top: 1px solid #d0d0d0;
@@ -414,7 +390,6 @@ input[readOnly] {
   padding-left: 10px;
   font-weight: 400;
 }
-
 
 .qnaPages {
   text-align: center;
@@ -474,7 +449,6 @@ input[readOnly] {
   top: 25px; /* 헤더 높이 만큼 여백 (상황에 맞게 조정) */
   z-index: 10; /* 필요시 */
 }
-
 
 .qnaWriteBtn {
   background-color: #ff6b6b;
@@ -634,4 +608,69 @@ input[readOnly] {
 .chargeButton:hover {
   background-color: #1fab89;
   color: white;
+}
+.skeletonCard {
+  padding: 18px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 18px;
+  background: #f9f9fa;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.skeletonBox {
+  background: linear-gradient(90deg, #eeeeee 25%, #dddddd 50%, #eeeeee 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: 6px;
+  height: 16px;
+  margin-bottom: 10px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.short {
+  width: 40%;
+}
+.medium {
+  width: 60%;
+}
+.long {
+  width: 80%;
+}
+
+.qnaSkeletonCard {
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  background-color: #fdfdfd;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+  min-height: 360px;
+}
+
+.qnaSkeletonBox {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: 6px;
+  height: 16px;
+  margin-bottom: 10px;
+}
+
+.qnaShort {
+  width: 30%;
+}
+.qnaMedium {
+  width: 60%;
+}
+.qnaLong {
+  width: 90%;
 }
