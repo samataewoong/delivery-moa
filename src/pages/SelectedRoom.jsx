@@ -12,6 +12,8 @@ export default function SelectRoom() {
     const [roomSelect, setRoomSelect] = useState([]);
     const [store, setStore] = useState([]);
     const [userId, setUserId] = useState(null);
+    const mapRef = useRef(null);
+    const [activeRoomId, setActiveRoomId] = useState(null);
 
     useEffect(() => {
         async function fetchUser() {
@@ -21,6 +23,55 @@ export default function SelectRoom() {
         }
         fetchUser();
     }, []);
+
+    const waitForKakaoMaps = () => {
+        return new Promise((resolve, reject) => {
+            if (
+                window.kakao &&
+                window.kakao.maps &&
+                window.kakao.maps.Map &&
+                window.kakao.maps.services &&
+                window.kakao.maps.services.Geocoder
+            ) {
+                resolve();
+            } else {
+                reject(new Error('카카오 지도 API가 준비되지 않았습니다.'));
+            }
+        });
+    };
+
+    const showMap = async (addr) => {
+        await waitForKakaoMaps();
+
+        if (!mapRef.current) return;
+
+        const geocoder = new window.kakao.maps.services.Geocoder();
+
+        geocoder.addressSearch(addr, (result, status) => {
+            if (status === window.kakao.maps.services.Status.OK) {
+                const coords = new window.kakao.maps.LatLng(result[0].y, result[0].x);
+                const map = new window.kakao.maps.Map(mapRef.current, {
+                    center: coords,
+                    level: 2,
+                });
+
+                setTimeout(() => {
+                    window.kakao.maps.event.trigger(map, "resize");
+                }, 200);
+
+                new window.kakao.maps.Marker({
+                    map: map,
+                    position: coords,
+                });
+            }
+        });
+    };
+
+    useEffect(() => {
+        if (store?.store_address) {
+            showMap(store.store_address);
+        }
+    }, [store]);
 
 
     useEffect(() => {
@@ -73,19 +124,29 @@ export default function SelectRoom() {
                     <div className={styles["main_box"]}>
                         {roomSelect.filter(room => room.status == "모집중").length > 0 ? (
                             roomSelect.filter(room => room.status == "모집중").map((item) => (
-                                <Link key={item.id} to={`/room/${item.id}`} onClick={(e) => roomClick(e, item.id)}>
-                                    <div className={styles["search_result"]}>
+                                <div>
+                                    {activeRoomId === item.id && (
+                                        <div ref={mapRef} className={styles["address_map"]}></div>
+                                        )}
+                                    <div key={item.id} className={styles["search_result"]} onClick={() => {
+                                        setActiveRoomId(item.id);
+                                        showMap(item.room_address);
+                                    }}>
                                         <img className={styles["search_store_img"]}
                                             src={`${storeImgUrl}${item.store_id}.jpg`} alt={`${item.store_id}`}></img>
                                         <div className={styles["search_store_detail"]}>
                                             <div>
                                                 <div className={styles["search_store_name"]}>{item.room_name}</div>
-                                                <div className={styles["search_menu_name"]}>{item.room_address}</div>
+                                                <div className={styles["search_menu_name"]}>{item.room_address} {item.room_address_detail}</div>
                                                 <div className={styles["search_status"]}>{item.status}</div>
                                             </div>
+                                            <button className={styles["result_btn"]} onClick={(e) => {
+                                                e.stopPropagation();
+                                                roomClick(e, item.id)
+                                            }}>참여</button>
                                         </div>
                                     </div>
-                                </Link>
+                                </div>
                             ))
                         ) : (
                             <div className={styles["search_noResult"]}>개설된 방이 없습니다.</div>
