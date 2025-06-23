@@ -71,8 +71,8 @@ export default function SelectRoom() {
                         <div className={styles["store_name"]}>&nbsp;{store.store_name}</div>
                     </div>
                     <div className={styles["main_box"]}>
-                        {roomSelect.length > 0 ? (
-                            roomSelect.map((item) => (
+                        {roomSelect.filter(room => room.status == "모집중").length > 0 ? (
+                            roomSelect.filter(room => room.status == "모집중").map((item) => (
                                 <Link key={item.id} to={`/room/${item.id}`} onClick={(e) => roomClick(e, item.id)}>
                                     <div className={styles["search_result"]}>
                                         <img className={styles["search_store_img"]}
