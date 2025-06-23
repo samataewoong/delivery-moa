@@ -95,15 +95,6 @@ export default function RoomPage() {
                 }
             )
             .subscribe();
-        supabase.auth.onAuthStateChange(async (event, user) => {
-            if (event === "SIGNED_IN" || event === "USER_UPDATED") {
-                setUserId(user?.id);
-                const userData = await selectUser({ user_id: user.id });
-                setUser(userData[0]);
-            } else {
-                setUser(null);
-            }
-        });
         const userSubscribe = supabase
             .realtime
             .channel(`realtime:user_watch_in_room_page`)
