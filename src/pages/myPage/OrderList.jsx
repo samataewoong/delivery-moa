@@ -4,11 +4,14 @@ import styles from "./MyPage.module.css";
 
 export default function OrderList() {
   const [userId, setUserId] = useState("");
-  const [orders, setOrders] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [openOrderIds, setOpenOrderIds] = useState([]); //펼쳐진 주문 id배열
 
-  //로그인된 유저 정보 가져옴
+  const [openOrderIds, setOpenOrderIds] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
+  const [orders, setOrders] = useState([]);
+
+  const itemsPerPage = 5;
+
   useEffect(() => {
     const fetchUser = async () => {
       const {
@@ -16,35 +19,41 @@ export default function OrderList() {
         error,
       } = await supabase.auth.getUser();
       setUserId(error || !user ? "" : user.id);
-      //   if (error || !user) {
-      //     setUserId(""); //로그인 안 됐거나 에러
-      //   } else {
-      //     setUserId(user.id); //uuid
-      //   }
     };
     fetchUser();
   }, []);
 
-  // 내 주문내역 불러오기.
+  //총 주문 갯수 얻기 (페이지 버튼 갯수 계산용)
   useEffect(() => {
+    if (!userId) return;
+    const fetchCount = async () => {
+      const { count } = await supabase
+        .from("order")
+        .select("*", { count: "exact", head: true })
+        .eq("user_id", userId);
+      setTotalCount(count || 0);
+    };
+    fetchCount();
+  }, [userId]);
+
+  //현재 페이지 데이터만 fetch
+  useEffect(() => {
+    if (!userId) return;
     const fetchOrders = async () => {
-      if (!userId) {
-        setOrders([]);
-        return;
-      }
-      setLoading(true);
+      const from = currentPage * itemsPerPage;
+      const to = from + itemsPerPage - 1;
       const { data, error } = await supabase
         .from("order")
         .select("*")
-        .eq("user_id", userId);
-
-      //   if (error) setOrders([]);
-      // else setOrders(data);
+        .eq("user_id", userId)
+        .order("created_at", { ascending: false })
+        .range(from, to);
       setOrders(error ? [] : data);
-      setLoading(false);
     };
     fetchOrders();
-  }, [userId]);
+  }, [userId, currentPage]);
+
+  const totalPages = Math.ceil(totalCount / itemsPerPage);
 
   //펼치기 핸들러
   const toggleOrder = (order_id) => {
@@ -56,10 +65,8 @@ export default function OrderList() {
   };
 
   return (
-    <div className={styles.order_body}>
-      {loading ? (
-        <p>불러오는 중...</p>
-      ) : orders.length === 0 ? (
+    <div className="styles.order_body">
+      {orders.length === 0 ? (
         <p>주문 내역이 없습니다.</p>
       ) : (
         <ul style={{ listStyle: "none", padding: 0 }}>
@@ -68,6 +75,7 @@ export default function OrderList() {
               (sum, item) => sum + item.menu_price * item.quantity,
               0
             );
+
             return (
               <li
                 key={order.order_id}
@@ -149,6 +157,38 @@ export default function OrderList() {
             );
           })}
         </ul>
+      )}
+
+      {/* {페이지네이션 버튼} */}
+      {totalPages > 1 && (
+        <div className={styles.qnaPages}>
+          <button
+            onClick={() => setCurrentPage((p) => Math.max(p - 1, 0))}
+            disabled={currentPage === 0}
+          >
+            이전
+          </button>
+          {Array.from({ length: totalPages }).map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setCurrentPage(i)}
+              style={{
+                fontWeight: currentPage === i ? "bold" : "normal",
+                margin: "0 2px",
+              }}
+            >
+              {i + 1}
+            </button>
+          ))}
+          <button
+            onClick={() =>
+              setCurrentPage((p) => Math.min(p + 1, totalPages - 1))
+            }
+            disabled={currentPage === totalPages - 1}
+          >
+            다음
+          </button>
+        </div>
       )}
     </div>
   );
