@@ -8,10 +8,9 @@ import Modal from "../../components/Modal";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import QnaWriteModal from "./QnaWriteModal";
 
-
 export default function MyQnA() {
   const { userSession, userId } = useOutletContext();
-
+  const [loading, setLoading] = useState(true);
   const [qnaList, setQnaList] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [showAnswerId, setShowAnswerId] = useState(null);
@@ -20,26 +19,47 @@ export default function MyQnA() {
 
   const itemsPerPage = 3;
 
-  const fetchUserData = async () => {
+  //최초 로딩 + 실시간 구독
+  useEffect(() => {
+    //QnA 록록 불러오기
+    const fetchQnaList = async () => {
+      if (!userId) return;
+      const { data, error } = await supabase
+        .from("qna")
+        .select("id, title, q_contents, q_answer, created_at")
+        .eq("user_id", userId)
+        .order("created_at", { ascending: false });
+
+      setQnaList(error ? [] : data);
+      setCurrentPage(0);
+      setLoading(false);
+    };
+
+    fetchQnaList();
+
+    //실시간 구독
+    const channel = supabase
+      .channel("realtime:user_qna_watch_on_mypage")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "qna" },
+        (payload) => {
+          if (
+            payload.new?.user_id === userId ||
+            payload.old?.user_id === userId
+          ) {
+            fetchQnaList();
+          }
+        }
+      )
+      .subscribe();
+
+    console.log("userId in MyQnA:", userId); //<- 유저id 확인용
     if (!userId) return;
 
-    const { data, error } = await supabase
-      .from("qna")
-      .select("id, title, q_contents, q_answer, created_at")
-      .eq("user_id", userId)
-      .order("created_at", { ascending: false });
-
-    if (error) {
-      console.error("Error fetching user data:", error);
-      setQnaList([]);
-    } else {
-      setQnaList(data || []);
-      setCurrentPage(0);
-    }
-  };
-
-  useEffect(() => {
-    fetchUserData();
+    return () => {
+      channel.unsubscribe();
+    };
   }, [userId]);
 
   const toggleAnswer = (id) => {
@@ -72,7 +92,7 @@ export default function MyQnA() {
   const closeModal = () => {
     setEditing(false);
     setEditQnaById(null);
-    fetchUserData(); // 수정된 데이터 반영
+    // fetchUserData(); // 수정된 데이터 반영
   };
 
   const paginatedQna = qnaList.slice(
@@ -98,7 +118,7 @@ export default function MyQnA() {
       return;
     }
     //등록 성공 시
-    fetchUserData();
+    // fetchUserData();
     setCurrentPage(0);
   };
 
@@ -121,13 +141,23 @@ export default function MyQnA() {
         userId={userId}
       />
 
-      {paginatedQna.length === 0 ? (
+      {loading ? (
+        <>
+          {Array.from({ length: itemsPerPage }).map((_, i) => (
+            <div key={i} className={styles.qnaSkeletonCard}>
+              <div className={`${styles.qnaSkeletonBox} ${styles.qnaLong}`} />
+              <div className={`${styles.qnaSkeletonBox} ${styles.qnaMedium}`} />
+              <div className={`${styles.qnaSkeletonBox} ${styles.qnaShort}`} />
+            </div>
+          ))}
+        </>
+      ) : paginatedQna.length === 0 ? (
         <p>문의 내역이 없습니다.</p>
       ) : (
         paginatedQna.map((qna) => (
           <div key={qna.id} className={styles.myQna}>
             <div className={styles.qnaDate}>
-                <FormattedDate dateString={qna.created_at} />
+              <FormattedDate dateString={qna.created_at} />
             </div>
             <div className={styles.qnaTitle}>
               <b>Q. {qna.title}</b>
@@ -138,7 +168,9 @@ export default function MyQnA() {
                   value={qna.q_contents}
                 />
               </div>
-              <div className={styles.qnaanswer}>답변유무 {qna.q_answer ? "Yes" : "No"}</div>
+              <div className={styles.qnaanswer}>
+                답변유무 {qna.q_answer ? "Yes" : "No"}
+              </div>
               <div
                 style={qna.q_answer ? { cursor: "pointer" } : {}}
                 onClick={() => toggleAnswer(qna.id)}
