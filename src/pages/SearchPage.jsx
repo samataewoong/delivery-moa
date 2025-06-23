@@ -54,7 +54,7 @@ export default function SearchPage() {
                             {["전체", "가게", "메뉴", "공구방"].map((tab) => (
                                 <li key={tab} 
                                 className={category === tab ? styles["active_tab"] : ""}
-                                onClick={() => setCategory(tab)}>{tab}</li>
+                                onClick={() => {setCategory(tab);window.scrollTo({ top: 0 });}}>{tab}</li>
                             ))}
                         </ul>
                     </div>

@@ -104,12 +104,18 @@
 }
 .modal_btn {
     padding: 10px 20px;
-    border: none;
+    border: 1px solid #FF6B6B;
     border-radius: 4px;
-    background-color: #FF6B6B;
-    color: white;
+    background-color: white;
+    color: #FF6B6B;
     cursor: pointer;
     font-size: 14px;
+    margin: 0px 5px;
+    box-sizing: border-box;
+}
+.modal_btn:hover {
+    background-color: #FF6B6B;
+    color: white;
 }
 
 .modal_map {
@@ -120,10 +126,33 @@
     background-color: #f5f5f5;
 }
 
+.address_not{
+    width:100%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    height: 30px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
 .popupStyle {
     background: white;
     padding: 20px;
     border-radius: 10px;
     width: 90%;
     max-width: 500px;
+}
+.label_box {
+    font-size: 18px;
+    color: #999;
+    margin-top: 15px;
+}
+.input_box{
+    height: 50px;
+    margin-top: 5px;
+}
+.label_box_detail{
+    font-size: 18px;
+    color: #999;
+    margin-top: 5px;
 }
