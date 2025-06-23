@@ -183,7 +183,7 @@ export default function MainPage({ toggleMenu }) {
                                                 alt={`${items.category} 이미지`} />
                                             <div className={styles["square"]}>
                                                 <div className={styles["gongu_title"]}>{items.room_name}</div>
-                                                <div className={styles["gongu_date"]}>{items.room_address}
+                                                <div className={styles["gongu_date"]}>{items.room_address}  {items.room_address_detail}
                                                 </div>
                                                 <progress className={styles["gongu_progress"]} value={items.join_count} max={items.max_people}></progress>
                                                 <div className={styles["gongu_bottom"]}>
