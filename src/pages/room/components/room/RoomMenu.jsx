@@ -124,7 +124,7 @@ export default function RoomMenu({
                     )
                 )}
             </div>
-            {roomMenus.length && <div className={style.total_price_box}>
+            {roomMenus.length == 0 ? <></> : <div className={style.total_price_box}>
                 <div className={style.total_price_value}>
                     {thousands(roomMenus.reduce((total, menu) => (total + (menu.menu_price * menu.quantity)), 0))} 원
                 </div>
