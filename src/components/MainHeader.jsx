@@ -12,6 +12,7 @@ export default function MainHeader({ toggleMenu }) {
     const [address, setAddress] = useState("");
     const [showMapModal, setShowMapModal] = useState(false);
     const closeMapModal = () => setShowMapModal(false);
+    const [userCoords, setUserCoords] = useState(null);
 
 
     const mapRef = useRef(null);
@@ -103,13 +104,30 @@ export default function MainHeader({ toggleMenu }) {
                     window.kakao.maps.event.trigger(map, "resize");
                 }, 200);
 
-                new window.kakao.maps.Marker({
+                const marker = new window.kakao.maps.Marker({
                     map: map,
                     position: coords,
+                    draggable: true,
                 });
-            }
-        });
-    };
+                 window.kakao.maps.event.addListener(marker, "dragend", () => {
+                const pos = marker.getPosition();
+                setUserCoords(pos);
+
+                // 좌표 -> 주소 역지오코딩
+                geocoder.coord2Address(pos.getLng(), pos.getLat(), (result, status) => {
+                    if (status === window.kakao.maps.services.Status.OK) {
+                        // 주소 업데이트 (state 반영)
+                        setAddress(result[0].address.address_name);
+                    } else {
+                        console.error("역지오코딩 실패:", status);
+                    }
+                });
+            });
+        }
+    });
+};
+
+    
 
     useEffect(() => {
         if (showMapModal && address) {
