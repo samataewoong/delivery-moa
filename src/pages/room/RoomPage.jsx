@@ -127,7 +127,7 @@ export default function RoomPage() {
             flexDirection: "column",
             alignItems: "center",
         }}>
-            <RoomJoin room={room} />
+            <RoomJoin room_id={room_id} />
             <RoomHeader room={room} roomJoin={roomJoin} me={user} />
             <RoomBody room_id={room_id} room={room} store={store} roomJoin={roomJoin} setRoomMenus={setRoomMenus} roomMenus={roomMenus} me={user} />
         </div>
