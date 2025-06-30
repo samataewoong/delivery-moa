@@ -9,7 +9,7 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [nickname, setNickname] = useState("");
-  const [session, setSession] = useState("");
+  // const [session, setSession] = useState("");
   const navigate = useNavigate();
 
   // 닉네임 불러오기
@@ -55,9 +55,6 @@ function Login() {
       password,
     });
 
-    setEmail("");
-    setPassword("");
-    setSession(null);
 
     if (data.user) {
       alert("로그인 성공!");
