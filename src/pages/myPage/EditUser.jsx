@@ -63,9 +63,9 @@ export default function EditUser() {
         });
 
         if (error) {
-            setMessage('❌ 이메일 전송 실패: ' + error.message);
+            setMessage('이메일 전송 실패: ' + error.message);
         } else {
-            setMessage('📧 이메일을 확인해 주세요! 비밀번호 재설정 링크가 전송되었어요.');
+            setMessage('이메일을 확인해 주세요! 비밀번호 재설정 링크가 전송되었어요.');
         }
     };
 
