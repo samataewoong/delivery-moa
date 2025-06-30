@@ -30,7 +30,7 @@ export default function SearchPage() {
 
             const storeIds = storeResult?.map((s) => s.id) || [];
 
-            const { data: roomstoreData } = await supabase.from("room").select("*").eq("store_id", storeIds);
+            const { data: roomstoreData } = await supabase.from("room").select("*").in("store_id", storeIds);
 
             const roomResult = [
                 ...(roomData || []),
@@ -48,6 +48,8 @@ export default function SearchPage() {
     //채팅방에 사용자 있는지 확인
     const roomClick = async (e, roomId) => {
         e.preventDefault();
+
+        const { data: { session } } = await supabase.auth.getSession();
 
         const userId = session?.user?.id;
         if (!userId) {
@@ -155,7 +157,7 @@ export default function SearchPage() {
                             <hr />
                             {roomData.filter(room => room.status == "모집중").length > 0 ? (
                                 (category === "전체" ? roomData.filter(room => room.status == "모집중").slice(0, 4) : roomData).filter(room => room.status == "모집중").map((item) => (
-                                    <Link key={item.id} to={`/room/${item.id}`} onClick={(e) => roomClick(e, items.id)}>
+                                    <Link key={item.id} to={`/room/${item.id}`} onClick={(e) => roomClick(e, item.id)}>
                                     <div className={styles["search_result"]}>
                                         <img className={styles["search_store_img"]}
                                             src={`${storeImgUrl}${item.store_id}.jpg`} alt={`${item.store_id}`}></img>
