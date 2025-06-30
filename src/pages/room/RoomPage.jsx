@@ -128,7 +128,7 @@ export default function RoomPage() {
             alignItems: "center",
         }}>
             <RoomJoin room_id={room_id} />
-            <RoomHeader room={room} roomJoin={roomJoin} me={user} />
+            <RoomHeader room_id={room_id} room={room} roomJoin={roomJoin} me={user} />
             <RoomBody room_id={room_id} room={room} store={store} roomJoin={roomJoin} setRoomMenus={setRoomMenus} roomMenus={roomMenus} me={user} />
         </div>
     );

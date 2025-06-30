@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { getCoordinates } from "../../../../functions/maps/Coord";
 
 export default function RoomHeader({
+    room_id,
     room,
     roomJoin,
     me,
