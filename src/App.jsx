@@ -28,6 +28,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Search from "./pages/SearchPage";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+import Error404Page from "./pages/Error404Page";
 
 function App() {
   const [isOpen, setIsOpen] = useState(false);
@@ -82,54 +83,55 @@ function App() {
 
   return (
     <>
-        {isMainPage ? (
-          <MainHeader toggleMenu={toggleMenu} />
-        ) : (
-          <Header toggleMenu={toggleMenu} excludes={[
-            "/mainpage",
-            "/cashcharge",
-          ]} />
-        )}
-        <Routes>
-          <Route path="/" element={<RootPage />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/mainpage" element={<MainPage />} />
-          <Route path="/roomPage/AllRoom" element={<AllRoom />} />
-          <Route path="/room/create/:store_id" element={<RoomCreatePage />} />
-          <Route path="/room/:room_id" element={<RoomPage />} />
-          <Route path="/store/:store_id" element={<StoreDetail />} />
-          <Route path="/ordercomplete/:order_id" element={<OrderComplete />} />
-          <Route path="/gongucomplete/:order_id" element={<GonguComplete />} />
-          <Route path="/review/:room_id" element={<Review />} />
-          <Route path="/storelist" element={<StoreListPage />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/forgotpw" element={<ForgotPassword/>}/>
-          <Route path="/resetpw" element={<ResetPassword/>}/>
-          <Route path="/selectroom/:store_id" element={<SelectRoom/>} />
-          {/* 마이페이지 및 하위 라우트 */}
-          <Route path="/mypage" element={<MyPage />}>
-            <Route index element={<UserInfo />} />
-            <Route path="userinfo" element={<UserInfo />} />
-            <Route path="edituser" element={<EditUser />} />
-            <Route path="myqna" element={<MyQnA />} />
-            <Route path="orderlist" element={<OrderList />} />
-          </Route>
-          <Route path="cashcharge" element={<CashCharge />} />
-        </Routes>
-        {isOpen && (
-          <Hamburger
-            isOpen={isOpen}
-            session={session}
-            nickname={nickname}
-            handleLogout={handleLogout}
-            onClose={() => setIsOpen(false)}
-
-          />
-        )}
-        <Footer excludes={[
-          "/cashcharge"
+      {isMainPage ? (
+        <MainHeader toggleMenu={toggleMenu} />
+      ) : (
+        <Header toggleMenu={toggleMenu} excludes={[
+          "/mainpage",
+          "/cashcharge",
         ]} />
+      )}
+      <Routes>
+        <Route path="/" element={<RootPage />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/mainpage" element={<MainPage />} />
+        <Route path="/roomPage/AllRoom" element={<AllRoom />} />
+        <Route path="/room/create/:store_id" element={<RoomCreatePage />} />
+        <Route path="/room/:room_id" element={<RoomPage />} />
+        <Route path="/store/:store_id" element={<StoreDetail />} />
+        <Route path="/ordercomplete/:order_id" element={<OrderComplete />} />
+        <Route path="/gongucomplete/:order_id" element={<GonguComplete />} />
+        <Route path="/review/:room_id" element={<Review />} />
+        <Route path="/storelist" element={<StoreListPage />} />
+        <Route path="/search" element={<Search />} />
+        <Route path="/forgotpw" element={<ForgotPassword />} />
+        <Route path="/resetpw" element={<ResetPassword />} />
+        <Route path="/selectroom/:store_id" element={<SelectRoom />} />
+        <Route path="*" element={<Error404Page />} />
+        {/* 마이페이지 및 하위 라우트 */}
+        <Route path="/mypage" element={<MyPage />}>
+          <Route index element={<UserInfo />} />
+          <Route path="userinfo" element={<UserInfo />} />
+          <Route path="edituser" element={<EditUser />} />
+          <Route path="myqna" element={<MyQnA />} />
+          <Route path="orderlist" element={<OrderList />} />
+        </Route>
+        <Route path="cashcharge" element={<CashCharge />} />
+      </Routes>
+      {isOpen && (
+        <Hamburger
+          isOpen={isOpen}
+          session={session}
+          nickname={nickname}
+          handleLogout={handleLogout}
+          onClose={() => setIsOpen(false)}
+
+        />
+      )}
+      <Footer excludes={[
+        "/cashcharge"
+      ]} />
     </>
   );
 }
