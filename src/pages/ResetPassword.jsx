@@ -19,16 +19,16 @@ export default function ResetPassword() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!password) {
-            setMessage('❗ 새 비밀번호를 입력해 주세요.');
+            setMessage(' 새 비밀번호를 입력해 주세요.');
             return;
         }
 
         const { error } = await supabase.auth.updateUser({ password });
 
         if (error) {
-            setMessage('❌ 비밀번호 변경 실패: ' + error.message);
+            setMessage('비밀번호 변경 실패: ' + error.message);
         } else {
-            setMessage('✅ 비밀번호가 변경되었어요! 로그인 페이지로 이동');
+            setMessage('비밀번호가 변경되었어요! 로그인 페이지로 이동');
             setTimeout(() => navigate('/login'), 2000);
         }
     };
