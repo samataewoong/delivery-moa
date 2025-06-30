@@ -48,11 +48,11 @@ export default function HamburgerMenu({ isOpen, session, nickname, handleLogout,
                         .select("created_at")
                         .eq("room_id", roomId)
                         .order("created_at", { ascending: false })
-                        .maybeSingle();
+                        .limit(1);
 
                     return {
                         room_id: roomId,
-                        latest_chat: chatData?.created_at || null,
+                        latest_chat: chatData?.[0]?.created_at || null,
                     };
                 })
             );
