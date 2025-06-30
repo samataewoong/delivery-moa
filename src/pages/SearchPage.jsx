@@ -13,6 +13,7 @@ export default function SearchPage() {
     const [roomData, setRoomData] = useState([]);
     const [category, setCategory] = useState("전체");
 
+
     const storeImgUrl = "https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/store/store_"
     const menuImgUrl = "https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/"
     // const menuImgUrl = "https://epfwvrafnhdgvyfcrhbo.supabase.co/storage/v1/object/public/imgfile/store_2/menu_12.jpg"
@@ -43,6 +44,28 @@ export default function SearchPage() {
         };
         fetchResults();
     }, [keyword]);
+
+    //채팅방에 사용자 있는지 확인
+    const roomClick = async (e, roomId) => {
+        e.preventDefault();
+
+        const userId = session?.user?.id;
+        if (!userId) {
+            alert("로그인이 필요합니다.");
+            return;
+        }
+        const { data } = await supabase.from("room_join").select("*").eq("room_id", roomId).eq("user_id", userId);
+
+        if (data.length > 0) {
+            window.location.href = `/delivery-moa/room/${roomId}`;
+        } else {
+            const confirmJoin = window.confirm("이 공구방에 참여하시겠습니까?");
+            if (confirmJoin) {
+                window.location.href = `/delivery-moa/room/${roomId}`;
+            }
+        }
+    }
+
     return (
         <main className={styles["main_box"]}>
             <div className={styles["main_container"]}>
@@ -132,7 +155,7 @@ export default function SearchPage() {
                             <hr />
                             {roomData.filter(room => room.status == "모집중").length > 0 ? (
                                 (category === "전체" ? roomData.filter(room => room.status == "모집중").slice(0, 4) : roomData).filter(room => room.status == "모집중").map((item) => (
-                                    <Link key={item.id} to={`/room/${item.id}`}>
+                                    <Link key={item.id} to={`/room/${item.id}`} onClick={(e) => roomClick(e, items.id)}>
                                     <div className={styles["search_result"]}>
                                         <img className={styles["search_store_img"]}
                                             src={`${storeImgUrl}${item.store_id}.jpg`} alt={`${item.store_id}`}></img>
