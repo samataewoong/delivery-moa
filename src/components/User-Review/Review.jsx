@@ -86,6 +86,10 @@ const Review = () => {
   };
 
   const handleSubmit = async () => {
+    if (participants.length !== Object.keys(ratings).length) {
+  alert("모든 사용자에게 별점을 주세요!");
+  return;
+}
     for (const [userId, rating] of Object.entries(ratings)) {
       try {
         const userData = await selectUser({ user_id: userId });
@@ -147,6 +151,7 @@ const Review = () => {
 
       <button className={styles.submitBtn} onClick={handleSubmit}>
         제출하기
+        
       </button>
     </div>
   );
