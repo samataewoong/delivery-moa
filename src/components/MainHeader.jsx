@@ -109,7 +109,7 @@ export default function MainHeader({ toggleMenu }) {
                     position: coords,
                     draggable: true,
                 });
-                 window.kakao.maps.event.addListener(marker, "dragend", () => {
+                window.kakao.maps.event.addListener(marker, "dragend", () => {
                 const pos = marker.getPosition();
                 setUserCoords(pos);
 

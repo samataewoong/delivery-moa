@@ -113,7 +113,6 @@ export default function MyPage() {
 
         if (deleteError) {
           console.error("기존 이미지 삭제 실패:", deleteError.message);
-          // 삭제 실패해도 업로드 계속 진행
         } else {
           console.log("기존 이미지 삭제 완료:", filePath);
         }
