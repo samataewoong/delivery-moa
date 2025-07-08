@@ -169,7 +169,7 @@ export default function RoomOrderUserCard({
                 user_id: roomJoin.user_id,
                 status: "픽업 완료",
             });
-            navigate(`/gongucomplete/${orderId}`);
+            navigate(`/gongucomplete/${room_id}`);
         } catch (error) {
             console.error("Error picking up:", error);
         }
