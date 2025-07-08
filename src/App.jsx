@@ -101,7 +101,7 @@ function App() {
         <Route path="/room/:room_id" element={<RoomPage />} />
         <Route path="/store/:store_id" element={<StoreDetail />} />
         <Route path="/ordercomplete/:order_id" element={<OrderComplete />} />
-        <Route path="/gongucomplete/:order_id" element={<GonguComplete />} />
+        <Route path="/gongucomplete/:room_id" element={<GonguComplete />} />
         <Route path="/review/:room_id" element={<Review />} />
         <Route path="/storelist" element={<StoreListPage />} />
         <Route path="/search" element={<Search />} />

@@ -6,104 +6,137 @@ import selectRoom from "../../functions/room/SelectRoom";
 import thousands from 'thousands';
 
 const GonguComplete = () => {
-  const { order_id } = useParams();
+  const { room_id } = useParams(); // ✅ room_id 기반으로 변경
   const navigate = useNavigate();
 
-  const [orderDetails, setOrderDetails] = useState(null);
-  const [orderItems, setOrderItems] = useState([]);
   const [roomInfo, setRoomInfo] = useState(null);
+  const [participants, setParticipants] = useState([]); // [{ user_id, nickname, orders: [...] }]
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchOrderDetails = async () => {
+    const fetchData = async () => {
       try {
         setLoading(true);
-        
-        const { data: orderData, error: orderError } = await supabase
+        if (!room_id) throw new Error('room_id가 필요합니다.');
+
+        // 1. 공구방 정보 조회
+        const roomData = await selectRoom({ room_id });
+        if (roomData.length > 0) setRoomInfo(roomData[0]);
+
+        // 2. order 테이블에서 room_id 기준 전체 주문 조회
+        const { data: orders, error: orderError } = await supabase
           .from('order')
           .select('*')
-          .eq('order_id', order_id)
-          .single();
+          .eq('room_id', room_id);
 
         if (orderError) throw orderError;
 
-        if (orderData.room_id) {
-          try {
-            const roomData = await selectRoom({ room_id: orderData.room_id });
-            if (roomData.length > 0) {
-              setRoomInfo(roomData[0]);
-            }
-          } catch (roomError) {
-            console.error('공구방 정보 조회 오류:', roomError);
-          }
-        }
+        // 3. 주문 내역 파싱 및 menu_id/user_id 수집
+        const userIdSet = new Set();
+        const menuIdSet = new Set();
 
-        let items = [];
-        if (orderData.room_order) {
-          try {
-            items = typeof orderData.room_order === 'string' 
-              ? JSON.parse(orderData.room_order) 
-              : orderData.room_order;
-            
-            if (!Array.isArray(items)) {
-              items = [items];
-            }
-          } catch (parseError) {
-            console.error('JSON 파싱 오류:', parseError);
-            items = [];
-          }
-        }
+        orders.forEach(order => {
+          userIdSet.add(order.user_id);
 
-        const menuIds = items.map(item => item.menu_id).filter(Boolean);
+          let parsed = [];
+          try {
+            parsed = typeof order.room_order === 'string'
+              ? JSON.parse(order.room_order)
+              : order.room_order;
+            if (!Array.isArray(parsed)) parsed = [parsed];
+          } catch {
+            parsed = [];
+          }
+
+          order.parsedItems = parsed;
+
+          parsed.forEach(item => {
+            if (item.menu_id) menuIdSet.add(item.menu_id);
+          });
+        });
+
+        // 4. 메뉴 정보 조회
         let menus = [];
-        
+        const menuIds = Array.from(menuIdSet);
         if (menuIds.length > 0) {
           const { data: menuData, error: menuError } = await supabase
             .from('menu')
-            .select('*')
-            .in('menu_id', menuIds);
-          
-          if (!menuError) {
-            menus = menuData;
-          }
+            .select('id, menu_name, menu_price')
+            .in('id', menuIds);
+          if (!menuError) menus = menuData;
         }
 
-        const combinedItems = items.map(item => {
-          const menuInfo = menus.find(m => m.menu_id === item.menu_id) || {};
-          return {
-            ...item,
-            menu_name: item.menu_name || menuInfo.menu_name,
-            menu_price: item.menu_price || menuInfo.menu_price
-          };
+        // 5. 사용자 닉네임 조회
+        let userProfiles = [];
+        const userIds = Array.from(userIdSet);
+        if (userIds.length > 0) {
+          const { data: userData, error: userError } = await supabase
+            .from('user')
+            .select('id, nickname')
+            .in('id', userIds);
+          if (!userError) userProfiles = userData;
+        }
+
+        const getUserName = (userId) => {
+          const user = userProfiles.find(u => u.id === userId);
+          return user?.nickname || '이름 없음';
+        };
+
+        // 6. 메뉴 정보 매핑
+        orders.forEach(order => {
+          order.items = order.parsedItems.map(item => {
+            const menuInfo = menus.find(m => m.id === item.menu_id) || {};
+            return {
+              ...item,
+              menu_name: item.menu_name || menuInfo.menu_name,
+              menu_price: item.menu_price || menuInfo.menu_price
+            };
+          });
         });
 
-        setOrderDetails(orderData);
-        setOrderItems(combinedItems);
+        // 7. 유저별로 주문 그룹화
+        const grouped = new Map();
+        orders.forEach(order => {
+          const userId = order.user_id;
+          const nickname = getUserName(userId);
+
+          if (!grouped.has(userId)) {
+            grouped.set(userId, {
+              user_id: userId,
+              nickname,
+              orders: []
+            });
+          }
+
+          grouped.get(userId).orders.push(order);
+        });
+
+        setParticipants(Array.from(grouped.values()));
         setLoading(false);
       } catch (err) {
-        console.error('주문 조회 중 오류:', err);
+        console.error('에러 발생:', err);
         setError(err.message);
         setLoading(false);
       }
     };
 
-    fetchOrderDetails();
-  }, [order_id]);
+    fetchData();
+  }, [room_id]);
 
   const goToGroupPurchase = () => {
-    if (orderDetails?.room_id) {
-      navigate(`/room/${orderDetails.room_id}`);
+    if (roomInfo?.id) {
+      navigate(`/room/${roomInfo.id}`);
     } else {
       navigate('/mainpage');
     }
   };
 
   const goToReview = () => {
-    if (orderDetails?.room_id) {
-      navigate(`/review/${orderDetails.room_id}`);
+    if (roomInfo?.id) {
+      navigate(`/review/${roomInfo.id}`);
     } else {
-      alert("room_id가 존재하지 않아 리뷰 페이지로 이동할 수 없습니다.");
+      alert("room_id가 없어 리뷰 페이지로 이동할 수 없습니다.");
     }
   };
 
@@ -117,72 +150,69 @@ const GonguComplete = () => {
         <h1 className={styles.title}>공구가 완료되었습니다!</h1>
       </div>
       
-      <p className={styles.description}>주문해주셔서 감사합니다. 배달이 완료되었습니다.</p>
+      <p className={styles.description}>공구방 배달이 완료되었습니다. 전체 주문 내역을 확인하세요.</p>
 
       <div className={styles.orderInfo}>
-        <h2>주문 번호 및 공구 정보</h2>
-        <div className={styles.infoRow}>
-          <div className={styles.infoLabel}>주문번호</div>
-          <div className={styles.infoValue}>{orderDetails?.order_id || 'N/A'}</div>
-        </div>
-        <div className={styles.infoRow}>
-                <span className={styles.infoLabel}>주문 일자 </span>
-                <span className={styles.infoValue}>
-                  {new Date(orderDetails.created_at).toLocaleString()}
-                </span>
-              </div>
+        <h2>공구방 정보</h2>
         <div className={styles.infoRow}>
           <div className={styles.infoLabel}>공구방 이름</div>
-          <div className={styles.infoValue}>{roomInfo?.room_name || '공구방 이름 없음'}</div>         
+          <div className={styles.infoValue}>{roomInfo?.room_name || '공구방 이름 없음'}</div>
         </div>
-  
-        <h2>주문한 상품</h2>
-        {orderItems.map((item, index) => (
-          <div className={styles.itemCard} key={index}>
-            <div className={styles.infoRow}>
-              <div className={styles.infoLabel}>주문상품</div>
-              <div className={styles.infoValue}>{item.menu_name || `메뉴 ${index + 1}`}</div>
-            </div>
-            <div className={styles.infoRow}>
-              <div className={styles.infoLabel}>주문수량</div>
-              <div className={styles.infoValue}>{item.quantity ? `${item.quantity}개` : '수량 정보 없음'}</div>
-            </div>
-            <div className={styles.infoRow}>
-              <div className={styles.infoLabel}>상품금액</div>
-              <div className={styles.infoValue}>{thousands(item.menu_price || 0)}원</div>
-            </div>
+
+        <h2>참여자별 주문 내역</h2>
+        {participants.map(part => (
+          <div key={part.user_id} className={styles.participantCard}>
+            <h3>{part.nickname} 님의 주문</h3>
+
+            {part.orders.map(order => (
+              <div key={order.order_id} className={styles.orderCard}>
+                <div className={styles.infoRow}>
+                  <div className={styles.infoLabel}>주문번호</div>
+                  <div className={styles.infoValue}>{order.order_id}</div>
+                </div>
+                <div className={styles.infoRow}>
+                  <div className={styles.infoLabel}>주문 일자</div>
+                  <div className={styles.infoValue}>
+                    {new Date(order.created_at).toLocaleString()}
+                  </div>
+                </div>
+                <div className={styles.infoRow}>
+                  <div className={styles.infoLabel}>총 금액</div>
+                  <div className={styles.infoValue}>{thousands(order.total_price || 0)}원</div>
+                </div>
+
+                <h4>상품 내역</h4>
+                {order.items.map((item, i) => (
+                  <div key={i} className={styles.itemCard}>
+                    <div className={styles.infoRow}>
+                      <div className={styles.infoLabel}>상품명</div>
+                      <div className={styles.infoValue}>{item.menu_name}</div>
+                    </div>
+                    <div className={styles.infoRow}>
+                      <div className={styles.infoLabel}>수량</div>
+                      <div className={styles.infoValue}>{item.quantity}개</div>
+                    </div>
+                    <div className={styles.infoRow}>
+                      <div className={styles.infoLabel}>금액</div>
+                      <div className={styles.infoValue}>{thousands(item.menu_price)}원</div>
+                    </div>
+                  </div>
+                ))}
+                <hr />
+              </div>
+            ))}
           </div>
         ))}
-
-        <h2>최종 정보</h2>
-        <div className={styles.infoRow}>
-          <div className={styles.infoLabel}>총 금액</div>
-          <div className={styles.infoValue}>{thousands(orderDetails?.total_price || 0)}원</div>
-        </div>
-        <div className={styles.infoRow}>
-          <div className={styles.infoLabel}>배달완료</div>
-          <div className={styles.infoValue}>
-            {orderDetails?.delivered_at 
-              ? new Date(orderDetails.delivered_at).toLocaleString() 
-              : '배달 완료 시간 정보 없음'}
-          </div>
-        </div>
       </div>
-        <div className={styles.notice}>
-        <p>
-          <i className="fas fa-info-circle"></i> 주문이 만족스러웠다면 리뷰 또는 평가를 남겨주세요.
-        </p>
-      </div>             
-      <button 
-        className={styles.button} 
-        onClick={goToReview}
-      >
+
+      <div className={styles.notice}>
+        <p><i className="fas fa-info-circle"></i> 주문이 만족스러웠다면 리뷰를 남겨주세요!</p>
+      </div>
+
+      <button className={styles.button} onClick={goToReview}>
         리뷰 작성하기
       </button>
-      <button 
-        className={`${styles.button} ${styles.buttonSecondary}`} 
-        onClick={goToGroupPurchase}
-      >
+      <button className={`${styles.button} ${styles.buttonSecondary}`} onClick={goToGroupPurchase}>
         공구방 바로가기
       </button>
     </div>
