@@ -157,7 +157,7 @@ const GonguComplete = () => {
         <div className={styles.infoRow}>
           <div className={styles.infoLabel}>공구방 이름</div>
           <div className={styles.infoValue}>{roomInfo?.room_name || '공구방 이름 없음'}</div>
-        </div>
+        </div><br></br>
 
         <h2>참여자별 주문 내역</h2>
         {participants.map(part => (
