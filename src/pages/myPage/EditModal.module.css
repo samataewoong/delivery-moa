@@ -80,3 +80,11 @@
 .saveButton:hover {
   background: #e35a5a;
 }
+.qnaDate {
+  padding: 0px;
+  border-bottom: 1px dotted;
+  color: gray;
+  font-size: 8px;
+  font-weight: 700;
+  box-sizing: border-box;
+}

@@ -57,7 +57,7 @@ export default function EditModal({ qnaId, onClose }) {
     <div className={styles.overlay}>
       <div className={styles.modal}>
         <h2>문의 수정</h2>
-        <div className={pageStyles.qnaDate}>
+        <div className={styles.qnaDate}>
           <h1>
             <FormattedDate dateString={date} />
           </h1>
