@@ -63,6 +63,11 @@ export default function RoomPage() {
                 console.error("User not found");
             }
         }
+        fetchUser();
+        fetchRoom();
+        fetchMenus();
+        fetchRoomJoin();
+        fetchStore();
         const roomJoinListSubscribe = supabase
             .realtime
             .channel(`realtime:room_join_watch_in_room`)
@@ -101,20 +106,15 @@ export default function RoomPage() {
             .on(
                 "postgres_changes",
                 { event: '*', schema: 'public', table: 'user' },
-                (payload) => {
-                    if (payload.new.id === user_id) {
+                async (payload) => {
+                    const { id } = await getAuthUser();
+                    if (payload.new.id === id) {
                         setUser((prevUser) => ({ ...prevUser, ...payload.new }));
                     }
                 }
             )
             .subscribe();
 
-        fetchUser();
-
-        fetchRoom();
-        fetchMenus();
-        fetchRoomJoin();
-        fetchStore();
         return () => {
             roomJoinListSubscribe.unsubscribe();
             roomSubscribe.unsubscribe();
