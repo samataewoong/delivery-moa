@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import supabase from "../config/supabaseClient";
-import Header from "../components/Header";
 import style from "./Register.module.css";
 
 
@@ -63,9 +62,9 @@ function Register() {
         const { data, error } = await supabase.auth.signUp({
             email,
             password,
-            options: {
-                data: { nickname },
-            },
+            // options: {
+            //     data: { nickname },
+            // },
         });
 
         if (error) {
